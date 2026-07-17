@@ -1,0 +1,21 @@
+{
+    "name": "spendigo/backend",
+    "description": "Spendigo Expense Tracker Backend API",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Spendigo\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mohammad Sleiman"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "firebase/php-jwt": "^7.1"
+    }
+}
