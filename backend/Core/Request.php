@@ -4,19 +4,27 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-final class Request
-{
-    public static function json(): array
-    {
-        $data = json_decode(file_get_contents('php://input'), true);
+final class Request {
+
+    // Get JSON request body
+    public static function json(): array {
+        $data = json_decode(
+            file_get_contents('php://input'),
+            true
+        );
 
         return is_array($data)
             ? $data
             : [];
     }
 
-    public static function bearerToken(): ?string
-    {
+    // Get current HTTP method
+    public static function method(): string {
+        return $_SERVER['REQUEST_METHOD'];
+    }
+
+    // Get current HTTP method
+    public static function bearerToken(): ?string {
         $headers = getallheaders();
 
         if (!isset($headers['Authorization'])) {

@@ -8,20 +8,25 @@ use PDO;
 use PDOException;
 use Dotenv\Dotenv;
 
-final class Database
-{
+final class Database {
     private static ?PDO $connection = null;
 
-    public static function getConnection(): PDO
-    {
-        if (self::$connection instanceof PDO) {
+    // Return a reusable database connection
+    public static function getConnection(): PDO {
+
+        if (self::$connection !== null) {
             return self::$connection;
         }
 
-        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
+        // Load environment variables.
+        $dotenv = Dotenv::createImmutable(
+            dirname(__DIR__)
+        );
+
         $dotenv->safeLoad();
 
         try {
+
             self::$connection = new PDO(
                 sprintf(
                     'mysql:host=%s;dbname=%s;charset=utf8mb4',
@@ -32,20 +37,22 @@ final class Database
                 $_ENV['DB_PASSWORD'],
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+
                     PDO::ATTR_EMULATE_PREPARES => false,
                 ]
             );
 
             return self::$connection;
 
-        } catch (PDOException $e) {
+        } catch (PDOException $exception) {
             http_response_code(500);
-
-            exit(json_encode([
+            echo json_encode([
                 'success' => false,
                 'message' => 'Database connection failed.'
-            ]));
+            ]);
+            exit;
         }
     }
 }
