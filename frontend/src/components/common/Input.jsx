@@ -4,7 +4,8 @@ export default function Input({
     value,
     onChange,
     placeholder,
-    name
+    name,
+    autoComplete="off"
 }) {
     return (
         <div className="space-y-2">
@@ -17,12 +18,18 @@ export default function Input({
                     w-full
                     rounded-xl
                     border
-                    border-gray-300
+                    border-slate-300
+                    bg-white
                     px-4
                     py-3
+                    text-slate-900
+                    placeholder:text-slate-400
+                    transition-all
+                    duration-200
                     outline-none
-                    transition
-                    focus:border-emerald-500
+                    focus:border-emerald-600
+                    focus:ring-4
+                    focus:ring-emerald-100
                 "
                 type={type}
                 name={name}
