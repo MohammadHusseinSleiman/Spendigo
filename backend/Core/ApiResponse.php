@@ -5,25 +5,31 @@ declare(strict_types=1);
 namespace App\Core;
 
 final class ApiResponse {
-
-    // Return successful response
+    // Return a successful JSON response
     public static function success(
-        array $data = [],
+        ?array $data = null,
         string $message = 'Success',
         int $status = 200
     ): never {
         http_response_code($status);
-        echo json_encode([
+
+        $response = [
             'success' => true,
             'message' => $message,
-            'data' => $data
-        ]);
+        ];
+
+        if ($data !== null) {
+            $response['data'] = $data;
+        }
+
+        echo json_encode($response);
+
         exit;
     }
 
-    // Return created resource response
+    // Return a created resource response
     public static function created(
-        array $data = [],
+        ?array $data = null,
         string $message = 'Created successfully.'
     ): never {
         self::success(
@@ -33,48 +39,48 @@ final class ApiResponse {
         );
     }
 
-    // Return error response
+    // Return an error response
     public static function error(
         string $message,
         int $status = 400
     ): never {
         http_response_code($status);
+
         echo json_encode([
             'success' => false,
-            'message' => $message
+            'message' => $message,
         ]);
+
         exit;
     }
 
     // Return validation errors
     public static function validation(
-        array $errors
+        array $errors,
+        string $message = 'Validation failed.'
     ): never {
         http_response_code(422);
+
         echo json_encode([
             'success' => false,
-            'errors' => $errors
+            'message' => $message,
+            'errors' => $errors,
         ]);
+
         exit;
     }
 
-    // Return unauthorized response
+    // Return an unauthorized response
     public static function unauthorized(
         string $message = 'Unauthorized.'
     ): never {
-        self::error(
-            $message,
-            401
-        );
+        self::error($message, 401);
     }
 
-    // Return not found response
+    // Return a not found response
     public static function notFound(
         string $message = 'Resource not found.'
     ): never {
-        self::error(
-            $message,
-            404
-        );
+        self::error($message, 404);
     }
 }

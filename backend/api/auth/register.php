@@ -6,8 +6,11 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 use App\Config\Database;
 use App\Core\ApiResponse;
+use App\Core\DefaultCategories;
+use App\Core\JWTHelper;
 use App\Core\Request;
 use App\Core\Validator;
+//use Throwable;
 
 // Only allow POST requests.
 if (Request::method() !== 'POST') {
@@ -25,7 +28,7 @@ $email = trim($data['email'] ?? '');
 $password = $data['password'] ?? '';
 $confirmPassword = $data['confirm_password'] ?? '';
 
-// Validate required fields.
+// Validate input.
 $errors = [];
 
 if (!Validator::required($fullName)) {
@@ -52,147 +55,136 @@ if (!empty($errors)) {
 
 $db = Database::getConnection();
 
-// Check if email already exists.
-$stmt = $db->prepare(
-    "SELECT id FROM users WHERE email = ?"
-);
+try {
 
-$stmt->execute([$email]);
+    // Start database transaction.
+    $db->beginTransaction();
 
-if ($stmt->fetch()) {
-    ApiResponse::error(
-        'Email already exists.',
-        409
+    // Check existing email.
+    $stmt = $db->prepare(
+        "SELECT 1 FROM users WHERE email = ? LIMIT 1"
     );
-}
 
-// Hash password before storing.
-$hashedPassword = password_hash(
-    $password,
-    PASSWORD_DEFAULT
-);
+    $stmt->execute([$email]);
 
-// Create user.
-$stmt = $db->prepare(
-    "
-    INSERT INTO users
-    (
-        full_name,
-        email,
-        password
-    )
-    VALUES
-    (
-        ?,
-        ?,
-        ?
-    )
-    "
-);
+    if ($stmt->fetch()) {
 
-$stmt->execute([
-    $fullName,
-    $email,
-    $hashedPassword
-]);
+        $db->rollBack();
 
-$userId = (int)$db->lastInsertId();
+        ApiResponse::error(
+            'Email already exists.',
+            409
+        );
+    }
 
-// Create default notification settings.
-$stmt = $db->prepare(
-    "
-    INSERT INTO notification_settings
-    (
-        user_id
-    )
-    VALUES
-    (?)
-    "
-);
+    // Hash password.
+    $hashedPassword = password_hash(
+        $password,
+        PASSWORD_DEFAULT
+    );
 
-$stmt->execute([
-    $userId
-]);
-
-// Default categories for new users.
-$categories = [
-
-    [
-        'name' => 'Salary',
-        'type' => 'income',
-        'color' => '#22C55E'
-    ],
-
-    [
-        'name' => 'Freelance',
-        'type' => 'income',
-        'color' => '#16A34A'
-    ],
-
-    [
-        'name' => 'Food',
-        'type' => 'expense',
-        'color' => '#EF4444'
-    ],
-
-    [
-        'name' => 'Transport',
-        'type' => 'expense',
-        'color' => '#F97316'
-    ],
-
-    [
-        'name' => 'Shopping',
-        'type' => 'expense',
-        'color' => '#8B5CF6'
-    ],
-
-    [
-        'name' => 'Bills',
-        'type' => 'expense',
-        'color' => '#3B82F6'
-    ],
-
-    [
-        'name' => 'Other',
-        'type' => 'expense',
-        'color' => '#64748B'
-    ],
-
-];
-
-$stmt = $db->prepare(
-    "
-    INSERT INTO categories
-    (
-        user_id,
-        name,
-        type,
-        color
-    )
-    VALUES
-    (
-        ?,
-        ?,
-        ?,
-        ?
-    )
-    "
-);
-
-foreach ($categories as $category) {
+    // Create user.
+    $stmt = $db->prepare(
+        "
+        INSERT INTO users
+        (
+            full_name,
+            email,
+            password
+        )
+        VALUES
+        (
+            ?,
+            ?,
+            ?
+        )
+        "
+    );
 
     $stmt->execute([
-        $userId,
-        $category['name'],
-        $category['type'],
-        $category['color']
+        $fullName,
+        $email,
+        $hashedPassword
     ]);
-}
 
-ApiResponse::created(
-    [
-        'user_id' => $userId
-    ],
-    'Account created successfully.'
-);
+    $userId = (int)$db->lastInsertId();
+
+    // Create notification settings.
+    $stmt = $db->prepare(
+        "
+        INSERT INTO notification_settings
+        (
+            user_id
+        )
+        VALUES
+        (?)
+        "
+    );
+
+    $stmt->execute([
+        $userId
+    ]);
+
+    // Create default categories.
+    $categories = DefaultCategories::all();
+
+    $stmt = $db->prepare(
+        "
+        INSERT INTO categories
+        (
+            user_id,
+            name,
+            type,
+            color
+        )
+        VALUES
+        (
+            ?,
+            ?,
+            ?,
+            ?
+        )
+        "
+    );
+
+    foreach ($categories as $category) {
+
+        $stmt->execute([
+            $userId,
+            $category['name'],
+            $category['type'],
+            $category['color']
+        ]);
+    }
+
+    // Commit database changes.
+    $db->commit();
+
+    // Create authentication token.
+    $token = JWTHelper::create($userId);
+
+    ApiResponse::created(
+        [
+            'token' => $token,
+
+            'user' => [
+                'id' => $userId,
+                'full_name' => $fullName,
+                'email' => $email
+            ]
+        ],
+        'Account created successfully.'
+    );
+
+} catch (Throwable $exception) {
+
+    // Rollback if any database operation fails.
+    if ($db->inTransaction()) {
+        $db->rollBack();
+    }
+
+    ApiResponse::error(
+        'Failed to create account.',
+        500
+    );
+}
