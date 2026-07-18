@@ -9,9 +9,7 @@ import api from "../api/axios";
 
 const AuthContext = createContext();
 
-export function AuthProvider({
-    children
-}) {
+export function AuthProvider({ children }) {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -76,6 +74,18 @@ export function AuthProvider({
 
     }
 
+async function register(data) {
+
+    const response =
+        await api.post(
+            "/auth/register.php",
+            data
+        );
+
+    return response.data;
+
+}
+
     function logout() {
 
         localStorage.removeItem(
@@ -86,18 +96,17 @@ export function AuthProvider({
     }
 
     return (
-
         <AuthContext.Provider
             value={{
                 user,
                 login,
+                register,
                 logout,
                 loading
             }}
         >
             {children}
         </AuthContext.Provider>
-
     );
 }
 

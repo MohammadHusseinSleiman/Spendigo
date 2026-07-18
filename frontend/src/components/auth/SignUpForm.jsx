@@ -1,34 +1,89 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../common/Button";
 import Input from "../common/Input";
+import { useAuth } from "../../context/AuthContext";
 
-export default function SignUpForm() {
+export default function SignUpForm({ onSuccess }) {
+
+    const { register } = useAuth();
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         full_name: "",
         email: "",
         password: "",
         confirm_password: "",
     });
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
     function handleChange(event) {
-        setForm((previous) => ({
-            ...previous,
+
+        setForm({
+            ...form,
             [event.target.name]: event.target.value,
-        }));
+        });
+
     }
 
-    function handleSubmit(event) {
-        event.preventDefault();
+    async function handleSubmit(event) {
 
-        console.log(form);
+        event.preventDefault();
+        setError("");
+
+        try {
+            await register(form);
+            onSuccess(form.email);
+        } catch (error) {
+            console.log(error);
+            setError(
+                error.response?.data?.message ??
+                "Something went wrong."
+            );
+        }
+
     }
 
     return (
+
         <form
             onSubmit={handleSubmit}
             className="space-y-5"
         >
+
+            {success && (
+
+                <p
+                    className="
+                        rounded-xl
+                        bg-emerald-50
+                        p-3
+                        text-sm
+                        text-emerald-600
+                    "
+                >
+                    {success}
+                </p>
+
+            )}
+
+            {error && (
+
+                <p
+                    className="
+                        rounded-xl
+                        bg-red-50
+                        p-3
+                        text-sm
+                        text-red-600
+                    "
+                >
+                    {error}
+                </p>
+
+            )}
+
             <Input
                 label="Full Name"
                 name="full_name"
@@ -67,6 +122,8 @@ export default function SignUpForm() {
             <Button type="submit">
                 Create Account
             </Button>
+
         </form>
+
     );
 }

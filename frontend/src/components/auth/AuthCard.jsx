@@ -6,7 +6,7 @@ import SignUpForm from "./SignUpForm";
 
 export default function AuthCard() {
     const [mode, setMode] = useState("signin");
-
+    const [registeredEmail, setRegisteredEmail] = useState("");
     const isSignIn = mode === "signin";
 
     return (
@@ -73,7 +73,18 @@ export default function AuthCard() {
                 </button>
             </div>
 
-            {isSignIn ? <SignInForm /> : <SignUpForm />}
+            {
+                isSignIn ? 
+                    <SignInForm
+                        email={registeredEmail}
+                    /> :
+                    <SignUpForm
+                        onSuccess={(email) => {
+                            setRegisteredEmail(email);
+                            setMode("signin");
+                        }}
+                    />
+}
         </div>
     );
 }
