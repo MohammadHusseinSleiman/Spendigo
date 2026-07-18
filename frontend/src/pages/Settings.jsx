@@ -1,17 +1,17 @@
 import AppLayout from "../components/layout/AppLayout";
 
 
-export default function Dashboard() {
+export default function Settings() {
 
     return (
 
         <AppLayout
-            title="Dashboard"
-            description="Overview of your financial activity"
+            title="Settings"
+            description="Manage your account preferences"
         >
 
             <h2 className="text-2xl font-bold text-slate-900">
-                Dashboard Content
+                Settings Content
             </h2>
 
         </AppLayout>
