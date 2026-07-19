@@ -1,22 +1,18 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+import LoadingSpinner from "../components/common/LoadingSpinner";
+
 export default function ProtectedRoute({children}) {
 
     const {user, loading} = useAuth();
 
     if (loading) {
-        return (
-            <div>
-                Loading...
-            </div>
-        );
+        return <LoadingSpinner />;
     }
 
     if (!user) {
-        return (
-            <Navigate to="/" replace/>
-        );
+        return <Navigate to="/" replace/>;
     }
 
     return children;
