@@ -24,7 +24,7 @@ final class DashboardService {
         ];
     }
 
-    // Current account balance
+    // Calculate current account balance
     private function getBalance( int $userId ): float {
 
         $stmt = $this->db->prepare(
@@ -52,13 +52,16 @@ final class DashboardService {
         return (float)$stmt->fetchColumn();
     }
 
-    // Total income for the current month
+    // Calculate total income for the current month
     private function getMonthlyIncome( int $userId ): float {
 
         $stmt = $this->db->prepare(
             "
             SELECT
-                COALESCE(SUM(amount), 0)
+                COALESCE(
+                    SUM(amount),
+                    0
+                )
             FROM transactions
             WHERE
                 user_id = ?
@@ -75,13 +78,16 @@ final class DashboardService {
         return (float)$stmt->fetchColumn();
     }
 
-    // Total expenses for the current month
+    // Calculate total expenses for the current month
     private function getMonthlyExpenses( int $userId ): float {
 
         $stmt = $this->db->prepare(
             "
             SELECT
-                COALESCE(SUM(amount), 0)
+                COALESCE(
+                    SUM(amount),
+                    0
+                )
             FROM transactions
             WHERE
                 user_id = ?
@@ -91,7 +97,9 @@ final class DashboardService {
             "
         );
 
-        $stmt->execute([ $userId ]);
+        $stmt->execute([
+            $userId
+        ]);
 
         return (float)$stmt->fetchColumn();
     }
