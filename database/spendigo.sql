@@ -72,6 +72,8 @@ CREATE TABLE transactions (
 
     category_id BIGINT UNSIGNED NOT NULL,
 
+    type ENUM('income', 'expense') NOT NULL,
+
     description VARCHAR(255) NOT NULL,
 
     amount DECIMAL(10,2) NOT NULL,

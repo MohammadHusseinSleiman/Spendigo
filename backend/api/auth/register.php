@@ -10,7 +10,7 @@ use App\Core\DefaultCategories;
 use App\Core\JWTHelper;
 use App\Core\Request;
 use App\Core\Validator;
-//use Throwable;
+use Throwable;
 
 // Only allow POST requests.
 if (Request::method() !== 'POST') {
