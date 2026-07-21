@@ -99,7 +99,10 @@ CREATE TABLE transactions (
 
     INDEX idx_transactions_category (category_id),
 
-    INDEX idx_transactions_date (transaction_date)
+    INDEX idx_transactions_date (transaction_date),
+
+    INDEX idx_transactions_user_type (user_id, type)
+
 );
 
 -- =====================================================
