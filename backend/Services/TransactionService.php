@@ -105,7 +105,73 @@ final class TransactionService
         int $userId,
         array $filters = []
     ): array {
-        return [];
+
+        $query = "
+            SELECT
+                t.id,
+                t.description,
+                t.amount,
+                t.type,
+                t.transaction_date,
+                c.name AS category,
+                c.color AS category_color
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            WHERE t.user_id = ?
+        ";
+
+        $params = [
+            $userId
+        ];
+
+        // Search filter
+        if (!empty($filters['search'])) {
+
+            $query .= "
+                AND t.description LIKE ?
+            ";
+
+            $params[] =
+                "%" . $filters['search'] . "%";
+        }
+
+        // Type filter
+        if (
+            !empty($filters['type']) &&
+            in_array(
+                $filters['type'],
+                ['income', 'expense'],
+                true
+            )
+        ) {
+
+            $query .= "
+                AND t.type = ?
+            ";
+
+            $params[] =
+                $filters['type'];
+        }
+
+        // Order
+        $query .= "
+            ORDER BY
+                t.transaction_date DESC,
+                t.id DESC
+        ";
+
+        $stmt = $this->db->prepare(
+            $query
+        );
+
+        $stmt->execute(
+            $params
+        );
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
     }
 
     // Get a single transaction
@@ -149,7 +215,7 @@ final class TransactionService
             WHERE
                 user_id = ?
                 AND type = ?
-            ORDER BY name ASC
+            ORDER BY id ASC
             "
         );
 

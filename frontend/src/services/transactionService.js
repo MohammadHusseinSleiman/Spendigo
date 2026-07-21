@@ -1,4 +1,4 @@
-import api from "../api/api";
+import api from "../api/axios";
 
 // Transaction API
 const transactionService = {
@@ -18,6 +18,7 @@ const transactionService = {
         return response.data.data;
     },
 
+
     // Create transaction
     async create(data) {
 
@@ -26,8 +27,21 @@ const transactionService = {
             data
         );
 
-        return response.data.data;
+        return response.data;
     },
 
+    
+    // Get transactions
+    async getTransactions(filters = {}) {
+
+        const response = await api.get(
+            "/transactions/index.php",
+            {
+                params: filters,
+            }
+        );
+
+        return response.data.data;
+    },
 };
 export default transactionService;
