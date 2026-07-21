@@ -60,6 +60,29 @@ final class TransactionService
         int $userId,
         string $type
     ): array {
-        return [];
+
+        $stmt = $this->db->prepare(
+            "
+            SELECT
+                id,
+                name,
+                color
+            FROM categories
+            WHERE
+                user_id = ?
+                AND type = ?
+            ORDER BY name ASC
+            "
+        );
+
+        $stmt->execute([
+            $userId,
+            $type
+        ]);
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+
     }
 }

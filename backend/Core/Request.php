@@ -37,4 +37,13 @@ final class Request {
 
         return $matches[1];
     }
+
+    // Get query string value
+    public static function query(
+        string $key,
+        mixed $default = null
+    ): mixed {
+
+        return $_GET[$key] ?? $default;
+    }
 }
