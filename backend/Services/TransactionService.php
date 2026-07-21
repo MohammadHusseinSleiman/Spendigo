@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use PDO;
+use Throwable;
+use RuntimeException;
 
 // Handles all transaction operations
 final class TransactionService
@@ -179,7 +181,34 @@ final class TransactionService
         int $userId,
         int $transactionId
     ): ?array {
-        return null;
+
+        $stmt = $this->db->prepare(
+            "
+            SELECT
+                id,
+                category_id,
+                type,
+                description,
+                amount,
+                transaction_date
+            FROM transactions
+            WHERE
+                id = ?
+                AND user_id = ?
+            LIMIT 1
+            "
+        );
+
+        $stmt->execute([
+            $transactionId,
+            $userId
+        ]);
+
+        $transaction = $stmt->fetch(
+            PDO::FETCH_ASSOC
+        );
+
+        return $transaction ?: null;
     }
 
     // Update transaction
@@ -187,16 +216,120 @@ final class TransactionService
         int $userId,
         int $transactionId,
         array $data
-    ): bool {
-        return false;
+    ): void {
+
+        $this->db->beginTransaction();
+
+        try {
+
+            // Validate transaction ownership
+            $transaction = $this->find(
+                $userId,
+                $transactionId
+            );
+
+            if (!$transaction) {
+
+                throw new RuntimeException(
+                    'Transaction not found.'
+                );
+
+            }
+
+            // Validate category ownership
+            $stmt = $this->db->prepare(
+                "
+                SELECT
+                    id,
+                    type
+                FROM categories
+                WHERE
+                    id = ?
+                    AND user_id = ?
+                LIMIT 1
+                "
+            );
+
+            $stmt->execute([
+                $data['category_id'],
+                $userId
+            ]);
+
+            $category = $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
+
+            if (!$category) {
+
+                throw new RuntimeException(
+                    'Invalid category.'
+                );
+
+            }
+
+            // Update transaction
+            $stmt = $this->db->prepare(
+                "
+                UPDATE transactions
+                SET
+                    category_id = ?,
+                    type = ?,
+                    description = ?,
+                    amount = ?,
+                    transaction_date = ?
+                WHERE
+                    id = ?
+                    AND user_id = ?
+                "
+            );
+
+            $stmt->execute([
+                $data['category_id'],
+                $category['type'],
+                trim($data['description']),
+                (float)$data['amount'],
+                $data['transaction_date'],
+                $transactionId,
+                $userId
+            ]);
+
+            $this->db->commit();
+
+        } catch (Throwable $exception) {
+
+            $this->db->rollBack();
+            throw $exception;
+
+        }
     }
 
     // Delete transaction
     public function delete(
         int $userId,
         int $transactionId
-    ): bool {
-        return false;
+    ): void {
+
+        $stmt = $this->db->prepare(
+            "
+            DELETE FROM transactions
+            WHERE
+                id = ?
+                AND user_id = ?
+            "
+        );
+
+        $stmt->execute([
+            $transactionId,
+            $userId
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+
+            throw new RuntimeException(
+                'Transaction not found.'
+            );
+
+        }
     }
 
     // Get categories by transaction type
