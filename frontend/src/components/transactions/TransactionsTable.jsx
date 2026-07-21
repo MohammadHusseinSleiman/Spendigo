@@ -1,7 +1,11 @@
-import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle, Pencil, Trash2 } from "lucide-react";
 
 // Transactions table
-export default function TransactionsTable( {transactions} ) {
+export default function TransactionsTable({
+    transactions,
+    onEdit,
+    onDelete,
+}) {
 
     if (transactions.length === 0) {
 
@@ -60,6 +64,9 @@ export default function TransactionsTable( {transactions} ) {
                         <th className="px-6 py-4">
                             Date
                         </th>
+                        <th className="px-6 py-4 text-center">
+                            Actions
+                        </th>
                     </tr>
 
                 </thead>
@@ -115,6 +122,40 @@ export default function TransactionsTable( {transactions} ) {
 
                             <td className="px-6 py-4">
                                 {transaction.transaction_date}
+                            </td>
+
+                            <td className="px-6 py-4">
+                                <div className="flex justify-center gap-2">
+
+                                    <button
+                                        onClick={() => onEdit(transaction.id)}
+                                        className="
+                                            rounded-lg
+                                            p-2
+                                            text-blue-600
+                                            transition
+                                            hover:bg-blue-50
+                                        "
+                                        title="Edit"
+                                    >
+                                        <Pencil size={18} />
+                                    </button>
+
+                                    <button
+                                        onClick={() => onDelete(transaction.id)}
+                                        className="
+                                            rounded-lg
+                                            p-2
+                                            text-red-600
+                                            transition
+                                            hover:bg-red-50
+                                        "
+                                        title="Delete"
+                                    >
+                                        <Trash2 size={18} />
+                                    </button>
+
+                                </div>
                             </td>
 
                         </tr>

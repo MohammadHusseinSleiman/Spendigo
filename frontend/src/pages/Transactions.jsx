@@ -1,17 +1,27 @@
 import { useState, useEffect } from "react";
+
 import AppLayout from "../components/layout/AppLayout";
 import TransactionsHeader from "../components/transactions/TransactionsHeader";
 import AddTransactionModal from "../components/transactions/AddTransactionModal";
+import EditTransactionModal from "../components/transactions/EditTransactionModal";
+import DeleteTransactionModal from "../components/transactions/DeleteTransactionModal";
 import TransactionFilters from "../components/transactions/TransactionFilters";
 import TransactionsTable from "../components/transactions/TransactionsTable";
 import transactionService from "../services/transactionService";
 
 export default function Transactions() {
 
-    const [search,setSearch] = useState("");
-    const [type,setType] = useState("all");
-    const [transactions, setTransactions] = useState([]);
+    const [search, setSearch] = useState("");
+    const [type, setType] = useState("all");
     const [modalOpen, setModalOpen] = useState(false);
+    const [transactions, setTransactions] = useState([]);
+
+    const [editId, setEditId] = useState(null);
+    const [editOpen, setEditOpen] = useState(false);
+
+    const [deleteId, setDeleteId] = useState(null);
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     useEffect(() => {
         loadTransactions(); 
@@ -23,6 +33,25 @@ export default function Transactions() {
             type,
         });
         setTransactions(data);
+    }
+
+    async function handleDelete() {
+
+        setDeleteLoading(true);
+
+        try {
+
+            await transactionService.delete(
+                deleteId
+            );
+
+            setDeleteOpen(false);
+            setDeleteId(null);
+            loadTransactions();
+
+        } finally {
+            setDeleteLoading(false);
+        }
     }
 
     return (
@@ -48,6 +77,26 @@ export default function Transactions() {
                 }}
             />
 
+            <EditTransactionModal
+                transactionId={editId}
+                isOpen={editOpen}
+                onClose={() => {
+                    setEditOpen(false);
+                    setEditId(null);
+                }}
+                onSuccess={loadTransactions}
+            />
+
+            <DeleteTransactionModal
+                isOpen={deleteOpen}
+                onClose={() => {
+                    setDeleteOpen(false);
+                    setDeleteId(null);
+                }}
+                onConfirm={handleDelete}
+                loading={deleteLoading}
+            />
+
             <TransactionFilters
                 search={search}
                 setSearch={setSearch}
@@ -57,6 +106,14 @@ export default function Transactions() {
 
             <TransactionsTable
                 transactions={transactions}
+                onEdit={(id) => {
+                    setEditId(id);
+                    setEditOpen(true);
+                }}
+                onDelete={(id) => {
+                    setDeleteId(id);
+                    setDeleteOpen(true);
+                }}
             />
 
         </AppLayout>

@@ -30,7 +30,7 @@ const transactionService = {
         return response.data;
     },
 
-    
+
     // Get transactions
     async getTransactions(filters = {}) {
 
@@ -42,6 +42,43 @@ const transactionService = {
         );
 
         return response.data.data;
+    },
+
+
+    // Get a single transaction
+    async getById(id) {
+
+        const response = await api.get(
+            "/transactions/show.php",
+            {
+                params: { id },
+            }
+        );
+
+        return response.data.data;
+    },
+
+
+    // Update transaction
+    async update(id, data) {
+
+        const response = await api.put(
+            `/transactions/update.php?id=${id}`,
+            data
+        );
+
+        return response.data;
+    },
+
+
+    // Delete transaction
+    async delete(id) {
+
+        const response = await api.delete(
+            `/transactions/destroy.php?id=${id}`
+        );
+
+        return response.data;
     },
 };
 export default transactionService;
