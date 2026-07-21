@@ -19,7 +19,85 @@ final class TransactionService
         int $userId,
         array $data
     ): int {
-        return 0;
+
+        try {
+
+            $this->db->beginTransaction();
+
+            // Validate category ownership
+            // The category must belong to the authenticated user
+            $stmt = $this->db->prepare(
+                "
+                SELECT
+                    id,
+                    type
+                FROM categories
+                WHERE
+                    id = ?
+                    AND user_id = ?
+                LIMIT 1
+                "
+            );
+
+            $stmt->execute([
+                $data['category_id'],
+                $userId
+            ]);
+
+            $category = $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
+
+            if (!$category) {
+                throw new \RuntimeException(
+                    'Invalid category.'
+                );
+            }
+
+            // Create transaction
+            $stmt = $this->db->prepare(
+                "
+                INSERT INTO transactions
+                (
+                    user_id,
+                    category_id,
+                    type,
+                    description,
+                    amount,
+                    transaction_date
+                )
+                VALUES
+                (
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?,
+                    ?
+                )
+                "
+            );
+
+            $stmt->execute([
+                $userId,
+                $data['category_id'],
+                $category['type'],
+                $data['description'],
+                $data['amount'],
+                $data['transaction_date']
+            ]);
+
+            $transactionId = (int)$this->db->lastInsertId();
+
+            $this->db->commit();
+
+            return $transactionId;
+
+        } catch (\Throwable $exception) {
+
+            $this->db->rollBack();
+            throw $exception;
+        }
     }
 
     // Get all user transactions
