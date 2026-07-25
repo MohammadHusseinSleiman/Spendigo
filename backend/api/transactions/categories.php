@@ -23,12 +23,14 @@ if (Request::method() !== 'GET') {
 // Authenticate user.
 $userId = AuthMiddleware::handle();
 
-// Validate transaction type.
+// Transaction type is optional.
 $type = trim(
-    Request::query('type') ?? ''
+    Request::query('type', '')
 );
 
+// Validate type only if it is provided.
 if (
+    $type !== '' &&
     !in_array(
         $type,
         ['income', 'expense'],
@@ -50,7 +52,7 @@ $service = new TransactionService(
 // Get categories.
 $categories = $service->categories(
     $userId,
-    $type
+    $type === '' ? null : $type
 );
 
 // Return response.

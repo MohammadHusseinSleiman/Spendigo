@@ -23,16 +23,37 @@ export default function Transactions() {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
 
+    const [categoryId, setCategoryId] = useState("");
+    const [categories, setCategories] = useState([]);
+
+    const [month, setMonth] = useState("");
+
     useEffect(() => {
         loadTransactions(); 
-    }, [search, type]);
+    }, [
+        search,
+        type,
+        categoryId,
+        month,
+    ]);
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
 
     async function loadTransactions() {
         const data = await transactionService.getTransactions({
             search,
             type,
+            category_id: categoryId,
+            month,
         });
         setTransactions(data);
+    }
+
+    async function loadCategories() {
+        const data = await transactionService.getAllCategories();
+        setCategories(data);
     }
 
     async function handleDelete() {
@@ -102,6 +123,11 @@ export default function Transactions() {
                 setSearch={setSearch}
                 type={type}
                 setType={setType}
+                categoryId={categoryId}
+                setCategoryId={setCategoryId}
+                categories={categories}
+                month={month}
+                setMonth={setMonth}
             />
 
             <TransactionsTable

@@ -34,6 +34,13 @@ $filters = [
         Request::query('type', '')
     ),
 
+    'category_id' => (int)
+    Request::query('category_id', 0),
+
+    'month' => trim(
+        Request::query('month', '')
+    ),
+
 ];
 
 // Create service.

@@ -8,6 +8,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 import Started from "./pages/Started";
 import Dashboard from "./pages/Dashboard";
+import Categories from "./pages/Categories";
 import Transactions from "./pages/Transactions";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
@@ -41,6 +42,15 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <Transactions />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/categories"
+                    element={
+                        <ProtectedRoute>
+                            <Categories />
                         </ProtectedRoute>
                     }
                 />

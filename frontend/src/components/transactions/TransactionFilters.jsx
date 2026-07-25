@@ -6,6 +6,11 @@ export default function TransactionFilters({
     setSearch,
     type,
     setType,
+    categoryId,
+    setCategoryId,
+    categories,
+    month,
+    setMonth,
 }) {
 
     return (
@@ -98,6 +103,50 @@ export default function TransactionFilters({
                     </option>
 
                 </select>
+
+                {/* Category filter */}
+                <select
+                    value={categoryId}
+                    onChange={(e) =>
+                        setCategoryId(e.target.value)
+                    }
+                    className="
+                        rounded-xl
+                        border
+                        px-4
+                        py-3
+                    "
+                >
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    {categories.map(category => (
+                        <option
+                            key={category.id}
+                            value={category.id}
+                        >
+                            {category.name}
+                        </option>
+                    ))}
+
+                </select>
+
+                {/* Month filter */}
+                <input
+                    type="month"
+                    value={month}
+                    onChange={(e) =>
+                        setMonth(e.target.value)
+                    }
+                    className="
+                        rounded-xl
+                        border
+                        px-4
+                        py-3
+                    "
+                />
 
             </div>
 

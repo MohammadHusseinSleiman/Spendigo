@@ -45,6 +45,17 @@ const transactionService = {
     },
 
 
+    // Get all user categories
+    async getAllCategories() {
+
+        const response = await api.get(
+            "/transactions/categories.php"
+        );
+
+        return response.data.data;
+    },
+
+
     // Get a single transaction
     async getById(id) {
 

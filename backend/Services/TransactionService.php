@@ -156,6 +156,33 @@ final class TransactionService
                 $filters['type'];
         }
 
+        // Category filter
+        if (
+            !empty($filters['category_id'])
+        ) {
+
+            $query .= "
+                AND t.category_id = ?
+            ";
+
+            $params[] =
+                $filters['category_id'];
+        }
+
+        // Month filter
+        if (!empty($filters['month'])) {
+
+            $query .= "
+                AND DATE_FORMAT(
+                    t.transaction_date,
+                    '%Y-%m'
+                ) = ?
+            ";
+
+            $params[] =
+                $filters['month'];
+        }
+
         // Order
         $query .= "
             ORDER BY
@@ -333,29 +360,53 @@ final class TransactionService
     }
 
     // Get categories by transaction type
+/**
+ * Get user categories.
+ */
     public function categories(
         int $userId,
-        string $type
+        ?string $type = null
     ): array {
 
-        $stmt = $this->db->prepare(
-            "
+        $query = "
             SELECT
                 id,
                 name,
-                color
+                color,
+                type
             FROM categories
-            WHERE
-                user_id = ?
+            WHERE user_id = ?
+        ";
+
+        $params = [
+            $userId
+        ];
+
+        // Filter by type only when provided.
+        if (
+            $type !== null &&
+            $type !== ''
+        ) {
+
+            $query .= "
                 AND type = ?
-            ORDER BY id ASC
-            "
+            ";
+
+            $params[] = $type;
+
+        }
+
+        $query .= "
+            ORDER BY name ASC
+        ";
+
+        $stmt = $this->db->prepare(
+            $query
         );
 
-        $stmt->execute([
-            $userId,
-            $type
-        ]);
+        $stmt->execute(
+            $params
+        );
 
         return $stmt->fetchAll(
             PDO::FETCH_ASSOC
