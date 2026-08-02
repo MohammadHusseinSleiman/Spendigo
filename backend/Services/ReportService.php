@@ -138,4 +138,31 @@ final class ReportService {
         );
     }
 
+
+    // Get all transactions for export
+    public function transactions( int $userId ): array {
+
+        $stmt = $this->db->prepare("
+            SELECT
+                t.transaction_date,
+                t.description,
+                c.name AS category,
+                t.type,
+                t.amount
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            WHERE t.user_id = ?
+            ORDER BY
+                t.transaction_date DESC,
+                t.id DESC
+        ");
+
+        $stmt->execute([
+            $userId
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

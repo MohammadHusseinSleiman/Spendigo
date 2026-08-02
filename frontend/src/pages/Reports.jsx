@@ -44,6 +44,33 @@ export default function Reports() {
             description="Analyze your financial performance"
         >
 
+            <button
+                onClick={() => reportService.exportCSV()}
+                className="
+                    rounded-xl
+                    bg-emerald-600
+                    px-4
+                    py-2
+                    text-white
+                    transition
+                    hover:bg-emerald-700
+                "
+            >
+                Export CSV
+            </button>
+
+            <button
+                onClick={() => reportService.exportPDF()}
+                className="
+                    rounded-xl
+                    border
+                    px-4
+                    py-2
+                "
+            >
+                Export PDF
+            </button>
+
             <ReportsSummary
                 summary={summary}
             />
