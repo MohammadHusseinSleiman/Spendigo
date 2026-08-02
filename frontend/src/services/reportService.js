@@ -21,4 +21,18 @@ export default {
         return response.data.data;
     },
 
+
+    // Expense distribution by category
+    async getExpensesByCategory() {
+
+        const response = await api.get(
+            "/reports/categories.php"
+        );
+
+        return response.data.data.map(item => ({
+            ...item,
+            total: Number(item.total),
+        }));
+    },
+
 };

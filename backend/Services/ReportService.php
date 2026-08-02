@@ -107,4 +107,35 @@ final class ReportService {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    // Expense distribution by category
+    public function expensesByCategory( int $userId ): array {
+
+        $stmt = $this->db->prepare("
+            SELECT
+                c.name,
+                c.color,
+                SUM(t.amount) AS total
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            WHERE
+                t.user_id = ?
+                AND t.type = 'expense'
+            GROUP BY
+                c.id,
+                c.name,
+                c.color
+            ORDER BY total DESC
+        ");
+
+        $stmt->execute([
+            $userId
+        ]);
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+    }
+
 }
