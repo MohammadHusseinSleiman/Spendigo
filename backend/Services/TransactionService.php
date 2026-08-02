@@ -360,9 +360,7 @@ final class TransactionService
     }
 
     // Get categories by transaction type
-/**
- * Get user categories.
- */
+    // Get user categories
     public function categories(
         int $userId,
         ?string $type = null

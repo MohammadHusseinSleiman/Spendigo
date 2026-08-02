@@ -10,14 +10,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <StrictMode>
         <AuthProvider>
             <App />
-<AuthProvider>
-    <App />
-    <Toaster
-        position="top-right"
-        richColors
-        closeButton
-    />
-</AuthProvider>
+            <Toaster
+                position="top-right"
+                richColors
+                closeButton
+            />
         </AuthProvider>
     </StrictMode>
 );

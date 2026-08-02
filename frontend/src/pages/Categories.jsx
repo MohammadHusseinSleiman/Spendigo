@@ -1,0 +1,154 @@
+import { useMemo, useEffect, useState } from "react";
+
+import categoryService from "../services/categoryService";
+import AppLayout from "../components/layout/AppLayout";
+import CategoriesHeader from "../components/categories/CategoriesHeader";
+import CategoriesFilters from "../components/categories/CategoriesFilters";
+import CategoriesTable from "../components/categories/CategoriesTable";
+import AddCategoryModal from "../components/categories/AddCategoryModal";
+import EditCategoryModal from "../components/categories/EditCategoryModal";
+import DeleteCategoryModal from "../components/categories/DeleteCategoryModal";
+
+export default function Categories() {
+
+    const [categories, setCategories] = useState([]);
+    const [search, setSearch] = useState("");
+    const [type, setType] = useState("all");
+
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const filteredCategories = useMemo(() => {
+
+        return categories.filter((category) => {
+
+            const matchesSearch =
+                category.name
+                    .toLowerCase()
+                    .includes(
+                        search.toLowerCase()
+                    );
+
+            const matchesType =
+                type === "all"
+                    ? true
+                    : category.type === type;
+
+            return (
+                matchesSearch &&
+                matchesType
+            );
+        });
+    }, [
+        categories,
+        search,
+        type,
+    ]);
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
+
+    async function loadCategories() {
+        const data = await categoryService.getCategories();
+        setCategories(data);
+    }
+
+    function handleEdit(category) {
+        setSelectedCategory(category);
+        setShowEditModal(true);
+    }
+
+    function handleDelete(category) {
+        setSelectedCategory(category);
+        setShowDeleteModal(true);
+    }
+
+    async function confirmDelete() {
+
+        if (!selectedCategory) {
+            return;
+        }
+        setDeleteLoading(true);
+
+        try {
+            await categoryService.deleteCategory(
+                selectedCategory.id
+            );
+            setShowDeleteModal(false);
+            setSelectedCategory(null);
+            await loadCategories();
+
+        } catch (error) {
+
+            alert(
+                error.response?.data?.message ??
+                "Unable to delete category."
+            );
+
+        } finally {
+            setDeleteLoading(false);
+        }
+    }
+
+    return (
+
+        <div className="p-6">
+
+            <AppLayout>
+
+                <CategoriesHeader
+                    onAdd={() => {
+                        setShowAddModal(true)
+                    }}
+                />
+
+                <CategoriesFilters
+                    search={search}
+                    setSearch={setSearch}
+                    type={type}
+                    setType={setType}
+                />
+
+                <CategoriesTable
+                    categories={filteredCategories}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+
+                <AddCategoryModal
+                    open={showAddModal}
+                    onClose={() =>
+                        setShowAddModal(false)
+                    }
+                    onSuccess={loadCategories}
+                />
+
+                <EditCategoryModal
+                    open={showEditModal}
+                    category={selectedCategory}
+                    onClose={() =>
+                        setShowEditModal(false)
+                    }
+                    onSuccess={loadCategories}
+                />
+
+                <DeleteCategoryModal
+                    isOpen={showDeleteModal}
+                    onClose={() =>
+                        setShowDeleteModal(false)
+                    }
+                    onConfirm={confirmDelete}
+                    loading={deleteLoading}
+                />
+
+            </AppLayout>
+
+        </div>
+
+    );
+
+}

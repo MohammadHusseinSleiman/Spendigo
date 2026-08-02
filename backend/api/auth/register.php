@@ -135,14 +135,16 @@ try {
             user_id,
             name,
             type,
-            color
+            color,
+            is_default
         )
         VALUES
         (
             ?,
             ?,
             ?,
-            ?
+            ?,
+            1
         )
         "
     );

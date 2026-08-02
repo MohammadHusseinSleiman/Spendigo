@@ -29,11 +29,8 @@ export default function TransactionsHeader({
                         hover:bg-emerald-700
                     "
                 >
-
                     <Plus size={18} />
-
                     Add Transaction
-
                 </button>
 
             }

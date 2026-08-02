@@ -4,6 +4,12 @@ import {
     ChartColumn,
     Settings,
     LogOut,
+    TypeIcon,
+    Tags,
+    Layers,
+    Grid,
+    Folder,
+    List,
 } from "lucide-react";
 
 import Logo from "../common/Logo";
@@ -45,6 +51,12 @@ export default function Sidebar() {
                     to="/transactions"
                     icon={Wallet}
                     label="Transactions"
+                />
+
+                <NavItem
+                    to="/categories"
+                    icon={List}
+                    label="Categories"
                 />
 
                 <NavItem
