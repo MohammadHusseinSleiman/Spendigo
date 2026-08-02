@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
+
+import reportService from "../services/reportService";
+import IncomeExpenseChart from "../components/reports/IncomeExpenseChart";
 import AppLayout from "../components/layout/AppLayout";
 
-
 export default function Reports() {
+
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+        loadChart();
+    }, []);
+
+    async function loadChart() {
+        const data = await reportService.getMonthlyIncomeExpense();
+        setChartData(data);
+    }
 
     return (
 
@@ -10,9 +24,9 @@ export default function Reports() {
             description="Analyze your financial performance"
         >
 
-            <h2 className="text-2xl font-bold text-slate-900">
-                Reports Content
-            </h2>
+            <IncomeExpenseChart
+                data={chartData}
+            />
 
         </AppLayout>
 
