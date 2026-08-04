@@ -23,4 +23,15 @@ export default {
         return response.data;
     },
 
+    // Change password
+    async changePassword(data) {
+
+        const response = await api.put(
+            "/settings/password.php",
+            data
+        );
+
+        return response.data;
+    },
+
 };

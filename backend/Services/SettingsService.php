@@ -81,4 +81,51 @@ final class SettingsService {
 
         return (bool) $stmt->fetchColumn();
     }
+
+
+    // Verify current password
+    public function verifyPassword(
+        int $userId,
+        string $password
+    ): bool {
+
+        $stmt = $this->db->prepare("
+            SELECT password
+            FROM users
+            WHERE id = ?
+        ");
+
+        $stmt->execute([
+            $userId
+        ]);
+
+        $hash = $stmt->fetchColumn();
+
+        return password_verify(
+            $password,
+            $hash
+        );
+    }
+
+
+    // Update user password
+    public function changePassword(
+        int $userId,
+        string $password
+    ): void {
+
+        $stmt = $this->db->prepare("
+            UPDATE users
+            SET password = ?
+            WHERE id = ?
+        ");
+
+        $stmt->execute([
+            password_hash(
+                $password,
+                PASSWORD_DEFAULT
+            ),
+            $userId
+        ]);
+    }
 }
