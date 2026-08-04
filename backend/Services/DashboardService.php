@@ -13,14 +13,18 @@ final class DashboardService {
     // Returns all dashboard data required by the frontend
     public function summary( int $userId ): array {
 
+        $analytics = new AnalyticsService(
+            $this->db
+        );
+
         return [
             'balance' => $this->getBalance($userId),
             'monthly_income' => $this->getMonthlyIncome($userId),
             'monthly_expenses' => $this->getMonthlyExpenses($userId),
             'savings_rate' => $this->getSavingsRate($userId),
-            'income_vs_expenses' => [],
-            'expense_breakdown' => [],
-            'recent_transactions' => [],
+            'income_vs_expenses' => $analytics->monthlyIncomeExpense($userId),
+            'expense_breakdown' => $analytics->expensesByCategory($userId),
+            'recent_transactions' => $this->latestTransactions($userId),
         ];
     }
 
@@ -118,4 +122,49 @@ final class DashboardService {
             2
         );
     }
+
+    // Get latest user transactions
+    public function latestTransactions(
+        int $userId,
+        int $limit = 5
+    ): array {
+
+        $stmt = $this->db->prepare("
+            SELECT
+                t.id,
+                t.description,
+                t.amount,
+                t.type,
+                t.transaction_date,
+                c.name AS category,
+                c.color AS category_color
+            FROM transactions t
+            INNER JOIN categories c
+                ON c.id = t.category_id
+            WHERE t.user_id = ?
+            ORDER BY
+                t.transaction_date DESC,
+                t.id DESC
+            LIMIT ?
+        ");
+
+        $stmt->bindValue(
+            1,
+            $userId,
+            PDO::PARAM_INT
+        );
+
+        $stmt->bindValue(
+            2,
+            $limit,
+            PDO::PARAM_INT
+        );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+    }
+
 }

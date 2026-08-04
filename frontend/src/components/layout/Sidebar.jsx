@@ -1,15 +1,10 @@
 import {
     LayoutDashboard,
     Wallet,
+    Tags,
     ChartColumn,
     Settings,
     LogOut,
-    TypeIcon,
-    Tags,
-    Layers,
-    Grid,
-    Folder,
-    List,
 } from "lucide-react";
 
 import Logo from "../common/Logo";
@@ -55,7 +50,7 @@ export default function Sidebar() {
 
                 <NavItem
                     to="/categories"
-                    icon={List}
+                    icon={Tags}
                     label="Categories"
                 />
 

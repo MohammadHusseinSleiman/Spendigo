@@ -4,8 +4,8 @@ import reportService from "../services/reportService";
 
 import AppLayout from "../components/layout/AppLayout";
 import ReportsSummary from "../components/reports/ReportsSummary";
-import IncomeExpenseChart from "../components/reports/IncomeExpenseChart";
-import ExpenseCategoryChart from "../components/reports/ExpenseCategoryChart";
+import IncomeExpenseChart from "../components/charts/IncomeExpenseChart";
+import ExpenseCategoryChart from "../components/charts/ExpenseCategoryChart";
 
 export default function Reports() {
 

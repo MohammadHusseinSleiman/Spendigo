@@ -9,7 +9,7 @@ import {
     Legend,
 } from "recharts";
 
-export default function IncomeExpenseChart({ data }) {
+export default function IncomeExpenseChart({ data = [] }) {
     if (data.length === 0) {
         return (
             <div className="rounded-2xl bg-white p-6 shadow-sm">

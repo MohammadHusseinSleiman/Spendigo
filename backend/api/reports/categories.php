@@ -7,11 +7,11 @@ require_once __DIR__ . '/../../bootstrap.php';
 use App\Config\Database;
 use App\Core\ApiResponse;
 use App\Middleware\AuthMiddleware;
-use App\Services\ReportService;
+use App\Services\AnalyticsService;
 
 $userId = AuthMiddleware::handle();
 
-$service = new ReportService(
+$service = new AnalyticsService(
     Database::getConnection()
 );
 

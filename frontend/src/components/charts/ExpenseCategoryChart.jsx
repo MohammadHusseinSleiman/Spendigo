@@ -8,7 +8,7 @@ import {
 } from "recharts";
 
 // Expense distribution by category
-export default function ExpenseCategoryChart({ data }) {
+export default function ExpenseCategoryChart({ data = [] }) {
     if (data.length === 0) {
         return (
             <div

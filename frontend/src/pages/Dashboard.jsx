@@ -1,7 +1,42 @@
+import { useEffect, useState } from "react";
+
 import AppLayout from "../components/layout/AppLayout";
 
+import dashboardService from "../services/dashboardService";
+
+import DashboardStats from "../components/dashboard/DashboardStats";
+import IncomeExpenseChart from "../components/charts/IncomeExpenseChart";
+import ExpenseCategoryChart from "../components/charts/ExpenseCategoryChart";
+import RecentTransactions from "../components/dashboard/RecentTransactions";
+import QuickActions from "../components/dashboard/QuickActions";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 export default function Dashboard() {
+
+    const [dashboard, setDashboard] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        loadDashboard();
+    }, []);
+
+    async function loadDashboard() {
+
+        try {
+
+            const data = await dashboardService.getSummary();
+            setDashboard(data);
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    if (loading) {
+        return (
+            <LoadingSpinner />
+        );
+    }
 
     return (
 
@@ -10,9 +45,32 @@ export default function Dashboard() {
             description="Overview of your financial activity"
         >
 
-            <h2 className="text-2xl font-bold text-slate-900">
-                Dashboard Content
-            </h2>
+            <DashboardStats
+                stats={dashboard}
+            />
+
+            <div
+                className="
+                    mt-8
+                    grid
+                    gap-6
+                    lg:grid-cols-2
+                "
+            >
+
+                <IncomeExpenseChart
+                    data={
+                        dashboard.income_vs_expenses
+                    }
+                />
+
+                <ExpenseCategoryChart
+                    data={
+                        dashboard.expense_breakdown ?? []
+                    }
+                />
+
+            </div>
 
         </AppLayout>
 
