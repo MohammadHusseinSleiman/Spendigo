@@ -27,6 +27,10 @@ export default function Settings() {
     const [passwordErrors, setPasswordErrors] = useState({});
     const [passwordLoading, setPasswordLoading] = useState(false);
 
+    const photoUrl = profile.photo
+        ? `${import.meta.env.VITE_API_URL}/uploads/profile.php?file=${profile.photo.split("/").pop()}`
+        : "/default-avatar.png";
+
     useEffect(() => {
         loadProfile();
     }, []);
@@ -133,6 +137,22 @@ export default function Settings() {
         }
     }
 
+    async function handlePhotoChange(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) { return; }
+
+        try {
+
+            await settingsService.uploadPhoto( file );
+            loadProfile();
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
 
         <AppLayout
@@ -144,6 +164,25 @@ export default function Settings() {
                 onSubmit={handleSubmit}
                 className="space-y-6"
             >
+
+                <img
+                    src={photoUrl}
+                    alt="Profile"
+                    className="
+                        h-28
+                        w-28
+                        rounded-full
+                        object-cover
+                        border
+                        border-slate-300
+                    "
+                />
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                />
 
                 <input
                     name="full_name"

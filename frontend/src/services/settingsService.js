@@ -34,4 +34,27 @@ export default {
         return response.data;
     },
 
+    // Upload photo
+    async uploadPhoto(file) {
+
+        const formData = new FormData();
+
+        formData.append(
+            "photo",
+            file
+        );
+
+        const response = await api.post(
+            "/settings/upload_photo.php",
+            formData,
+            {
+                headers: {
+                    "Content-Type":"multipart/form-data",
+                },
+            }
+        );
+
+        return response.data.data;
+    },
+
 };

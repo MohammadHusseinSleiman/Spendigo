@@ -128,4 +128,23 @@ final class SettingsService {
             $userId
         ]);
     }
+
+
+    // Update user photo
+    public function updatePhoto(
+        int $userId,
+        string $photo
+    ): void {
+
+        $stmt = $this->db->prepare("
+            UPDATE users
+            SET photo = ?
+            WHERE id = ?
+        ");
+
+        $stmt->execute([
+            $photo,
+            $userId,
+        ]);
+    }
 }
