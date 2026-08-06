@@ -1,6 +1,7 @@
 import { useMemo, useEffect, useState } from "react";
 
 import { toast } from "sonner";
+import { useNotifications } from "../context/NotificationContext";
 
 import categoryService from "../services/categoryService";
 import AppLayout from "../components/layout/AppLayout";
@@ -22,6 +23,8 @@ export default function Categories() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const { addNotification } = useNotifications();
 
     const filteredCategories = useMemo(() => {
 
@@ -79,6 +82,9 @@ export default function Categories() {
         try {
             await categoryService.deleteCategory(
                 selectedCategory.id
+            );
+            addNotification(
+                "Category deleted"
             );
             setShowDeleteModal(false);
             setSelectedCategory(null);

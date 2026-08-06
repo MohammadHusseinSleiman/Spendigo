@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-
 import { toast } from "sonner";
+import { useNotifications } from "../../context/NotificationContext";
+
+import { useState, useEffect } from "react";
 
 import Modal from "../common/Modal";
 import categoryService from "../../services/categoryService";
@@ -23,6 +24,8 @@ export default function EditCategoryModal({
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
 
+    const { addNotification } = useNotifications();
+
     useEffect(() => {
 
         if (!category) {
@@ -37,7 +40,9 @@ export default function EditCategoryModal({
 
     }, [category]);
 
-    async function handleSubmit() {
+    async function handleSubmit(event) {
+
+        event.preventDefault();
 
         setLoading(true);
         setErrors({});
@@ -48,33 +53,33 @@ export default function EditCategoryModal({
                 category.id,
                 form
             );
-
+            addNotification(
+                `Category "${form.name}" updated`
+            );
             setForm({
                 name: "",
                 type: "expense",
                 color: "#2563EB",
             });
+            toast.success("Category updated successfully.");
+
             onSuccess();
             onClose();
-            toast.success("Category updated successfully.");
 
         } catch (error) {
 
             if (error.response?.status === 422) {
 
-                setErrors(
-                    error.response.data.errors
-                );
+                setErrors(error.response.data.errors);
 
-            } else if (
-                error.response?.status === 409
-            ) {
+            } else if (error.response?.status === 409) {
 
                 setErrors({
                     name: "Category already exists.",
                 });
 
             } else {
+
                 toast.error(
                     error.response?.data?.message ??
                     "Something went wrong."

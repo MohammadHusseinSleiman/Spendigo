@@ -1,5 +1,7 @@
 import { ArrowDownCircle, ArrowUpCircle, Pencil, Trash2 } from "lucide-react";
 
+import { toast } from "sonner";
+
 // Transactions table
 export default function TransactionsTable({
     transactions,
@@ -142,7 +144,10 @@ export default function TransactionsTable({
                                     </button>
 
                                     <button
-                                        onClick={() => onDelete(transaction.id)}
+                                        onClick={() => {
+                                            onDelete(transaction.id);
+                                            toast.warning("This action cannot be undone.");
+                                        }}
                                         className="
                                             rounded-lg
                                             p-2

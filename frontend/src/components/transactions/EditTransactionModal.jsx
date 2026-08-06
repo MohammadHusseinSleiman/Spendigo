@@ -1,3 +1,6 @@
+import { toast } from "sonner";
+import { useNotifications } from "../../context/NotificationContext";
+
 import { useEffect, useState } from "react";
 
 import Modal from "../common/Modal";
@@ -23,6 +26,8 @@ export default function EditTransactionModal({
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+
+    const { addNotification } = useNotifications();
 
     useEffect(() => {
 
@@ -73,10 +78,11 @@ export default function EditTransactionModal({
                 transactionId,
                 form
             );
+            addNotification("Transaction updated");
+            toast.success("Transaction updated successfully.");
 
             onSuccess();
             onClose();
-            toast.success("Transaction updated successfully.");
 
         } catch (error) {
 

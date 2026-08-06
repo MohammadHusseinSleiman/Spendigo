@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { toast } from "sonner";
+import { useNotifications } from "../context/NotificationContext";
 
 import AppLayout from "../components/layout/AppLayout";
 import settingsService from "../services/settingsService";
@@ -37,6 +38,8 @@ export default function Settings() {
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const { addNotification } = useNotifications();
 
     const photoUrl = profile.photo
         ? `${import.meta.env.VITE_API_URL}/uploads/profile.php?file=${profile.photo.split("/").pop()}`
@@ -85,8 +88,9 @@ export default function Settings() {
         try {
 
             await settingsService.updateProfile( profile );
-            await loadProfile();
+            addNotification("Profile updated");
             toast.success("Profile updated successfully.");
+            await loadProfile();
 
         } catch (error) {
 
@@ -128,12 +132,13 @@ export default function Settings() {
         try {
 
             await settingsService.changePassword( passwordForm );
+            addNotification("Password changed");
+            toast.success("Password changed successfully.");
             setPasswordForm({
                 current_password: "",
                 new_password: "",
                 confirm_password: "",
             });
-            toast.success("Password changed successfully.");
 
         } catch (error) {
 
@@ -165,8 +170,9 @@ export default function Settings() {
         try {
 
             await settingsService.uploadPhoto( file );
-            loadProfile();
+            addNotification("Profile photo updated");
             toast.success("Photo updated successfully.");
+            loadProfile();
 
         } catch (error) {
             toast.error(

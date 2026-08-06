@@ -1,3 +1,6 @@
+import { toast } from "sonner";
+import { useNotifications } from "../context/NotificationContext";
+
 import { useState, useEffect } from "react";
 
 import AppLayout from "../components/layout/AppLayout";
@@ -27,6 +30,8 @@ export default function Transactions() {
     const [categories, setCategories] = useState([]);
 
     const [month, setMonth] = useState("");
+
+    const { addNotification } = useNotifications();
 
     useEffect(() => {
         loadTransactions(); 
@@ -65,11 +70,12 @@ export default function Transactions() {
             await transactionService.delete(
                 deleteId
             );
+            addNotification("Transaction deleted");
+            toast.success("Transaction deleted successfully.");
 
             setDeleteOpen(false);
             setDeleteId(null);
-            loadTransactions();
-            toast.success("Transaction deleted successfully.");
+            await loadTransactions();
 
         } finally {
             setDeleteLoading(false);

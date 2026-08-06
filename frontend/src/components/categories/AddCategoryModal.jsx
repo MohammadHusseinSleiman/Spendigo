@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { toast } from "sonner";
+import { useNotifications } from "../../context/NotificationContext";
 
 import Modal from "../common/Modal";
 import categoryService from "../../services/categoryService";
@@ -26,53 +27,56 @@ export default function AddCategoryModal({
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
 
-    async function handleSubmit() {
+    const { addNotification } = useNotifications();
 
-        setLoading(true);
-        setErrors({});
+async function handleSubmit(event) {
 
-        try {
+    event.preventDefault();
 
-            await categoryService.createCategory({
-                name,
-                type,
-                color,
+    setLoading(true);
+    setErrors({});
+
+    try {
+
+        await categoryService.createCategory(form);
+        addNotification(
+            `Category "${form.name}" created`
+        );
+        toast.success("Category created successfully.");
+
+        setName("");
+        setType("expense");
+        setColor("#2563EB");
+
+        onSuccess();
+        onClose();
+
+    } catch (error) {
+
+        if (error.response?.status === 422) {
+
+            setErrors(
+                error.response.data.errors
+            );
+
+        } else if (error.response?.status === 409) {
+
+            setErrors({
+                name: "Category already exists.",
             });
 
-            setName("");
-            setType("expense");
-            setColor("#2563EB");
-            onSuccess();
-            onClose();
-            toast.success("Category created successfully.");
+        } else {
 
-        } catch (error) {
-
-            if (error.response?.status === 422) {
-
-                setErrors(
-                    error.response.data.errors
-                );
-
-            } else if (
-                error.response?.status === 409
-            ) {
-
-                setErrors({
-                    name: "Category already exists.",
-                });
-
-            } else {
-                toast.error(
-                    error.response?.data?.message ??
-                    "Something went wrong."
-                );
-            }
-
-        } finally {
-            setLoading(false);
+            toast.error(
+                error.response?.data?.message ??
+                "Something went wrong."
+            );
         }
+
+    } finally {
+        setLoading(false);
     }
+}
 
     function handleChange(event) {
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { toast } from "sonner";
+import { useNotifications } from "../../context/NotificationContext";
 
 import Modal from "../common/Modal";
 import transactionService from "../../services/transactionService";
@@ -26,6 +27,8 @@ export default function AddTransactionModal({
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+
+    const { addNotification } = useNotifications();
 
     // Load categories whenever the transaction type changes
     useEffect(() => {
@@ -88,9 +91,12 @@ export default function AddTransactionModal({
         try {
 
             await transactionService.create(form);
+            addNotification(
+                `Transaction "${form.description}" added`
+            );
+            toast.success("Transaction added successfully.");
             onSuccess();
             onClose();
-            toast.success("Transaction added successfully.");
 
         } catch (error) {
 
