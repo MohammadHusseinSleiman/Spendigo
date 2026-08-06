@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { toast } from "sonner";
+
 import Modal from "../common/Modal";
 import categoryService from "../../services/categoryService";
 import CategoryForm from "./CategoryForm";
@@ -54,6 +56,7 @@ export default function EditCategoryModal({
             });
             onSuccess();
             onClose();
+            toast.success("Category updated successfully.");
 
         } catch (error) {
 
@@ -72,7 +75,10 @@ export default function EditCategoryModal({
                 });
 
             } else {
-                console.error(error);
+                toast.error(
+                    error.response?.data?.message ??
+                    "Something went wrong."
+                );
             }
 
         } finally {

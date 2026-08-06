@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { toast } from "sonner";
+
 import AppLayout from "../components/layout/AppLayout";
 import settingsService from "../services/settingsService";
 import ChangePasswordForm from "../components/settings/ChangePasswordForm";
@@ -84,6 +86,7 @@ export default function Settings() {
 
             await settingsService.updateProfile( profile );
             await loadProfile();
+            toast.success("Profile updated successfully.");
 
         } catch (error) {
 
@@ -92,7 +95,10 @@ export default function Settings() {
                 setErrors( error.response.data.errors );
 
             } else {
-                console.error(error);
+                toast.error(
+                    error.response?.data?.message ??
+                    "Something went wrong."
+                );
             }
 
         } finally {
@@ -127,7 +133,7 @@ export default function Settings() {
                 new_password: "",
                 confirm_password: "",
             });
-            alert("Password changed successfully.");
+            toast.success("Password changed successfully.");
 
         } catch (error) {
 
@@ -139,8 +145,7 @@ export default function Settings() {
 
             } else {
 
-                console.error(error);
-                alert(
+                toast.error(
                     error.response?.data?.message ??
                     "Unable to change password."
                 );
@@ -161,9 +166,13 @@ export default function Settings() {
 
             await settingsService.uploadPhoto( file );
             loadProfile();
+            toast.success("Photo updated successfully.");
 
         } catch (error) {
-            console.error(error);
+            toast.error(
+                error.response?.data?.message ??
+                "Something went wrong."
+            );
         }
     }
 
@@ -181,9 +190,13 @@ export default function Settings() {
             setLoading(true);
             await settingsService.updatePreferences( preferences );
             await loadPreferences();
+            toast.success("Preferences updated successfully.");
 
         } catch (error) {
-            console.error(error);
+            toast.error(
+                error.response?.data?.message ??
+                "Something went wrong."
+            );
         } finally {
             setLoading(false);
         }
@@ -199,17 +212,15 @@ export default function Settings() {
                 password
             );
             localStorage.removeItem("token");
-            // toast.success(
-            //     "Account deleted successfully."
-            // );
+            toast.success("Account deleted successfully.");
             navigate("/login");
 
         } catch (error) {
 
-            // toast.error(
-            //     error.response?.data?.message ??
-            //     "Unable to delete account."
-            // );
+            toast.error(
+                error.response?.data?.message ??
+                "Unable to delete account."
+            );
 
         } finally {
 
@@ -339,9 +350,10 @@ export default function Settings() {
 
                 <button
                     type="button"
-                    onClick={() =>
-                        setShowDeleteModal(true)
-                    }
+                    onClick={() =>{
+                        setShowDeleteModal(true);
+                        toast.warning("This action cannot be undone.");
+                    }}
                     className="
                         mt-5
                         rounded-xl

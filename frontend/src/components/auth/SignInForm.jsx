@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -27,6 +29,7 @@ export default function SignInForm({ email = "" }) {
         setError("");
         try {
             await login(form);
+            toast.success("Welcome back!");
             navigate("/dashboard");
         } catch (error) {
             setError(
@@ -45,7 +48,6 @@ export default function SignInForm({ email = "" }) {
         >
 
             {error && (
-
                 <p className="
                     rounded-xl
                     bg-red-50
@@ -55,7 +57,6 @@ export default function SignInForm({ email = "" }) {
                 ">
                     {error}
                 </p>
-
             )}
 
             <Input

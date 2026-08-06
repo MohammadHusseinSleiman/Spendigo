@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -35,8 +37,8 @@ export default function SignUpForm({ onSuccess }) {
         try {
             await register(form);
             onSuccess(form.email);
+            toast.success("Account created successfully.");
         } catch (error) {
-            console.log(error);
             setError(
                 error.response?.data?.message ??
                 "Something went wrong."

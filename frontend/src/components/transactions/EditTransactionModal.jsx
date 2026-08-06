@@ -76,6 +76,7 @@ export default function EditTransactionModal({
 
             onSuccess();
             onClose();
+            toast.success("Transaction updated successfully.");
 
         } catch (error) {
 

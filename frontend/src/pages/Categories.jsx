@@ -1,5 +1,7 @@
 import { useMemo, useEffect, useState } from "react";
 
+import { toast } from "sonner";
+
 import categoryService from "../services/categoryService";
 import AppLayout from "../components/layout/AppLayout";
 import CategoriesHeader from "../components/categories/CategoriesHeader";
@@ -81,10 +83,11 @@ export default function Categories() {
             setShowDeleteModal(false);
             setSelectedCategory(null);
             await loadCategories();
+            toast.success("Category deleted successfully.");
 
         } catch (error) {
 
-            alert(
+            toast.error(
                 error.response?.data?.message ??
                 "Unable to delete category."
             );

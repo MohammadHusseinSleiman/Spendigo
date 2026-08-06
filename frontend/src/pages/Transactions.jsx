@@ -69,6 +69,7 @@ export default function Transactions() {
             setDeleteOpen(false);
             setDeleteId(null);
             loadTransactions();
+            toast.success("Transaction deleted successfully.");
 
         } finally {
             setDeleteLoading(false);

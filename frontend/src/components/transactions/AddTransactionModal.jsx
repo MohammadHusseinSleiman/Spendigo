@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { toast } from "sonner";
+
 import Modal from "../common/Modal";
 import transactionService from "../../services/transactionService";
 import TransactionForm from "./TransactionForm";
@@ -57,7 +59,10 @@ export default function AddTransactionModal({
             }
 
         } catch (error) {
-            console.error(error);
+            toast.error(
+                error.response?.data?.message ??
+                "Something went wrong."
+            );
         }
     }
 
@@ -85,6 +90,7 @@ export default function AddTransactionModal({
             await transactionService.create(form);
             onSuccess();
             onClose();
+            toast.success("Transaction added successfully.");
 
         } catch (error) {
 
@@ -97,7 +103,10 @@ export default function AddTransactionModal({
                 );
 
             } else {
-                console.error(error);
+                toast.error(
+                    error.response?.data?.message ??
+                    "Something went wrong."
+                );
             }
 
         } finally {
