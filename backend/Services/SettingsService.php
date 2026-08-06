@@ -18,7 +18,8 @@ final class SettingsService {
                 email,
                 photo,
                 bio,
-                currency
+                currency,
+                dark_mode
             FROM users
             WHERE id = ?
             LIMIT 1
@@ -147,4 +148,84 @@ final class SettingsService {
             $userId,
         ]);
     }
+
+
+    // Update user preferences
+    public function updatePreferences(
+        int $userId,
+        array $data
+    ): void {
+
+        $stmt = $this->db->prepare("
+            UPDATE users
+            SET
+                currency = ?,
+                dark_mode = ?
+            WHERE id = ?
+        ");
+
+        $stmt->execute([
+            $data['currency'],
+            (int) $data['dark_mode'],
+            $userId,
+        ]);
+    }
+
+
+    // Get user preferences
+    public function getPreferences( int $userId ): array {
+
+        $stmt = $this->db->prepare("
+            SELECT
+                currency,
+                dark_mode
+            FROM users
+            WHERE id = ?
+            LIMIT 1
+        ");
+
+        $stmt->execute([
+            $userId
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+    }
+
+
+    // Delete Account
+public function deleteAccount( int $userId ): void {
+
+    $stmt = $this->db->prepare("
+        SELECT photo
+        FROM users
+        WHERE id = ?
+    ");
+
+    $stmt->execute([
+        $userId
+    ]);
+
+    $photo = $stmt->fetchColumn();
+
+    if ($photo) {
+
+        $path =
+            __DIR__
+            . "/../../"
+            . $photo;
+
+        if (file_exists($path)) {
+            unlink($path);
+        }
+    }
+
+    $stmt = $this->db->prepare("
+        DELETE FROM users
+        WHERE id = ?
+    ");
+
+    $stmt->execute([
+        $userId
+    ]);
+}
 }

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import AppLayout from "../components/layout/AppLayout";
 import settingsService from "../services/settingsService";
 import ChangePasswordForm from "../components/settings/ChangePasswordForm";
+import PreferencesCard from "../components/settings/PreferencesCard";
+import DeleteAccountModal from "../components/settings/DeleteAccountModal";
 
 export default function Settings() {
 
@@ -23,9 +25,16 @@ export default function Settings() {
         new_password: "",
         confirm_password: "",
     });
-
     const [passwordErrors, setPasswordErrors] = useState({});
     const [passwordLoading, setPasswordLoading] = useState(false);
+
+    const [preferences, setPreferences] = useState({
+        currency: "USD",
+        dark_mode: false,
+    });
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     const photoUrl = profile.photo
         ? `${import.meta.env.VITE_API_URL}/uploads/profile.php?file=${profile.photo.split("/").pop()}`
@@ -33,6 +42,7 @@ export default function Settings() {
 
     useEffect(() => {
         loadProfile();
+        loadPreferences();
     }, []);
 
     async function loadProfile() {
@@ -41,6 +51,10 @@ export default function Settings() {
 
             const data = await settingsService.getProfile();
             setProfile(data);
+            setPreferences({
+                currency: data.currency,
+                dark_mode: data.dark_mode,
+            });
 
         } finally {
             setLoading(false);
@@ -153,6 +167,57 @@ export default function Settings() {
         }
     }
 
+    // Preferences
+    async function loadPreferences() {
+
+        const data = await settingsService.getPreferences();
+        setPreferences(data);
+    }
+
+    async function handlePreferencesSubmit() {
+
+        try {
+
+            setLoading(true);
+            await settingsService.updatePreferences( preferences );
+            await loadPreferences();
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function handleDeleteAccount( password ) {
+
+        setDeleteLoading(true);
+
+        try {
+
+            await settingsService.deleteAccount(
+                password
+            );
+            localStorage.removeItem("token");
+            // toast.success(
+            //     "Account deleted successfully."
+            // );
+            navigate("/login");
+
+        } catch (error) {
+
+            // toast.error(
+            //     error.response?.data?.message ??
+            //     "Unable to delete account."
+            // );
+
+        } finally {
+
+            setDeleteLoading(false);
+            setShowDeleteModal(false);
+        }
+    }
+
     return (
 
         <AppLayout
@@ -253,6 +318,51 @@ export default function Settings() {
                 loading={passwordLoading}
                 onChange={handlePasswordChange}
                 onSubmit={handlePasswordSubmit}
+            />
+
+            <PreferencesCard
+                loading={loading}
+                onClick={handlePreferencesSubmit}
+                preferences={preferences}
+                setPreferences={setPreferences}
+            />
+
+            <div className="rounded-2xl bg-white p-6 shadow-sm">
+
+                <h2 className="text-xl font-semibold">
+                    Danger Zone
+                </h2>
+
+                <p className="mt-2 text-sm text-slate-500">
+                    Permanently delete your account.
+                </p>
+
+                <button
+                    type="button"
+                    onClick={() =>
+                        setShowDeleteModal(true)
+                    }
+                    className="
+                        mt-5
+                        rounded-xl
+                        bg-red-600
+                        px-5
+                        py-3
+                        text-white
+                    "
+                >
+                    Delete Account
+                </button>
+
+            </div>
+
+            <DeleteAccountModal
+                open={showDeleteModal}
+                loading={deleteLoading}
+                onClose={() =>
+                    setShowDeleteModal(false)
+                }
+                onConfirm={handleDeleteAccount}
             />
 
         </AppLayout>

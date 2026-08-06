@@ -57,4 +57,34 @@ export default {
         return response.data.data;
     },
 
+    // Get preferences
+    async getPreferences() {
+        const response = await api.get(
+            "/settings/preferences.php"
+        );
+
+        return response.data.data;
+    },
+    
+    // Update preferences
+    async updatePreferences(data) {
+        await api.put(
+            "/settings/preferences.php",
+            data
+        );
+    },
+
+    // Delete Account
+    async deleteAccount(password) {
+
+        return api.delete(
+            "/settings/delete_account.php",
+            {
+                data: {
+                    password,
+                },
+            }
+        );
+    },
+
 };
