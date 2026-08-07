@@ -10,6 +10,7 @@ import EditTransactionModal from "../components/transactions/EditTransactionModa
 import DeleteTransactionModal from "../components/transactions/DeleteTransactionModal";
 import TransactionFilters from "../components/transactions/TransactionFilters";
 import TransactionsTable from "../components/transactions/TransactionsTable";
+import EmptyState from "../components/common/EmptyState";
 import transactionService from "../services/transactionService";
 
 export default function Transactions() {
@@ -47,18 +48,39 @@ export default function Transactions() {
     }, []);
 
     async function loadTransactions() {
-        const data = await transactionService.getTransactions({
-            search,
-            type,
-            category_id: categoryId,
-            month,
-        });
-        setTransactions(data);
+        try {
+
+            const data = await transactionService.getTransactions({
+                search,
+                type,
+                category_id: categoryId,
+                month,
+            });
+            setTransactions(data);
+
+        } catch(error) {
+
+            toast.error(
+                error.response?.data?.message ??
+                "Unable to load transactions."
+            );
+        }
     }
 
     async function loadCategories() {
-        const data = await transactionService.getAllCategories();
-        setCategories(data);
+        try {
+
+            const data = await transactionService.getAllCategories();
+            setCategories(data);
+
+        } catch (error) {
+
+            toast.error(
+                error.response?.data?.message ??
+                "Unable to load categories."
+            );
+
+        }
     }
 
     async function handleDelete() {
@@ -67,15 +89,22 @@ export default function Transactions() {
 
         try {
 
-            await transactionService.delete(
-                deleteId
-            );
+            await transactionService.delete( deleteId );
+
             addNotification("Transaction deleted");
             toast.success("Transaction deleted successfully.");
 
             setDeleteOpen(false);
             setDeleteId(null);
+
             await loadTransactions();
+
+        } catch (error) {
+
+            toast.error(
+                error.response?.data?.message ??
+                "Unable to delete transaction."
+            );
 
         } finally {
             setDeleteLoading(false);
