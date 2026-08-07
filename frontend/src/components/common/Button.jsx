@@ -1,33 +1,69 @@
+// Reusable button component
+
 export default function Button({
     children,
     type = "button",
     onClick,
-    disabled = false
+    disabled = false,
+    variant = "primary",
+    className = "",
 }) {
+
+    const variants = {
+
+        primary: `
+            bg-emerald-600
+            text-white
+            hover:bg-emerald-700
+        `,
+
+        secondary: `
+            border
+            border-slate-200
+            bg-white
+            text-slate-700
+            hover:bg-slate-50
+        `,
+
+        danger: `
+            bg-red-600
+            text-white
+            hover:bg-red-700
+        `,
+
+        ghost: `
+            bg-transparent
+            text-slate-700
+            hover:bg-slate-100
+        `,
+    };
+
     return (
+
         <button
             type={type}
             onClick={onClick}
             disabled={disabled}
-            className="
-                w-full
+            className={`
+                inline-flex
+                items-center
+                justify-center
                 rounded-xl
-                bg-emerald-600
                 px-4
-                py-3
+                py-2.5
                 font-semibold
-                text-white
                 shadow-sm
                 transition-all
                 duration-200
-                hover:bg-emerald-700
-                hover:shadow-md
                 active:scale-[0.98]
                 disabled:cursor-not-allowed
                 disabled:opacity-60
-            "
+                ${variants[variant] ?? variants.primary}
+                ${className}
+            `}
         >
             {children}
         </button>
+
     );
 }

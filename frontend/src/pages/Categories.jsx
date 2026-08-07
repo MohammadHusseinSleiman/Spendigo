@@ -1,6 +1,8 @@
 import { useMemo, useEffect, useState } from "react";
 
 import { toast } from "sonner";
+
+import notificationService from "../services/notificationService";
 import { useNotifications } from "../context/NotificationContext";
 
 import categoryService from "../services/categoryService";
@@ -58,8 +60,19 @@ export default function Categories() {
     }, []);
 
     async function loadCategories() {
-        const data = await categoryService.getCategories();
-        setCategories(data);
+        try {
+
+            const data = await categoryService.getCategories();
+            setCategories(data);
+
+        } catch (error) {
+
+            toast.error(
+                error.response?.data?.message ??
+                "Unable to load categories."
+            );
+
+        }
     }
 
     function handleEdit(category) {
@@ -105,58 +118,54 @@ export default function Categories() {
 
     return (
 
-        <div className="p-6">
+        <AppLayout>
 
-            <AppLayout>
+            <CategoriesHeader
+                onAdd={() => {
+                    setShowAddModal(true)
+                }}
+            />
 
-                <CategoriesHeader
-                    onAdd={() => {
-                        setShowAddModal(true)
-                    }}
-                />
+            <CategoriesFilters
+                search={search}
+                setSearch={setSearch}
+                type={type}
+                setType={setType}
+            />
 
-                <CategoriesFilters
-                    search={search}
-                    setSearch={setSearch}
-                    type={type}
-                    setType={setType}
-                />
+            <CategoriesTable
+                categories={filteredCategories}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
 
-                <CategoriesTable
-                    categories={filteredCategories}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
+            <AddCategoryModal
+                open={showAddModal}
+                onClose={() =>
+                    setShowAddModal(false)
+                }
+                onSuccess={loadCategories}
+            />
 
-                <AddCategoryModal
-                    open={showAddModal}
-                    onClose={() =>
-                        setShowAddModal(false)
-                    }
-                    onSuccess={loadCategories}
-                />
+            <EditCategoryModal
+                open={showEditModal}
+                category={selectedCategory}
+                onClose={() =>
+                    setShowEditModal(false)
+                }
+                onSuccess={loadCategories}
+            />
 
-                <EditCategoryModal
-                    open={showEditModal}
-                    category={selectedCategory}
-                    onClose={() =>
-                        setShowEditModal(false)
-                    }
-                    onSuccess={loadCategories}
-                />
+            <DeleteCategoryModal
+                isOpen={showDeleteModal}
+                onClose={() =>
+                    setShowDeleteModal(false)
+                }
+                onConfirm={confirmDelete}
+                loading={deleteLoading}
+            />
 
-                <DeleteCategoryModal
-                    isOpen={showDeleteModal}
-                    onClose={() =>
-                        setShowDeleteModal(false)
-                    }
-                    onConfirm={confirmDelete}
-                    loading={deleteLoading}
-                />
-
-            </AppLayout>
-
-        </div>
+        </AppLayout>
 
     );
 
