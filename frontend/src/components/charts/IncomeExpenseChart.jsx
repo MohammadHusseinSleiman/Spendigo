@@ -9,45 +9,77 @@ import {
     Legend,
 } from "recharts";
 
-export default function IncomeExpenseChart({ data = [] }) {
+import Card from "../common/Card";
+import EmptyState from "../common/EmptyState";
+
+// Monthly income vs expenses chart
+export default function IncomeExpenseChart({
+    data = [],
+}) {
+
     if (data.length === 0) {
+
         return (
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-                <h2 className="mb-4 text-lg font-semibold">
+            <Card>
+
+                <h2 className="text-lg font-semibold">
                     Monthly Income vs Expenses
                 </h2>
-                <p className="text-slate-500">No report data available.</p>
-            </div>
+
+                <div className="mt-6">
+                    <EmptyState
+                        title="No report data"
+                        description="There is no income or expense data available for the selected period."
+                    />
+                </div>
+
+            </Card>
         );
     }
 
     return (
-        <div className="rounded-2xl bg-white p-6 shadow-sm">
+
+        <Card>
+
             <h2 className="mb-6 text-lg font-semibold">
                 Monthly Income vs Expenses
             </h2>
 
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer
+                width="100%"
+                height={350}
+            >
+
                 <BarChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
+                    <CartesianGrid
+                        strokeDasharray="3 3"
+                    />
+                    <XAxis
+                        dataKey="month"
+                    />
                     <YAxis />
                     <Tooltip
-                        formatter={(value) => `$${value}`}
+                        formatter={(value) =>
+                            `$${Number(value).toFixed(2)}`
+                        }
                     />
                     <Legend />
                     <Bar
                         dataKey="income"
+                        name="Income"
                         fill="#22C55E"
                         radius={[8, 8, 0, 0]}
                     />
                     <Bar
                         dataKey="expenses"
+                        name="Expenses"
                         fill="#EF4444"
                         radius={[8, 8, 0, 0]}
                     />
                 </BarChart>
+
             </ResponsiveContainer>
-        </div>
+
+        </Card>
     );
 }

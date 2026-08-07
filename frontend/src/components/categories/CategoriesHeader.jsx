@@ -10,8 +10,6 @@ export default function CategoriesHeader({ onAdd }) {
 
         <SectionHeader
 
-            title="Categories"
-
             action={
                 <Button
                     type="button"

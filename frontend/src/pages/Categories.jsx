@@ -118,7 +118,10 @@ export default function Categories() {
 
     return (
 
-        <AppLayout>
+        <AppLayout
+            title="Categories"
+            description="Categorize your transactions for easier management."
+        >
 
             <CategoriesHeader
                 onAdd={() => {
