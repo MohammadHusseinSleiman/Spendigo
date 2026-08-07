@@ -60,6 +60,10 @@ export default function Settings() {
                 currency: data.currency,
                 dark_mode: data.dark_mode,
             });
+            document.documentElement.classList.toggle(
+                "dark",
+                data.dark_mode
+            );
 
         } finally {
             setLoading(false);
@@ -197,6 +201,10 @@ export default function Settings() {
             await settingsService.updatePreferences( preferences );
             await loadPreferences();
             toast.success("Preferences updated successfully.");
+            document.documentElement.classList.toggle(
+                "dark",
+                preferences.dark_mode
+            );
 
         } catch (error) {
             toast.error(

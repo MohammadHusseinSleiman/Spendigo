@@ -24,6 +24,12 @@ export default {
                 expenses: Number(item.expenses),
             }));
 
+        data.recent_transactions =
+            data.recent_transactions.map(transaction => ({
+                ...transaction,
+                amount: Number(transaction.amount),
+            }));
+
         return data;
     }
 }

@@ -57,6 +57,7 @@ export default function NotificationItem({
                             className="
                                 text-emerald-600
                                 hover:text-emerald-700
+                                cursor-pointer
                             "
                         >
                             <Check size={16} />
@@ -72,6 +73,7 @@ export default function NotificationItem({
                     className="
                         text-red-600
                         hover:text-red-700
+                        cursor-pointer
                     "
                 >
                     <Trash2 size={16} />

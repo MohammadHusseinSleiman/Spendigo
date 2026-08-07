@@ -15,6 +15,7 @@ export default function Dashboard() {
 
     const [dashboard, setDashboard] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [recentTransactions, setRecentTransactions] = useState([]);
 
     useEffect(() => {
         loadDashboard();
@@ -26,6 +27,9 @@ export default function Dashboard() {
 
             const data = await dashboardService.getSummary();
             setDashboard(data);
+            setRecentTransactions(
+                data.recent_transactions
+            );
 
         } finally {
             setLoading(false);
@@ -71,6 +75,10 @@ export default function Dashboard() {
                 />
 
             </div>
+
+            <RecentTransactions
+                transactions={recentTransactions}
+            />
 
         </AppLayout>
 

@@ -71,6 +71,7 @@ export default function NotificationDropdown({
                             className="
                                 text-sm
                                 text-emerald-600
+                                cursor-pointer
                             "
                         >
                             Mark all as read
@@ -82,6 +83,7 @@ export default function NotificationDropdown({
                             className="
                                 text-sm
                                 text-red-600
+                                cursor-pointer
                             "
                         >
                             Clear all
