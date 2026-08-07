@@ -59,6 +59,7 @@ export default function Topbar({
                         rounded-xl
                         p-2
                         transition
+                        cursor-pointer
                         hover:bg-slate-100
                     "
                 >

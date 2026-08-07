@@ -80,6 +80,8 @@ export default function Dashboard() {
                 transactions={recentTransactions}
             />
 
+            <QuickActions />
+
         </AppLayout>
 
     );
