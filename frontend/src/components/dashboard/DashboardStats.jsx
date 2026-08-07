@@ -5,6 +5,8 @@ import {
     PiggyBank,
 } from "lucide-react";
 
+import Card from "../common/Card";
+
 // Dashboard statistics cards
 export default function DashboardStats({ stats }) {
 
@@ -63,17 +65,7 @@ export default function DashboardStats({ stats }) {
 
                 return (
 
-                    <div
-                        key={card.title}
-                        className="
-                            rounded-2xl
-                            border
-                            border-slate-200
-                            bg-white
-                            p-6
-                            shadow-sm
-                        "
-                    >
+                    <Card>
 
                         <div className="flex items-center justify-between">
 
@@ -114,7 +106,7 @@ export default function DashboardStats({ stats }) {
 
                         </div>
 
-                    </div>
+                    </Card>
 
                 );
 

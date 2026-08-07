@@ -7,6 +7,8 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+import Card from "../common/Card";
+
 // Dashboard quick actions
 export default function QuickActions() {
 
@@ -37,14 +39,7 @@ export default function QuickActions() {
 
     return (
 
-        <div
-            className="
-                rounded-2xl
-                bg-white
-                p-6
-                shadow-sm
-            "
-        >
+        <Card>
 
             <h2
                 className="
@@ -122,7 +117,7 @@ export default function QuickActions() {
 
             </div>
 
-        </div>
+        </Card>
 
     );
 }

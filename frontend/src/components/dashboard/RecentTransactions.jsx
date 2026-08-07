@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
+import Card from "../common/Card";
+import Badge from "../common/Badge";
+
 // Latest transactions table
 export default function RecentTransactions({ transactions }) {
 
@@ -7,14 +10,7 @@ export default function RecentTransactions({ transactions }) {
 
     return (
 
-        <div
-            className="
-                rounded-2xl
-                bg-white
-                p-6
-                shadow-sm
-            "
-        >
+        <Card>
 
             <div
                 className="
@@ -162,6 +158,6 @@ export default function RecentTransactions({ transactions }) {
                     }
                 </div>
             }
-        </div>
+        </Card>
     );
 }
