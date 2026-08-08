@@ -30,7 +30,7 @@ export default function TransactionsTable({
 
     return (
 
-        <Card className="overflow-hidden p-0">
+        <Card className="overflow-hidden p-0 mt-8">
 
             <div className="overflow-x-auto">
 

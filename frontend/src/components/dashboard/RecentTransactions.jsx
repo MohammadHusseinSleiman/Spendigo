@@ -10,7 +10,7 @@ export default function RecentTransactions({ transactions }) {
 
     return (
 
-        <Card>
+        <Card className="mt-8">
 
             <div
                 className="

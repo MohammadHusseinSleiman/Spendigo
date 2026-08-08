@@ -1,57 +1,26 @@
+import Card from "../common/Card";
+import Toggle from "../common/Toggle";
+
 export default function PreferencesCard({
     loading,
     onClick,
     preferences,
-    setPreferences
+    setPreferences,
 }) {
-    return (
-        <div
-            className="
-                rounded-2xl
-                bg-white
-                p-6
-                shadow-sm
-            "
-        >
 
-            <h2 className="mb-6 text-xl font-semibold">
+    return (
+
+        <Card className="mt-8">
+
+            <h2 className="mb-2 text-xl font-semibold text-slate-900">
                 Application Preferences
             </h2>
 
+            <p className="mb-6 text-sm text-slate-500">
+                Customize how Spendigo behaves and appears.
+            </p>
+
             <div className="space-y-5">
-
-                {/* Currency */}
-                <div>
-
-                    <label className="mb-2 block text-sm font-medium">
-                        Currency
-                    </label>
-
-                    <select
-                        value={preferences.currency}
-                        onChange={(event) =>
-                            setPreferences({
-                                ...preferences,
-                                currency: event.target.value,
-                            })
-                        }
-                        className="
-                            w-full
-                            rounded-xl
-                            border
-                            border-slate-200
-                            px-4
-                            py-3
-                        "
-                    >
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="LBP">LBP</option>
-                        <option value="SAR">SAR</option>
-                        <option value="AED">AED</option>
-                    </select>
-
-                </div>
 
                 {/* Dark mode */}
                 <div
@@ -59,51 +28,61 @@ export default function PreferencesCard({
                         flex
                         items-center
                         justify-between
+                        rounded-xl
+                        border
+                        border-slate-100
+                        p-4
                     "
                 >
-                    <span className="font-medium">
-                        Dark Mode
-                    </span>
-                    <input
-                        type="checkbox"
-                        className="
-                            h-5
-                            w-5
-                            accent-emerald-600
-                        "
+
+                    <div>
+                        <p className="font-medium text-slate-900">
+                            Dark Mode
+                        </p>
+                        <p className="mt-1 text-sm text-slate-500">
+                            Use a darker interface throughout the application.
+                        </p>
+                    </div>
+
+                    <Toggle
                         checked={preferences.dark_mode}
-                        onChange={(event) =>
-                            setPreferences({
-                                ...preferences,
-                                dark_mode: event.target.checked,
-                            })
+                        onChange={(value) =>
+                            setPreferences(previous => ({
+                                ...previous,
+                                dark_mode: value,
+                            }))
                         }
                     />
+
                 </div>
 
-                <button
-                    type="button"
-                    onClick={onClick}
-                    disabled={loading}
-                    className="
-                        rounded-xl
-                        bg-emerald-600
-                        px-5
-                        py-3
-                        font-medium
-                        text-white
-                        disabled:opacity-60
-                    "
-                >
-                    {
-                        loading
+                <div className="flex justify-end pt-2">
+                    <button
+                        type="button"
+                        onClick={onClick}
+                        disabled={loading}
+                        className="
+                            rounded-xl
+                            bg-emerald-600
+                            px-5
+                            py-3
+                            font-medium
+                            text-white
+                            transition
+                            hover:bg-emerald-700
+                            active:scale-[0.98]
+                            disabled:cursor-not-allowed
+                            disabled:opacity-60
+                        "
+                    >
+                        {loading
                             ? "Saving..."
-                            : "Save Preferences"
-                    }
-                </button>
+                            : "Save Preferences"}
+                    </button>
+                </div>
 
             </div>
 
-        </div>
+        </Card>
     );
 }

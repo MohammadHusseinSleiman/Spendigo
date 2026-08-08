@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { toast } from "sonner";
 import { useNotifications } from "../context/NotificationContext";
 
 import AppLayout from "../components/layout/AppLayout";
 import settingsService from "../services/settingsService";
+import ProfileForm from "../components/settings/ProfileForm";
 import ChangePasswordForm from "../components/settings/ChangePasswordForm";
 import PreferencesCard from "../components/settings/PreferencesCard";
 import DeleteAccountModal from "../components/settings/DeleteAccountModal";
+import Card from "../components/common/Card";
 
 export default function Settings() {
 
@@ -35,6 +38,7 @@ export default function Settings() {
         currency: "USD",
         dark_mode: false,
     });
+    const [preferencesLoading, setPreferencesLoading] = useState(false);
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -44,6 +48,8 @@ export default function Settings() {
     const photoUrl = profile.photo
         ? `${import.meta.env.VITE_API_URL}/uploads/profile.php?file=${profile.photo.split("/").pop()}`
         : "/default-avatar.png";
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadProfile();
@@ -193,28 +199,35 @@ export default function Settings() {
         setPreferences(data);
     }
 
-    async function handlePreferencesSubmit() {
+async function handlePreferencesSubmit() {
 
-        try {
+    setPreferencesLoading(true);
 
-            setLoading(true);
-            await settingsService.updatePreferences( preferences );
-            await loadPreferences();
-            toast.success("Preferences updated successfully.");
-            document.documentElement.classList.toggle(
-                "dark",
-                preferences.dark_mode
-            );
+    try {
 
-        } catch (error) {
-            toast.error(
-                error.response?.data?.message ??
-                "Something went wrong."
-            );
-        } finally {
-            setLoading(false);
-        }
+        await settingsService.updatePreferences(
+            preferences
+        );
+        await loadPreferences();
+
+        document.documentElement.classList.toggle(
+            "dark",
+            preferences.dark_mode
+        );
+        addNotification("Application preferences updated");
+        toast.success("Preferences updated successfully.");
+
+    } catch (error) {
+
+        toast.error(
+            error.response?.data?.message ??
+            "Unable to update preferences."
+        );
+
+    } finally {
+        setPreferencesLoading(false);
     }
+}
 
     async function handleDeleteAccount( password ) {
 
@@ -250,92 +263,15 @@ export default function Settings() {
             description="Manage your account preferences"
         >
 
-            <form
+            <ProfileForm
+                profile={profile}
+                errors={errors}
+                loading={saving}
+                onChange={handleChange}
                 onSubmit={handleSubmit}
-                className="space-y-6"
-            >
-
-                <img
-                    src={photoUrl}
-                    alt="Profile"
-                    className="
-                        h-28
-                        w-28
-                        rounded-full
-                        object-cover
-                        border
-                        border-slate-300
-                    "
-                />
-
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                />
-
-                <input
-                    name="full_name"
-                    value={profile.full_name}
-                    onChange={handleChange}
-                />
-                {
-                    errors.full_name && (
-                        <p className="mt-1 text-sm text-red-600">
-                            {errors.full_name}
-                        </p>
-                    )
-                }
-
-                <input
-                    name="email"
-                    value={profile.email}
-                    onChange={handleChange}
-                />
-                {
-                    errors.email && (
-                        <p className="mt-1 text-sm text-red-600">
-                            {errors.email}
-                        </p>
-                    )
-                }
-
-                <textarea
-                    name="bio"
-                    value={profile.bio ?? ""}
-                    onChange={handleChange}
-                />
-
-                <select
-                    name="currency"
-                    value={profile.currency}
-                    onChange={handleChange}
-                >
-                </select>
-
-                <button
-                    type="submit"
-                    disabled={saving}
-                    className="
-                        rounded-xl
-                        bg-emerald-600
-                        px-5
-                        py-3
-                        font-medium
-                        text-white
-                        transition
-                        hover:bg-emerald-700
-                        disabled:opacity-60
-                    "
-                >
-                    {
-                        saving
-                            ? "Saving..."
-                            : "Save Changes"
-                    }
-                </button>
-
-            </form>
+                photoUrl={photoUrl}
+                onPhotoChange={handlePhotoChange}
+            />
 
             <ChangePasswordForm
                 form={passwordForm}
@@ -346,13 +282,13 @@ export default function Settings() {
             />
 
             <PreferencesCard
-                loading={loading}
+                loading={preferencesLoading}
                 onClick={handlePreferencesSubmit}
                 preferences={preferences}
                 setPreferences={setPreferences}
             />
 
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <Card className="rounded-2xl bg-white p-6 shadow-sm mt-8">
 
                 <h2 className="text-xl font-semibold">
                     Danger Zone
@@ -380,7 +316,7 @@ export default function Settings() {
                     Delete Account
                 </button>
 
-            </div>
+            </Card>
 
             <DeleteAccountModal
                 open={showDeleteModal}

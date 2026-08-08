@@ -39,7 +39,7 @@ export default function QuickActions() {
 
     return (
 
-        <Card>
+        <Card className="mt-8">
 
             <h2
                 className="
