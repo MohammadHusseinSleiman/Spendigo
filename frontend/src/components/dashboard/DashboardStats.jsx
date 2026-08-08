@@ -8,14 +8,16 @@ import {
 import Card from "../common/Card";
 
 // Dashboard statistics cards
-export default function DashboardStats({ stats }) {
+export default function DashboardStats({
+    stats = {},
+}) {
 
     const cards = [
 
         {
             title: "Current Balance",
             value: `$${Number(
-                stats.balance
+                stats.balance ?? 0
             ).toLocaleString()}`,
             icon: Wallet,
             color: "bg-slate-800",
@@ -24,7 +26,7 @@ export default function DashboardStats({ stats }) {
         {
             title: "Monthly Income",
             value: `$${Number(
-                stats.monthly_income
+                stats.monthly_income ?? 0
             ).toLocaleString()}`,
             icon: ArrowUpCircle,
             color: "bg-emerald-600",
@@ -33,7 +35,7 @@ export default function DashboardStats({ stats }) {
         {
             title: "Monthly Expenses",
             value: `$${Number(
-                stats.monthly_expenses
+                stats.monthly_expenses ?? 0
             ).toLocaleString()}`,
             icon: ArrowDownCircle,
             color: "bg-red-600",
@@ -41,7 +43,9 @@ export default function DashboardStats({ stats }) {
 
         {
             title: "Savings Rate",
-            value: `${stats.savings_rate}%`,
+            value: `${Number(
+                stats.savings_rate ?? 0
+            ).toFixed(1)}%`,
             icon: PiggyBank,
             color: "bg-blue-600",
         },
@@ -53,7 +57,8 @@ export default function DashboardStats({ stats }) {
         <div
             className="
                 grid
-                gap-6
+                grid-cols-1
+                gap-4
                 sm:grid-cols-2
                 xl:grid-cols-4
             "
@@ -65,14 +70,29 @@ export default function DashboardStats({ stats }) {
 
                 return (
 
-                    <Card>
+                    <Card
+                        key={card.title}
+                        className="
+                            min-w-0
+                            p-4
+                            sm:p-6
+                        "
+                    >
 
-                        <div className="flex items-center justify-between">
+                        <div
+                            className="
+                                flex
+                                items-center
+                                justify-between
+                                gap-4
+                            "
+                        >
 
-                            <div>
+                            <div className="min-w-0">
 
                                 <p
                                     className="
+                                        truncate
                                         text-sm
                                         text-slate-500
                                     "
@@ -83,9 +103,11 @@ export default function DashboardStats({ stats }) {
                                 <h2
                                     className="
                                         mt-2
-                                        text-3xl
+                                        truncate
+                                        text-2xl
                                         font-bold
                                         text-slate-900
+                                        sm:text-3xl
                                     "
                                 >
                                     {card.value}
@@ -96,12 +118,19 @@ export default function DashboardStats({ stats }) {
                             <div
                                 className={`
                                     ${card.color}
+                                    flex
+                                    h-11
+                                    w-11
+                                    shrink-0
+                                    items-center
+                                    justify-center
                                     rounded-xl
-                                    p-3
                                     text-white
+                                    sm:h-12
+                                    sm:w-12
                                 `}
                             >
-                                <Icon size={28} />
+                                <Icon size={24} />
                             </div>
 
                         </div>
@@ -113,5 +142,6 @@ export default function DashboardStats({ stats }) {
             })}
 
         </div>
+
     );
 }

@@ -15,55 +15,64 @@ export default function QuickActions() {
     const navigate = useNavigate();
 
     const actions = [
+
         {
             label: "Add Transaction",
             icon: Plus,
             path: "/transactions",
         },
+
         {
             label: "Categories",
             icon: Tags,
             path: "/categories",
         },
+
         {
             label: "Reports",
             icon: BarChart3,
             path: "/reports",
         },
+
         {
             label: "Settings",
             icon: Settings,
             path: "/settings",
         },
+
     ];
 
     return (
 
-        <Card className="mt-8">
+        <Card
+            className="
+                mt-0
+                min-w-0
+                p-4
+                sm:p-6
+            "
+        >
 
             <h2
                 className="
-                    mb-5
-                    text-xl
+                    mb-4
+                    text-lg
                     font-semibold
+                    sm:mb-5
+                    sm:text-xl
                 "
             >
                 Quick Actions
             </h2>
 
-            <div
-                className="
-                    grid
-                    grid-cols-1
-                    gap-3
-                    sm:grid-cols-2
-                    lg:grid-cols-4
-                "
-            >
+            <div className="grid gap-3">
 
                 {actions.map((action) => {
+
                     const Icon = action.icon;
+
                     return (
+
                         <button
                             key={action.label}
                             type="button"
@@ -72,16 +81,18 @@ export default function QuickActions() {
                             }
                             className="
                                 flex
+                                w-full
                                 items-center
                                 gap-3
                                 rounded-xl
                                 border
                                 border-slate-200
-                                p-4
+                                p-3
                                 text-left
                                 transition
                                 hover:border-emerald-300
                                 hover:bg-emerald-50
+                                sm:p-4
                             "
                         >
 
@@ -103,6 +114,7 @@ export default function QuickActions() {
 
                             <span
                                 className="
+                                    truncate
                                     text-sm
                                     font-medium
                                     text-slate-700
@@ -112,7 +124,9 @@ export default function QuickActions() {
                             </span>
 
                         </button>
+
                     );
+
                 })}
 
             </div>

@@ -41,7 +41,7 @@ export default function IncomeExpenseChart({
 
         <Card>
 
-            <h2 className="mb-6 text-lg font-semibold">
+            <h2 className="mb-4 text-base font-semibold sm:mb-6 sm:text-lg">
                 Monthly Income vs Expenses
             </h2>
 
@@ -50,14 +50,23 @@ export default function IncomeExpenseChart({
                 height={350}
             >
 
-                <BarChart data={data}>
-                    <CartesianGrid
-                        strokeDasharray="3 3"
-                    />
+                <BarChart
+                    data={data}
+                    margin={{
+                        top: 10,
+                        right: 5,
+                        left:-15,
+                        bottom: 5,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                         dataKey="month"
+                        tick={{ fontSize: 12 }}
                     />
-                    <YAxis />
+                    <YAxis
+                        tick={{ fontSize: 12 }}
+                    />
                     <Tooltip
                         formatter={(value) =>
                             `$${Number(value).toFixed(2)}`

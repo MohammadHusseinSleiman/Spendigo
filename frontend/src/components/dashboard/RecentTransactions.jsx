@@ -1,30 +1,45 @@
 import { useNavigate } from "react-router-dom";
 
 import Card from "../common/Card";
-import Badge from "../common/Badge";
 
-// Latest transactions table
-export default function RecentTransactions({ transactions }) {
+// Latest transactions
+export default function RecentTransactions({
+    transactions = [],
+}) {
 
     const navigate = useNavigate();
 
     return (
 
-        <Card className="mt-8">
+        <Card
+            className="
+                mt-0
+                min-w-0
+                overflow-hidden
+                p-4
+                sm:p-6
+            "
+        >
 
+            {/* Header */}
             <div
                 className="
-                    mb-6
+                    mb-4
                     flex
-                    items-center
-                    justify-between
+                    flex-col
+                    gap-2
+                    sm:mb-6
+                    sm:flex-row
+                    sm:items-center
+                    sm:justify-between
                 "
             >
 
                 <h2
                     className="
-                        text-xl
+                        text-lg
                         font-semibold
+                        sm:text-xl
                     "
                 >
                     Recent Transactions
@@ -36,11 +51,13 @@ export default function RecentTransactions({ transactions }) {
                         navigate("/transactions")
                     }
                     className="
+                        self-start
+                        cursor-pointer
                         text-sm
                         font-medium
                         text-emerald-600
-                        cursor-pointer
                         hover:underline
+                        sm:self-auto
                     "
                 >
                     View All →
@@ -48,38 +65,44 @@ export default function RecentTransactions({ transactions }) {
 
             </div>
 
-            {
-                transactions.length === 0 ?
-                (
-                    <p
-                        className="
-                            text-center
-                            text-slate-500
-                        "
-                    >
-                        No recent transactions.
-                    </p>
-                )
-                :
-                <div className="space-y-4">
-                    {
-                        transactions.map(transaction => (
+            {transactions.length === 0 ? (
+
+                <p
+                    className="
+                        py-6
+                        text-center
+                        text-sm
+                        text-slate-500
+                    "
+                >
+                    No recent transactions.
+                </p>
+
+            ) : (
+
+                <div className="divide-y divide-slate-100">
+
+                    {transactions.map(
+                        (transaction) => (
+
                             <div
                                 key={transaction.id}
                                 className="
                                     flex
+                                    min-w-0
                                     items-center
                                     justify-between
-                                    rounded-xl
-                                    border
-                                    border-slate-200
-                                    p-4
+                                    gap-3
+                                    py-4
                                 "
                             >
 
+                                {/* Left side */}
                                 <div
                                     className="
                                         flex
+                                        min-w-0
+                                        flex-1
                                         items-center
                                         gap-3
                                     "
@@ -87,9 +110,12 @@ export default function RecentTransactions({ transactions }) {
 
                                     <span
                                         className="
-                                            h-4
-                                            w-4
+                                            h-3
+                                            w-3
+                                            shrink-0
                                             rounded-full
+                                            sm:h-4
+                                            sm:w-4
                                         "
                                         style={{
                                             backgroundColor:
@@ -97,67 +123,95 @@ export default function RecentTransactions({ transactions }) {
                                         }}
                                     />
 
-                                    <div>
+                                    <div
+                                        className="
+                                            min-w-0
+                                            flex-1
+                                        "
+                                    >
 
                                         <p
                                             className="
+                                                truncate
+                                                text-sm
                                                 font-medium
+                                                text-slate-800
                                             "
                                         >
-                                            {transaction.category}
+                                            {
+                                                transaction.description
+                                            }
                                         </p>
 
                                         <p
                                             className="
-                                                text-sm
+                                                mt-1
+                                                truncate
+                                                text-xs
                                                 text-slate-500
                                             "
                                         >
-                                            {transaction.description}
+                                            {
+                                                transaction.category
+                                            }
                                         </p>
 
                                     </div>
 
                                 </div>
 
+                                {/* Right side */}
                                 <div
                                     className="
+                                        shrink-0
                                         text-right
                                     "
                                 >
 
                                     <p
                                         className={
-                                            transaction.type === "income"
-                                                ? "font-semibold text-emerald-600"
-                                                : "font-semibold text-red-600"
+                                            transaction.type ===
+                                            "income"
+                                                ? "text-sm font-semibold text-emerald-600"
+                                                : "text-sm font-semibold text-red-600"
                                         }
                                     >
                                         {
-                                            transaction.type === "income"
+                                            transaction.type ===
+                                            "income"
                                                 ? "+"
                                                 : "-"
                                         }
                                         $
-                                        {transaction.amount.toFixed(2)}
+                                        {Number(
+                                            transaction.amount
+                                        ).toFixed(2)}
                                     </p>
 
                                     <p
                                         className="
+                                            mt-1
                                             text-xs
                                             text-slate-500
                                         "
                                     >
-                                        {transaction.transaction_date}
+                                        {
+                                            transaction.transaction_date
+                                        }
                                     </p>
 
                                 </div>
 
                             </div>
-                        ))
-                    }
+
+                        )
+                    )}
+
                 </div>
-            }
+
+            )}
+
         </Card>
+
     );
 }

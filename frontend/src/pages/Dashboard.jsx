@@ -26,9 +26,11 @@ export default function Dashboard() {
         try {
 
             const data = await dashboardService.getSummary();
+
             setDashboard(data);
+
             setRecentTransactions(
-                data.recent_transactions
+                data.recent_transactions ?? []
             );
 
         } finally {
@@ -36,10 +38,8 @@ export default function Dashboard() {
         }
     }
 
-    if (loading) {
-        return (
-            <LoadingSpinner />
-        );
+    if (loading || !dashboard) {
+        return <LoadingSpinner />;
     }
 
     return (
@@ -49,38 +49,67 @@ export default function Dashboard() {
             description="Overview of your financial activity"
         >
 
-            <DashboardStats
-                stats={dashboard}
-            />
+            <div className="space-y-6">
 
-            <div
-                className="
-                    mt-8
-                    grid
-                    gap-6
-                    lg:grid-cols-2
-                "
-            >
-
-                <IncomeExpenseChart
-                    data={
-                        dashboard.income_vs_expenses
-                    }
+                {/* Statistics */}
+                <DashboardStats
+                    stats={dashboard ?? {}}
                 />
 
-                <ExpenseCategoryChart
-                    data={
-                        dashboard.expense_breakdown ?? []
-                    }
-                />
+                {/* Charts */}
+                <div
+                    className="
+                        grid
+                        min-w-0
+                        gap-6
+                        lg:grid-cols-2
+                    "
+                >
+
+                    <IncomeExpenseChart
+                        data={
+                            dashboard.income_vs_expenses ?? []
+                        }
+                    />
+
+                    <ExpenseCategoryChart
+                        data={
+                            dashboard.expense_breakdown ?? []
+                        }
+                    />
+
+                </div>
+
+                {/* Recent Transactions + Quick Actions */}
+                <div
+                    className="
+                        grid
+                        min-w-0
+                        gap-6
+                        lg:grid-cols-3
+                    "
+                >
+
+                    <div
+                        className="
+                            min-w-0
+                            lg:col-span-2
+                        "
+                    >
+                        <RecentTransactions
+                            transactions={
+                                recentTransactions
+                            }
+                        />
+                    </div>
+
+                    <div className="min-w-0">
+                        <QuickActions />
+                    </div>
+
+                </div>
 
             </div>
-
-            <RecentTransactions
-                transactions={recentTransactions}
-            />
-
-            <QuickActions />
 
         </AppLayout>
 
