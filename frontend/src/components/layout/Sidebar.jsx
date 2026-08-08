@@ -5,6 +5,7 @@ import {
     ChartColumn,
     Settings,
     LogOut,
+    X,
 } from "lucide-react";
 
 import Logo from "../common/Logo";
@@ -12,73 +13,161 @@ import NavItem from "./NavItem";
 import Button from "../common/Button";
 import { useAuth } from "../../context/AuthContext";
 
-// Main application sidebar
-export default function Sidebar() {
+// Responsive application sidebar
+export default function Sidebar({
+    mobileOpen,
+    setMobileOpen,
+}) {
 
     const { logout } = useAuth();
 
+    function handleNavigation() {
+        setMobileOpen(false);
+    }
+
     return (
-
-        <aside
-            className="
-                flex
-                h-screen
-                w-64
-                flex-col
-                border-r
-                border-slate-200
-                bg-white
-                p-6
-            "
-        >
-
-            <Logo size="text-3xl" />
-
-            <nav className="mt-10 space-y-2">
-
-                <NavItem
-                    to="/dashboard"
-                    icon={LayoutDashboard}
-                    label="Dashboard"
+        <>
+            {/* Mobile overlay */}
+            {mobileOpen && (
+                <div
+                    className="
+                        fixed
+                        inset-0
+                        z-40
+                        bg-slate-900/40
+                        lg:hidden
+                    "
+                    onClick={() => setMobileOpen(false)}
                 />
+            )}
 
-                <NavItem
-                    to="/transactions"
-                    icon={Wallet}
-                    label="Transactions"
-                />
+            <aside
+                className={`
+                    fixed
+                    inset-y-0
+                    left-0
+                    z-50
+                    flex
+                    w-64
+                    flex-col
+                    border-r
+                    border-slate-200
+                    bg-white
+                    p-6
+                    transition-transform
+                    duration-300
+                    ease-in-out
 
-                <NavItem
-                    to="/categories"
-                    icon={Tags}
-                    label="Categories"
-                />
+                    lg:static
+                    lg:translate-x-0
 
-                <NavItem
-                    to="/reports"
-                    icon={ChartColumn}
-                    label="Reports"
-                />
+                    ${mobileOpen
+                        ? "translate-x-0"
+                        : "-translate-x-full"
+                    }
+                `}
+            >
 
-                <NavItem
-                    to="/settings"
-                    icon={Settings}
-                    label="Settings"
-                />
-
-            </nav>
-
-            <div className="mt-auto">
-                <Button
-                    onClick={logout}
+                {/* Sidebar header */}
+                <div
+                    className="
+                        flex
+                        items-center
+                        justify-between
+                    "
                 >
-                    <div className="flex items-center justify-center gap-2">
-                        <LogOut size={18} />
-                        Logout
-                    </div>
-                </Button>
-            </div>
 
-        </aside>
+                    <Logo size="text-3xl" />
+
+                    {/* Mobile close button */}
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setMobileOpen(false)
+                        }
+                        className="
+                            rounded-lg
+                            p-2
+                            text-slate-500
+                            transition
+                            hover:bg-slate-100
+                            hover:text-slate-700
+                            lg:hidden
+                        "
+                        aria-label="Close menu"
+                    >
+                        <X size={22} />
+                    </button>
+
+                </div>
+
+                {/* Navigation */}
+                <nav className="mt-10 space-y-2">
+
+                    <div onClick={handleNavigation}>
+                        <NavItem
+                            to="/dashboard"
+                            icon={LayoutDashboard}
+                            label="Dashboard"
+                        />
+                    </div>
+
+                    <div onClick={handleNavigation}>
+                        <NavItem
+                            to="/transactions"
+                            icon={Wallet}
+                            label="Transactions"
+                        />
+                    </div>
+
+                    <div onClick={handleNavigation}>
+                        <NavItem
+                            to="/categories"
+                            icon={Tags}
+                            label="Categories"
+                        />
+                    </div>
+
+                    <div onClick={handleNavigation}>
+                        <NavItem
+                            to="/reports"
+                            icon={ChartColumn}
+                            label="Reports"
+                        />
+                    </div>
+
+                    <div onClick={handleNavigation}>
+                        <NavItem
+                            to="/settings"
+                            icon={Settings}
+                            label="Settings"
+                        />
+                    </div>
+
+                </nav>
+
+                {/* Logout */}
+                <div className="mt-auto">
+
+                    <Button
+                        onClick={logout}
+                    >
+                        <div
+                            className="
+                                flex
+                                items-center
+                                justify-center
+                                gap-2
+                            "
+                        >
+                            <LogOut size={18} />
+                            Logout
+                        </div>
+                    </Button>
+
+                </div>
+
+            </aside>
+        </>
     );
 }

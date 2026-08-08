@@ -1,4 +1,8 @@
-import { Bell } from "lucide-react";
+import {
+    Bell,
+    Menu,
+} from "lucide-react";
+
 import { useState } from "react";
 
 import NotificationDropdown from "../notifications/NotificationDropdown";
@@ -7,20 +11,24 @@ import { useNotifications } from "../../context/NotificationContext";
 import PageTitle from "../common/PageTitle";
 import UserMenu from "./UserMenu";
 
-// Top navigation bar
+// Responsive top navigation bar
 export default function Topbar({
     title,
     description,
+    onMenuClick,
 }) {
 
-    const [openNotifications, setOpenNotifications] = useState(false);
+    const [openNotifications, setOpenNotifications] =
+        useState(false);
+
     const {
         notifications,
         markAsRead,
         removeNotification,
         clearNotifications,
-        markAllAsRead
+        markAllAsRead,
     } = useNotifications();
+
     const unreadCount =
         notifications.filter(
             notification => !notification.read
@@ -31,41 +39,82 @@ export default function Topbar({
         <header
             className="
                 flex
-                h-16
+                min-h-16
                 items-center
                 justify-between
+                gap-3
                 border-b
                 border-slate-200
                 bg-white
-                px-8
+                px-4
+                py-3
+
+                sm:px-6
+                lg:px-8
             "
         >
 
-            <PageTitle
-                title={title}
-                description={description}
-            />
+            {/* Mobile menu button */}
+            <button
+                type="button"
+                onClick={onMenuClick}
+                className="
+                    rounded-xl
+                    p-2
+                    text-slate-600
+                    transition
+                    hover:bg-slate-100
+                    lg:hidden
+                "
+                aria-label="Open menu"
+            >
+                <Menu size={24} />
+            </button>
 
-            <div className="relative">
-                <button
-                    type="button"
-                    onClick={() =>
-                        setOpenNotifications(
-                            !openNotifications
-                        )
-                    }
-                    className="
-                        relative
-                        rounded-xl
-                        p-2
-                        transition
-                        cursor-pointer
-                        hover:bg-slate-100
-                    "
-                >
-                    <Bell size={22} />
-                    {
-                        unreadCount > 0 && (
+            {/* Page title */}
+            <div className="min-w-0 flex-1">
+
+                <PageTitle
+                    title={title}
+                    description={description}
+                />
+
+            </div>
+
+            {/* Actions */}
+            <div
+                className="
+                    flex
+                    shrink-0
+                    items-center
+                    gap-2
+                "
+            >
+
+                {/* Notifications */}
+                <div className="relative">
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setOpenNotifications(
+                                previous => !previous
+                            )
+                        }
+                        className="
+                            relative
+                            rounded-xl
+                            p-2
+                            transition
+                            cursor-pointer
+                            hover:bg-slate-100
+                        "
+                        aria-label="Notifications"
+                    >
+
+                        <Bell size={22} />
+
+                        {unreadCount > 0 && (
                             <span
                                 className="
                                     absolute
@@ -86,23 +135,27 @@ export default function Topbar({
                             >
                                 {unreadCount}
                             </span>
-                        )
-                    }
-                </button>
-                <NotificationDropdown
-                    open={openNotifications}
-                    notifications={notifications}
-                    markAsRead={markAsRead}
-                    removeNotification={removeNotification}
-                    clearNotifications={clearNotifications}
-                    markAllAsRead={markAllAsRead}
-                />
-            </div>
+                        )}
 
-            <UserMenu />
+                    </button>
+
+                    <NotificationDropdown
+                        open={openNotifications}
+                        notifications={notifications}
+                        markAsRead={markAsRead}
+                        removeNotification={removeNotification}
+                        clearNotifications={clearNotifications}
+                        markAllAsRead={markAllAsRead}
+                    />
+
+                </div>
+
+                {/* User menu */}
+                <UserMenu />
+
+            </div>
 
         </header>
 
     );
-
 }
