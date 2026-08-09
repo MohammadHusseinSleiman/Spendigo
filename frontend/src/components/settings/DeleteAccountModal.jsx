@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Modal from "../common/Modal";
+import Button from "../common/Button"
 
 export default function DeleteAccountModal({
     open,
@@ -14,9 +15,7 @@ export default function DeleteAccountModal({
     function handleSubmit(e) {
 
         e.preventDefault();
-
         onConfirm(password);
-
         setPassword("");
     }
 
@@ -53,30 +52,42 @@ export default function DeleteAccountModal({
                     "
                 />
 
-                <div className="flex justify-end gap-3">
+                <div
+                    className="
+                        flex
+                        flex-col-reverse
+                        gap-3
+                        sm:flex-row
+                        sm:justify-end
+                    "
+                >
 
-                    <button
+                    <Button
                         type="button"
                         onClick={onClose}
                         className="
+                            w-full
                             rounded-xl
                             border
                             px-5
                             py-3
+                            sm:w-auto
                         "
                     >
                         Cancel
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
                         type="submit"
                         disabled={loading}
                         className="
+                            w-full
                             rounded-xl
                             bg-red-600
                             px-5
                             py-3
                             text-white
+                            sm:w-auto
                         "
                     >
                         {
@@ -84,7 +95,7 @@ export default function DeleteAccountModal({
                                 ? "Deleting..."
                                 : "Delete Account"
                         }
-                    </button>
+                    </Button>
 
                 </div>
 

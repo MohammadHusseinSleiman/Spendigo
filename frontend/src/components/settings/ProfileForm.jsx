@@ -22,7 +22,17 @@ export default function ProfileForm({
             </h2>
 
             {/* Profile photo */}
-            <div className="mb-6 flex items-center gap-5">
+            <div 
+                className="
+                    mb-6
+                    flex
+                    flex-col
+                    items-center
+                    gap-4
+                    sm:flex-row
+                    sm:gap-5
+                "
+            >
 
                 <img
                     src={photoUrl}
@@ -57,7 +67,6 @@ export default function ProfileForm({
                         "
                     >
                         Change Photo
-
                         <input
                             type="file"
                             accept="image/*"
@@ -186,10 +195,11 @@ export default function ProfileForm({
 
                 </div>
 
-                <div className="flex justify-end pt-2">
+                <div className="flex pt-2 sm:justify-end">
                     <Button
                         type="submit"
                         disabled={loading}
+                        className="w-full sm:w-auto"
                     >
                         {loading
                             ? "Saving..."

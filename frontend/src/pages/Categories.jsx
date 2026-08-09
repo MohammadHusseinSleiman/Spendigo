@@ -2,7 +2,6 @@ import { useMemo, useEffect, useState } from "react";
 
 import { toast } from "sonner";
 
-import notificationService from "../services/notificationService";
 import { useNotifications } from "../context/NotificationContext";
 
 import categoryService from "../services/categoryService";

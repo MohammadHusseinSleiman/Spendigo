@@ -111,70 +111,76 @@ export default function Reports() {
 
             </div>
 
-            {/* Export actions */}
-            <Card className="mt-8">
+{/* Export actions */}
+<Card className="mt-8">
 
-                <div className="mb-5">
-                    <h2 className="text-lg font-semibold text-slate-900">
-                        Export Reports
-                    </h2>
+    <div className="mb-5">
+        <h2 className="text-lg font-semibold text-slate-900">
+            Export Reports
+        </h2>
 
-                    <p className="mt-1 text-sm text-slate-500">
-                        Download your financial data for record-keeping or accounting.
-                    </p>
-                </div>
+        <p className="mt-1 text-sm text-slate-500">
+            Download your financial data for record-keeping or accounting.
+        </p>
+    </div>
 
-                <div className="flex flex-wrap gap-3">
+    <div className="flex flex-col gap-3 sm:flex-row">
 
-                    <button
-                        type="button"
-                        onClick={handleExportCSV}
-                        className="
-                            flex
-                            items-center
-                            gap-2
-                            rounded-xl
-                            bg-emerald-600
-                            px-4
-                            py-2.5
-                            font-medium
-                            text-white
-                            transition
-                            hover:bg-emerald-700
-                            active:scale-[0.98]
-                        "
-                    >
-                        <Download size={18} />
-                        Export CSV
-                    </button>
+        <button
+            type="button"
+            onClick={handleExportCSV}
+            className="
+                flex
+                w-full
+                items-center
+                justify-center
+                gap-2
+                rounded-xl
+                bg-emerald-600
+                px-4
+                py-2.5
+                font-medium
+                text-white
+                transition
+                hover:bg-emerald-700
+                active:scale-[0.98]
+                sm:w-auto
+            "
+        >
+            <Download size={18} />
+            Export CSV
+        </button>
 
-                    <button
-                        type="button"
-                        onClick={handleExportPDF}
-                        className="
-                            flex
-                            items-center
-                            gap-2
-                            rounded-xl
-                            border
-                            border-slate-200
-                            bg-white
-                            px-4
-                            py-2.5
-                            font-medium
-                            text-slate-700
-                            transition
-                            hover:bg-slate-50
-                            active:scale-[0.98]
-                        "
-                    >
-                        <FileText size={18} />
-                        Export PDF
-                    </button>
+        <button
+            type="button"
+            onClick={handleExportPDF}
+            className="
+                flex
+                w-full
+                items-center
+                justify-center
+                gap-2
+                rounded-xl
+                border
+                border-slate-200
+                bg-white
+                px-4
+                py-2.5
+                font-medium
+                text-slate-700
+                transition
+                hover:bg-slate-50
+                active:scale-[0.98]
+                sm:w-auto
+            "
+        >
+            <FileText size={18} />
+            Export PDF
+        </button>
 
-                </div>
+    </div>
 
-            </Card>
+</Card>
 
         </AppLayout>
     );

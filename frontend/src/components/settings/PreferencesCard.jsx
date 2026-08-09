@@ -1,5 +1,6 @@
 import Card from "../common/Card";
 import Toggle from "../common/Toggle";
+import Button from "../common/Button";
 
 export default function PreferencesCard({
     loading,
@@ -32,6 +33,7 @@ export default function PreferencesCard({
                         border
                         border-slate-100
                         p-4
+                        gap-4
                     "
                 >
 
@@ -57,28 +59,16 @@ export default function PreferencesCard({
                 </div>
 
                 <div className="flex justify-end pt-2">
-                    <button
+                    <Button
                         type="button"
                         onClick={onClick}
                         disabled={loading}
-                        className="
-                            rounded-xl
-                            bg-emerald-600
-                            px-5
-                            py-3
-                            font-medium
-                            text-white
-                            transition
-                            hover:bg-emerald-700
-                            active:scale-[0.98]
-                            disabled:cursor-not-allowed
-                            disabled:opacity-60
-                        "
+                        className="w-full sm:w-auto"
                     >
                         {loading
                             ? "Saving..."
                             : "Save Preferences"}
-                    </button>
+                    </Button>
                 </div>
 
             </div>

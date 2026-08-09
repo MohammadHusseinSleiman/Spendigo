@@ -1,7 +1,6 @@
 import { Plus } from "lucide-react";
 
 import SectionHeader from "../common/SectionHeader";
-import Button from "../common/Button";
 
 // Categories page header
 export default function CategoriesHeader({ onAdd }) {
@@ -11,15 +10,30 @@ export default function CategoriesHeader({ onAdd }) {
         <SectionHeader
 
             action={
-                <Button
+                <button
                     type="button"
                     onClick={onAdd}
+                    className="
+                        flex
+                        w-full
+                        items-center
+                        justify-center
+                        gap-2
+                        rounded-xl
+                        bg-emerald-600
+                        px-4
+                        py-2.5
+                        text-sm
+                        font-medium
+                        text-white
+                        transition
+                        hover:bg-emerald-700
+                        sm:w-auto
+                    "
                 >
-                    <span className="flex items-center gap-2">
-                        <Plus size={18} />
-                        Add Category
-                    </span>
-                </Button>
+                    <Plus size={18} />
+                    Add Category
+                </button>
             }
 
         />

@@ -1,4 +1,5 @@
 import Card from "../common/Card";
+import Button from "../common/Button";
 
 // Change password form
 export default function ChangePasswordForm({
@@ -121,29 +122,18 @@ export default function ChangePasswordForm({
 
                 </div>
 
-                <div className="flex justify-end">
-
-                    <button
+                <div className="flex pt-1 sm:justify-end">
+                    <Button
                         type="submit"
                         disabled={loading}
-                        className="
-                            rounded-xl
-                            bg-emerald-600
-                            px-6
-                            py-3
-                            font-medium
-                            text-white
-                            transition
-                            hover:bg-emerald-700
-                            disabled:opacity-60
-                        "
+                        className="w-full sm:w-auto"
                     >
                         {
                             loading
                                 ? "Updating..."
                                 : "Change Password"
                         }
-                    </button>
+                    </Button>
 
                 </div>
 

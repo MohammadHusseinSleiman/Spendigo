@@ -25,11 +25,11 @@ export default function CategoriesTable({
 
     return (
 
-        <Card className="overflow-hidden p-0">
+        <Card className="mt-6 overflow-hidden p-0">
 
-            <div className="overflow-x-auto">
+            <div className="w-full overflow-x-auto">
 
-                <table className="w-full">
+                <table className="w-full min-w-[700px]">
 
                     <thead
                         className="
@@ -40,19 +40,19 @@ export default function CategoriesTable({
                         "
                     >
                         <tr>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
                                 Name
                             </th>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
                                 Type
                             </th>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
                                 Color
                             </th>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
                                 Source
                             </th>
-                            <th className="px-6 py-4 text-center text-sm font-semibold">
+                            <th className="px-4 py-3 text-center text-sm font-semibold sm:px-6 sm:py-4">
                                 Actions
                             </th>
                         </tr>
@@ -72,14 +72,14 @@ export default function CategoriesTable({
                             >
 
                                 {/* Name */}
-                                <td className="px-6 py-4">
+                                <td className="px-4 py-3 sm:px-6 sm:py-4">
                                     <span className="font-medium text-slate-800">
                                         {category.name}
                                     </span>
                                 </td>
 
                                 {/* Type */}
-                                <td className="px-6 py-4">
+                                <td className="px-4 py-3 sm:px-6 sm:py-4">
                                     <Badge
                                         variant={
                                             category.type === "income"
@@ -94,26 +94,25 @@ export default function CategoriesTable({
                                 </td>
 
                                 {/* Color */}
-                                <td className="px-6 py-4">
-                                    <div className="flex items-center gap-3">
-                                        <span
-                                            className="
-                                                h-6
-                                                w-6
-                                                rounded-full
-                                                border
-                                                border-slate-200
-                                            "
-                                            style={{
-                                                backgroundColor:
-                                                    category.color,
-                                            }}
-                                        />
-                                    </div>
+                                <td className="px-4 py-3 sm:px-6 sm:py-4">
+                                    <span
+                                        className="
+                                            block
+                                            h-6
+                                            w-6
+                                            rounded-full
+                                            border
+                                            border-slate-200
+                                        "
+                                        style={{
+                                            backgroundColor:
+                                                category.color,
+                                        }}
+                                    />
                                 </td>
 
                                 {/* Source */}
-                                <td className="px-6 py-4">
+                                <td className="px-4 py-3 sm:px-6 sm:py-4">
                                     <Badge
                                         variant={
                                             category.is_default
@@ -128,7 +127,7 @@ export default function CategoriesTable({
                                 </td>
 
                                 {/* Actions */}
-                                <td className="px-6 py-4">
+                                <td className="px-4 py-3 sm:px-6 sm:py-4">
                                     <div className="flex justify-center gap-2">
                                         {!category.is_default && (
                                             <>
@@ -151,7 +150,9 @@ export default function CategoriesTable({
                                                 <button
                                                     type="button"
                                                     onClick={() => {
-                                                        toast.warning("This action cannot be undone.");
+                                                        toast.warning(
+                                                            "This action cannot be undone."
+                                                        );
                                                         onDelete(category);
                                                     }}
                                                     className="

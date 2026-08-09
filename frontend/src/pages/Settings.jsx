@@ -11,6 +11,7 @@ import ChangePasswordForm from "../components/settings/ChangePasswordForm";
 import PreferencesCard from "../components/settings/PreferencesCard";
 import DeleteAccountModal from "../components/settings/DeleteAccountModal";
 import Card from "../components/common/Card";
+import Button from "../components/common/Button";
 
 export default function Settings() {
 
@@ -298,7 +299,7 @@ async function handlePreferencesSubmit() {
                     Permanently delete your account.
                 </p>
 
-                <button
+                <Button
                     type="button"
                     onClick={() =>{
                         setShowDeleteModal(true);
@@ -306,15 +307,14 @@ async function handlePreferencesSubmit() {
                     }}
                     className="
                         mt-5
-                        rounded-xl
+                        w-full
                         bg-red-600
-                        px-5
-                        py-3
                         text-white
+                        sm:w-auto
                     "
                 >
                     Delete Account
-                </button>
+                </Button>
 
             </Card>
 

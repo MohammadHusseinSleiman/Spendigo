@@ -7,8 +7,8 @@ export default function TransactionFilters({
     type,
     setType,
     categoryId,
-    setCategoryId,
     categories,
+    setCategoryId,
     month,
     setMonth,
 }) {
