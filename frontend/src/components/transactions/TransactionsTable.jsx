@@ -19,7 +19,6 @@ export default function TransactionsTable({
 }) {
 
     if (transactions.length === 0) {
-
         return (
             <EmptyState
                 title="No transactions found"
@@ -30,11 +29,11 @@ export default function TransactionsTable({
 
     return (
 
-        <Card className="overflow-hidden p-0 mt-8">
+        <Card className="mt-6 overflow-hidden p-0 sm:mt-8">
 
             <div className="overflow-x-auto">
 
-                <table className="w-full">
+                <table className="w-full min-w-[850px]">
 
                     <thead
                         className="
@@ -43,22 +42,22 @@ export default function TransactionsTable({
                         "
                     >
                         <tr>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
                                 Type
                             </th>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
                                 Description
                             </th>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
                                 Category
                             </th>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
                                 Amount
                             </th>
-                            <th className="px-6 py-4 text-sm font-semibold">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
                                 Date
                             </th>
-                            <th className="px-6 py-4 text-center text-sm font-semibold">
+                            <th className="px-4 py-4 text-center text-sm font-semibold sm:px-6">
                                 Actions
                             </th>
                         </tr>
@@ -78,7 +77,7 @@ export default function TransactionsTable({
                             >
 
                                 {/* Type */}
-                                <td className="px-6 py-4">
+                                <td className="px-4 py-4 sm:px-6">
                                     <Badge
                                         variant={
                                             transaction.type === "income"
@@ -100,19 +99,28 @@ export default function TransactionsTable({
                                 </td>
 
                                 {/* Description */}
-                                <td className="px-6 py-4">
-                                    <span className="font-medium text-slate-800">
+                                <td className="max-w-[220px] px-4 py-4 sm:px-6">
+                                    <span
+                                        className="
+                                            block
+                                            truncate
+                                            font-medium
+                                            text-slate-800
+                                        "
+                                        title={transaction.description}
+                                    >
                                         {transaction.description}
                                     </span>
                                 </td>
 
                                 {/* Category */}
-                                <td className="px-6 py-4">
+                                <td className="px-4 py-4 sm:px-6">
                                     <span
                                         className="
                                             inline-flex
                                             items-center
                                             gap-2
+                                            whitespace-nowrap
                                             text-sm
                                             text-slate-600
                                         "
@@ -121,6 +129,7 @@ export default function TransactionsTable({
                                             className="
                                                 h-3
                                                 w-3
+                                                shrink-0
                                                 rounded-full
                                             "
                                             style={{
@@ -135,7 +144,8 @@ export default function TransactionsTable({
                                 {/* Amount */}
                                 <td
                                     className={`
-                                        px-6
+                                        whitespace-nowrap
+                                        px-4
                                         py-4
                                         font-semibold
                                         ${
@@ -148,19 +158,27 @@ export default function TransactionsTable({
                                     {transaction.type === "income"
                                         ? "+"
                                         : "-"}
-                                    $
-                                    {Number(
+                                    ${Number(
                                         transaction.amount
                                     ).toFixed(2)}
                                 </td>
 
                                 {/* Date */}
-                                <td className="px-6 py-4 text-sm text-slate-500">
+                                <td
+                                    className="
+                                        whitespace-nowrap
+                                        px-4
+                                        py-4
+                                        text-sm
+                                        text-slate-500
+                                        sm:px-6
+                                    "
+                                >
                                     {transaction.transaction_date}
                                 </td>
 
                                 {/* Actions */}
-                                <td className="px-6 py-4">
+                                <td className="px-4 py-4 sm:px-6">
                                     <div className="flex justify-center gap-2">
                                         <button
                                             type="button"
@@ -208,5 +226,6 @@ export default function TransactionsTable({
             </div>
 
         </Card>
+
     );
 }

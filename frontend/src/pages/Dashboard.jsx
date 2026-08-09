@@ -26,9 +26,7 @@ export default function Dashboard() {
         try {
 
             const data = await dashboardService.getSummary();
-
             setDashboard(data);
-
             setRecentTransactions(
                 data.recent_transactions ?? []
             );

@@ -13,10 +13,12 @@ import CategoriesTable from "../components/categories/CategoriesTable";
 import AddCategoryModal from "../components/categories/AddCategoryModal";
 import EditCategoryModal from "../components/categories/EditCategoryModal";
 import DeleteCategoryModal from "../components/categories/DeleteCategoryModal";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 export default function Categories() {
 
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [type, setType] = useState("all");
 
@@ -72,6 +74,8 @@ export default function Categories() {
                 "Unable to load categories."
             );
 
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -114,6 +118,10 @@ export default function Categories() {
         } finally {
             setDeleteLoading(false);
         }
+    }
+
+    if (loading) {
+        return <LoadingSpinner />
     }
 
     return (

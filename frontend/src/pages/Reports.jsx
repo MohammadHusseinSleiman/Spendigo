@@ -9,10 +9,12 @@ import ReportsSummary from "../components/reports/ReportsSummary";
 import IncomeExpenseChart from "../components/charts/IncomeExpenseChart";
 import ExpenseCategoryChart from "../components/charts/ExpenseCategoryChart";
 import Card from "../components/common/Card";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 export default function Reports() {
 
     const [summary, setSummary] = useState({});
+    const [loading, setLoading] = useState(true);
     const [chartData, setChartData] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
 
@@ -23,8 +25,12 @@ export default function Reports() {
     }, []);
 
     async function loadSummary() {
-        const data = await reportService.getSummary();
-        setSummary(data);
+        try {
+            const data = await reportService.getSummary();
+            setSummary(data);
+        } finally {
+            setLoading(false);
+        }
     }
 
     async function loadChart() {
@@ -42,10 +48,7 @@ export default function Reports() {
         try {
 
             await reportService.exportCSV();
-
-            toast.success(
-                "CSV report exported successfully."
-            );
+            toast.success("CSV report exported successfully.");
 
         } catch (error) {
 
@@ -53,7 +56,6 @@ export default function Reports() {
                 error.response?.data?.message ??
                 "Unable to export CSV report."
             );
-
         }
     }
 
@@ -62,10 +64,7 @@ export default function Reports() {
         try {
 
             await reportService.exportPDF();
-
-            toast.success(
-                "PDF report exported successfully."
-            );
+            toast.success("PDF report exported successfully.");
 
         } catch (error) {
 
@@ -73,8 +72,11 @@ export default function Reports() {
                 error.response?.data?.message ??
                 "Unable to export PDF report."
             );
-
         }
+    }
+
+    if (loading) {
+        return <LoadingSpinner />;
     }
 
     return (
@@ -86,7 +88,7 @@ export default function Reports() {
 
             {/* Summary */}
             <ReportsSummary
-                summary={summary}
+                summary={summary ?? {}}
             />
 
             {/* Charts */}
