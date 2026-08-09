@@ -16,7 +16,6 @@ export default function AppLayout({
 
         <div
             className="
-                flex
                 min-h-screen
                 bg-slate-50
             "
@@ -33,6 +32,7 @@ export default function AppLayout({
                     min-w-0
                     flex-1
                     flex-col
+                    lg:ml-64
                 "
             >
 
@@ -49,9 +49,11 @@ export default function AppLayout({
                         min-w-0
                         flex-1
                         p-4
-
+                        pt-24
                         sm:p-6
+                        sm:pt-24
                         lg:p-8
+                        lg:pt-24
                     "
                 >
                     {children}

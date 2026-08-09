@@ -44,10 +44,12 @@ export default function Sidebar({
             <aside
                 className={`
                     fixed
+                    top-0
                     inset-y-0
                     left-0
                     z-50
                     flex
+                    h-screen
                     w-64
                     flex-col
                     border-r
@@ -57,13 +59,12 @@ export default function Sidebar({
                     transition-transform
                     duration-300
                     ease-in-out
-
-                    lg:static
                     lg:translate-x-0
 
-                    ${mobileOpen
-                        ? "translate-x-0"
-                        : "-translate-x-full"
+                    ${
+                        mobileOpen
+                            ? "translate-x-0"
+                            : "-translate-x-full"
                     }
                 `}
             >
@@ -151,6 +152,7 @@ export default function Sidebar({
 
                     <Button
                         onClick={logout}
+                        className="w-full w-auto"
                     >
                         <div
                             className="

@@ -23,13 +23,13 @@ export default function UserMenu() {
                 {user?.full_name?.charAt(0).toUpperCase()}
             </div>
 
-            <div>
+            <div className="hidden min-w-0 sm:block">
 
-                <p className="font-medium text-slate-900">
+                <p className="max-w-50 truncate font-medium text-slate-900">
                     {user?.full_name}
                 </p>
 
-                <p className="text-sm text-slate-500">
+                <p className="max-w-40 truncate text-sm text-slate-500">
                     {user?.email}
                 </p>
 

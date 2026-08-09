@@ -3,7 +3,7 @@ import {
     Menu,
 } from "lucide-react";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import NotificationDropdown from "../notifications/NotificationDropdown";
 import { useNotifications } from "../../context/NotificationContext";
@@ -18,8 +18,8 @@ export default function Topbar({
     onMenuClick,
 }) {
 
-    const [openNotifications, setOpenNotifications] =
-        useState(false);
+    const [openNotifications, setOpenNotifications] = useState(false);
+    const notificationRef = useRef(null);
 
     const {
         notifications,
@@ -34,10 +34,42 @@ export default function Topbar({
             notification => !notification.read
         ).length;
 
+    useEffect(() => {
+
+        function handleClickOutside(event) {
+
+            if (
+                notificationRef.current &&
+                !notificationRef.current.contains(event.target)
+            ) {
+                setOpenNotifications(false);
+            }
+        }
+
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        );
+
+        return () => {
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+        };
+
+    }, []);
+
     return (
 
         <header
             className="
+                fixed
+                left-0
+                right-0
+                top-0
+                z-40
+
                 flex
                 min-h-16
                 items-center
@@ -50,6 +82,7 @@ export default function Topbar({
                 py-3
 
                 sm:px-6
+                lg:left-64
                 lg:px-8
             "
         >
@@ -92,7 +125,10 @@ export default function Topbar({
             >
 
                 {/* Notifications */}
-                <div className="relative">
+                <div
+                    ref={notificationRef}
+                    className="relative"
+                >
 
                     <button
                         type="button"

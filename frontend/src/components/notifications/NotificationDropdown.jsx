@@ -15,17 +15,25 @@ export default function NotificationDropdown({
 
         <div
             className="
-                absolute
-                right-0
-                top-12
-                w-80
-                overflow-hidden
+                fixed
+                left-4
+                right-4
+                top-16
+                z-50
+                overflow-x-hidden
                 rounded-2xl
-                bg-white
-                shadow-xl
                 border
                 border-slate-200
-                z-50
+                bg-white
+                shadow-xl
+
+                lg:absolute
+                lg:left-auto
+                lg:right-0
+                lg:top-12
+                lg:w-80
+                lg:max-h-none
+                lg:overflow-hidden
             "
         >
 
@@ -35,23 +43,25 @@ export default function NotificationDropdown({
                 </h3>
             </div>
 
-            {
-                notifications.length === 0 ?
-                (
-                    <p className="p-6 text-center text-slate-500">
-                        No notifications yet.
-                    </p>
-                )
-                :
-                notifications.map(notification => (
-                    <NotificationItem
-                        key={notification.id}
-                        notification={notification}
-                        onRead={markAsRead}
-                        onDelete={removeNotification}
-                    />
-                ))
-            }
+            <div className="max-h-[60vh] overflow-y-auto">
+                {
+                    notifications.length === 0 ?
+                    (
+                        <p className="p-6 text-center text-slate-500">
+                            No notifications yet.
+                        </p>
+                    )
+                    :
+                    notifications.map(notification => (
+                        <NotificationItem
+                            key={notification.id}
+                            notification={notification}
+                            onRead={markAsRead}
+                            onDelete={removeNotification}
+                        />
+                    ))
+                }
+            </div>
 
             {
                 notifications.length > 0 && (
@@ -59,7 +69,9 @@ export default function NotificationDropdown({
                     <div
                         className="
                             flex
+                            flex-wrap
                             justify-between
+                            gap-3
                             border-t
                             p-3
                         "

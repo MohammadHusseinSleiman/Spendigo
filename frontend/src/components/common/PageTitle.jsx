@@ -3,13 +3,14 @@ export default function PageTitle({
     description,
 }) {
     return (
-        <div className="space-y-2">
+        <div className="min-w-0">
             <h1
                 className="
-                    text-3xl
+                    truncate
+                    text-xl
                     font-bold
-                    tracking-tight
                     text-slate-900
+                    sm:text-xl
                 "
             >
                 {title}
@@ -17,8 +18,10 @@ export default function PageTitle({
 
             <p
                 className="
-                    text-sm
+                    truncate
+                    text-xs
                     text-slate-500
+                    sm:text-sm
                 "
             >
                 {description}
