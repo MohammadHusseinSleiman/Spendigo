@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { toast } from "sonner";
+
 import AppLayout from "../components/layout/AppLayout";
 
 import dashboardService from "../services/dashboardService";
@@ -31,6 +33,11 @@ export default function Dashboard() {
                 data.recent_transactions ?? []
             );
 
+        } catch (error) {
+            toast.error(
+                error.response?.data?.message ??
+                "Unable to load dashboard."
+            );
         } finally {
             setLoading(false);
         }

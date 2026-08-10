@@ -7,6 +7,8 @@ import {
 
 import Card from "../common/Card";
 
+import formatCurrency from "../../utils/formatCurrency";
+
 // Dashboard statistics cards
 export default function DashboardStats({
     stats = {},
@@ -16,27 +18,27 @@ export default function DashboardStats({
 
         {
             title: "Current Balance",
-            value: `$${Number(
+            value: formatCurrency(
                 stats.balance ?? 0
-            ).toLocaleString()}`,
+            ),
             icon: Wallet,
             color: "bg-slate-800",
         },
 
         {
             title: "Monthly Income",
-            value: `$${Number(
+            value: formatCurrency(
                 stats.monthly_income ?? 0
-            ).toLocaleString()}`,
+            ),
             icon: ArrowUpCircle,
             color: "bg-emerald-600",
         },
 
         {
             title: "Monthly Expenses",
-            value: `$${Number(
+            value: formatCurrency(
                 stats.monthly_expenses ?? 0
-            ).toLocaleString()}`,
+            ),
             icon: ArrowDownCircle,
             color: "bg-red-600",
         },
