@@ -306,10 +306,12 @@ async function handlePreferencesSubmit() {
                         toast.warning("This action cannot be undone.");
                     }}
                     className="
+                        cursor-pointer
                         mt-5
                         w-full
                         bg-red-600
                         text-white
+                        hover:bg-red-700
                         sm:w-auto
                     "
                 >

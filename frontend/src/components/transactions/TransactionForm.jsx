@@ -1,3 +1,5 @@
+import Button from "../common/Button";
+
 // Transaction form component
 export default function TransactionForm({
     form,
@@ -142,40 +144,48 @@ export default function TransactionForm({
 
             </div>
 
-            <div className="flex justify-end gap-3">
+            <div
+                className="
+                    flex
+                    flex-col-reverse
+                    gap-3
+                    sm:flex-row
+                    sm:justify-end
+                "
+            >
 
-                <button
+                <Button
                     type="button"
+                    variant="secondary"
                     onClick={onCancel}
                     className="
-                        rounded-xl
                         border
-                        px-5
-                        py-3
+                        cursor-pointer
+                        w-full
+                        sm:w-auto
                     "
                 >
                     Cancel
-                </button>
+                </Button>
 
-                <button
+                <Button
                     type="submit"
                     disabled={loading}
                     className="
-                        rounded-xl
+                        w-full
                         bg-emerald-600
-                        px-5
-                        py-3
                         font-medium
                         text-white
                         transition
+                        cursor-pointer
                         hover:bg-emerald-700
-                        disabled:opacity-60
+                        sm:w-auto
                     "
                 >
                     {loading
                         ? "Saving..."
                         : submitText}
-                </button>
+                </Button>
 
             </div>
 

@@ -1,3 +1,4 @@
+import Button from "../common/Button";
 import Modal from "../common/Modal";
 
 // Delete confirmation modal
@@ -24,41 +25,41 @@ export default function DeleteTransactionModal({
                 This action cannot be undone.
             </p>
 
-            <div className="mt-6 flex justify-end gap-3">
+            <div className="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row">
 
-                <button
+                <Button
                     type="button"
+                    variant="secondary"
                     onClick={onClose}
                     className="
-                        rounded-xl
-                        border
-                        px-5
-                        py-3
+                        w-full
+                        cursor-pointer
+                        sm:w-auto
                     "
                 >
                     Cancel
-                </button>
+                </Button>
 
-                <button
+                <Button
                     type="button"
                     onClick={onConfirm}
                     disabled={loading}
                     className="
-                        rounded-xl
+                        w-full
+                        cursor-pointer
                         bg-red-600
-                        px-5
-                        py-3
                         font-medium
                         text-white
                         transition
                         hover:bg-red-700
                         disabled:opacity-60
+                        sm:w-auto
                     "
                 >
                     {loading
                         ? "Deleting..."
                         : "Delete"}
-                </button>
+                </Button>
 
             </div>
 

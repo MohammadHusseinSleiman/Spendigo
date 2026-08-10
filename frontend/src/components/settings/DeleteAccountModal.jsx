@@ -64,13 +64,12 @@ export default function DeleteAccountModal({
 
                     <Button
                         type="button"
+                        variant="secondary"
                         onClick={onClose}
                         className="
+                            cursor-pointer
                             w-full
-                            rounded-xl
                             border
-                            px-5
-                            py-3
                             sm:w-auto
                         "
                     >
@@ -81,12 +80,11 @@ export default function DeleteAccountModal({
                         type="submit"
                         disabled={loading}
                         className="
+                            cursor-pointer
                             w-full
-                            rounded-xl
                             bg-red-600
-                            px-5
-                            py-3
                             text-white
+                            hover:bg-red-700
                             sm:w-auto
                         "
                     >
