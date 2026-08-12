@@ -1,7 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
 
-import { toast } from "sonner";
-
 import Card from "../common/Card";
 import Badge from "../common/Badge";
 import EmptyState from "../common/EmptyState";
@@ -150,12 +148,9 @@ export default function CategoriesTable({
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    onClick={() => {
-                                                        toast.warning(
-                                                            "This action cannot be undone."
-                                                        );
-                                                        onDelete(category);
-                                                    }}
+                                                    onClick={() =>
+                                                        onDelete(category)
+                                                    }
                                                     className="
                                                         cursor-pointer
                                                         rounded-lg

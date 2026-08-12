@@ -23,8 +23,6 @@ export default function TransactionsHeader({
                         bg-emerald-600
                         text-sm
                         font-medium
-                        text-white
-                        hover:bg-emerald-700
                         sm:w-auto
                     "
                 >

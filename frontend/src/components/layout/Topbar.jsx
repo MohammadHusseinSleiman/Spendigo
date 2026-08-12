@@ -121,7 +121,7 @@ export default function Topbar({
                     flex
                     shrink-0
                     items-center
-                    gap-2
+                    gap-3
                 "
             >
 

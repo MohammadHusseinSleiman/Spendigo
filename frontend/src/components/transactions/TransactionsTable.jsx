@@ -5,8 +5,6 @@ import {
     Trash2,
 } from "lucide-react";
 
-import { toast } from "sonner";
-
 import Card from "../common/Card";
 import Badge from "../common/Badge";
 import EmptyState from "../common/EmptyState";
@@ -199,10 +197,9 @@ export default function TransactionsTable({
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => {
-                                                toast.warning("This action cannot be undone.");
-                                                onDelete(transaction.id);
-                                            }}
+                                            onClick={() => 
+                                                onDelete(transaction.id)
+                                            }
                                             className="
                                                 cursor-pointer
                                                 rounded-lg

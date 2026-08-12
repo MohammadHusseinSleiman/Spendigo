@@ -43,6 +43,6 @@ const categoryService = {
         );
 
         return response.data;
-},
+    },
 };
 export default categoryService;

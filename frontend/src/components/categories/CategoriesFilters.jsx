@@ -1,6 +1,9 @@
 import { Search } from "lucide-react";
+
 import SearchInput from "../common/SearchInput";
 import Select from "../common/Select";
+
+import { TYPE_FILTER_OPTIONS } from "../../constants/typeFilterOptions";
 
 // Categories filters
 export default function CategoriesFilters({
@@ -9,21 +12,6 @@ export default function CategoriesFilters({
     type,
     setType,
 }) {
-
-    const typeOptions = [
-        {
-            value: "all",
-            label: "All Types",
-        },
-        {
-            value: "expense",
-            label: "Expenses",
-        },
-        {
-            value: "income",
-            label: "Income",
-        },
-    ];
 
     return (
 
@@ -60,7 +48,7 @@ export default function CategoriesFilters({
                 onChange={(event) =>
                     setType(event.target.value)
                 }
-                options={typeOptions}
+                options={TYPE_FILTER_OPTIONS}
             />
 
         </div>

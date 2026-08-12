@@ -10,6 +10,7 @@ import IncomeExpenseChart from "../components/charts/IncomeExpenseChart";
 import ExpenseCategoryChart from "../components/charts/ExpenseCategoryChart";
 import Card from "../components/common/Card";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import Button from "../components/common/Button";
 
 export default function Reports() {
 
@@ -126,57 +127,39 @@ export default function Reports() {
 
     <div className="flex flex-col gap-3 sm:flex-row">
 
-        <button
+        <Button
             type="button"
             onClick={handleExportCSV}
             className="
-                flex
+                cursor-pointer
                 w-full
-                items-center
-                justify-center
                 gap-2
-                rounded-xl
-                bg-emerald-600
-                px-4
-                py-2.5
                 font-medium
-                text-white
-                transition
-                hover:bg-emerald-700
                 active:scale-[0.98]
                 sm:w-auto
             "
         >
             <Download size={18} />
             Export CSV
-        </button>
+        </Button>
 
-        <button
+        <Button
             type="button"
+            variant="secondary"
             onClick={handleExportPDF}
             className="
-                flex
+                cursor-pointer
                 w-full
-                items-center
-                justify-center
                 gap-2
-                rounded-xl
-                border
-                border-slate-200
-                bg-white
-                px-4
-                py-2.5
                 font-medium
-                text-slate-700
-                transition
-                hover:bg-slate-50
+                hover:bg-slate-100
                 active:scale-[0.98]
                 sm:w-auto
             "
         >
             <FileText size={18} />
             Export PDF
-        </button>
+        </Button>
 
     </div>
 

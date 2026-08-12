@@ -54,11 +54,6 @@ export default function EditCategoryModal({
             );
             addNotification( `Category "${form.name}" updated`);
             toast.success("Category updated successfully.");
-            setForm({
-                name: "",
-                type: "expense",
-                color: "#2563EB",
-            });
             onSuccess();
             onClose();
 

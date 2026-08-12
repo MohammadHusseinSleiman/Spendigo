@@ -88,6 +88,16 @@ export default function Categories() {
         setShowDeleteModal(true);
     }
 
+    function closeEditModal() {
+        setShowEditModal(false);
+        setSelectedCategory(null);
+    }
+
+    function closeDeleteModal() {
+        setShowDeleteModal(false);
+        setSelectedCategory(null);
+    }
+
     async function confirmDelete() {
 
         if (!selectedCategory) {
@@ -160,17 +170,13 @@ export default function Categories() {
             <EditCategoryModal
                 open={showEditModal}
                 category={selectedCategory}
-                onClose={() =>
-                    setShowEditModal(false)
-                }
+                onClose={closeEditModal}
                 onSuccess={loadCategories}
             />
 
             <DeleteCategoryModal
                 isOpen={showDeleteModal}
-                onClose={() =>
-                    setShowDeleteModal(false)
-                }
+                onClose={closeDeleteModal}
                 onConfirm={confirmDelete}
                 loading={deleteLoading}
             />

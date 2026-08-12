@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 import SearchInput from "../common/SearchInput";
 import Select from "../common/Select";
 
-import { TRANSACTION_TYPE_FILTER_OPTIONS } from "../../constants/transactionOptions";
+import { TYPE_FILTER_OPTIONS } from "../../constants/typeFilterOptions";
 import { mapCategoriesToOptions } from "../../utils/selectOptions";
 
 // Transactions filters section
@@ -61,7 +61,7 @@ export default function TransactionFilters({
                     onChange={(event) =>
                         setType(event.target.value)
                     }
-                    options={TRANSACTION_TYPE_FILTER_OPTIONS}
+                    options={TYPE_FILTER_OPTIONS}
                 />
 
                 {/* Category */}
