@@ -5,26 +5,40 @@ export default function StatCard({
     title,
     value,
     icon: Icon,
-    iconColor = "text-emerald-600",
+    iconColor = "",
 }) {
 
     return (
-        <Card>
+        <Card
+            className="
+                min-w-0
+                p-4
+                sm:p-6
+            "
+        >
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
 
-                <div>
+                <div className="min-w-0">
 
-                    <p className="text-sm text-slate-500">
+                    <p
+                        className="
+                            truncate
+                            text-sm
+                            text-slate-500
+                        "
+                    >
                         {title}
                     </p>
 
                     <h2
                         className="
                             mt-2
-                            text-3xl
+                            truncate
+                            text-2xl
                             font-bold
                             text-slate-900
+                            sm:text-3xl
                         "
                     >
                         {value}
@@ -34,9 +48,16 @@ export default function StatCard({
 
                 <div
                     className={`
+                        flex
+                        h-11
+                        w-11
+                        shrink-0
+                        items-center
+                        justify-center
                         rounded-xl
-                        bg-slate-100
-                        p-3
+                        text-white
+                        sm:h-12
+                        sm:w-12
                         ${iconColor}
                     `}
                 >

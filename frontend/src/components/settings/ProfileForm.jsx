@@ -1,6 +1,9 @@
 import Card from "../common/Card";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import Select from "../common/Select";
+
+import { CURRENCY_OPTIONS } from "../../constants/currencyOptions";
 
 // Profile information form
 export default function ProfileForm({
@@ -162,30 +165,13 @@ export default function ProfileForm({
                         Currency
                     </label>
 
-                    <select
+                    <Select
                         name="currency"
                         value={profile.currency ?? "USD"}
                         onChange={onChange}
-                        className="
-                            w-full
-                            rounded-xl
-                            border
-                            border-slate-200
-                            px-4
-                            py-3
-                            outline-none
-                            transition
-                            focus:border-emerald-500
-                            focus:ring-2
-                            focus:ring-emerald-100
-                        "
-                    >
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="LBP">LBP</option>
-                        <option value="SAR">SAR</option>
-                        <option value="AED">AED</option>
-                    </select>
+                        options={CURRENCY_OPTIONS}
+                        className="min-h-[50px]"
+                    />
 
                     {errors.currency && (
                         <p className="mt-1 text-sm text-red-600">
@@ -199,7 +185,7 @@ export default function ProfileForm({
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto cursor-pointer"
                     >
                         {loading
                             ? "Saving..."

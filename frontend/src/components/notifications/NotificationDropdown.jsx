@@ -27,6 +27,15 @@ export default function NotificationDropdown({
                 bg-white
                 shadow-xl
 
+                md:w-80
+                md:absolute
+                md:left-auto
+                md:right-0
+                md:top-12
+                md:w-80
+                md:max-h-none
+                md:overflow-hidden
+
                 lg:absolute
                 lg:left-auto
                 lg:right-0

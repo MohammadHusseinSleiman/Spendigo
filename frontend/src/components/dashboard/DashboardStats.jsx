@@ -1,28 +1,26 @@
 import {
+    Wallet,
     ArrowDownCircle,
     ArrowUpCircle,
-    Wallet,
     PiggyBank,
 } from "lucide-react";
 
 import Card from "../common/Card";
+import StatCard from "../common/StatCard";
 
 import formatCurrency from "../../utils/formatCurrency";
 
 // Dashboard statistics cards
-export default function DashboardStats({
-    stats = {},
-}) {
+export default function DashboardStats({ stats = {} }) {
 
     const cards = [
-
         {
             title: "Current Balance",
             value: formatCurrency(
                 stats.balance ?? 0
             ),
             icon: Wallet,
-            color: "bg-slate-800",
+            iconColor: "bg-slate-800",
         },
 
         {
@@ -31,7 +29,7 @@ export default function DashboardStats({
                 stats.monthly_income ?? 0
             ),
             icon: ArrowUpCircle,
-            color: "bg-emerald-600",
+            iconColor: "bg-emerald-600",
         },
 
         {
@@ -40,7 +38,7 @@ export default function DashboardStats({
                 stats.monthly_expenses ?? 0
             ),
             icon: ArrowDownCircle,
-            color: "bg-red-600",
+            iconColor: "bg-red-600",
         },
 
         {
@@ -49,9 +47,8 @@ export default function DashboardStats({
                 stats.savings_rate ?? 0
             ).toFixed(1)}%`,
             icon: PiggyBank,
-            color: "bg-blue-600",
+            iconColor: "bg-blue-600",
         },
-
     ];
 
     return (
@@ -59,89 +56,23 @@ export default function DashboardStats({
         <div
             className="
                 grid
-                grid-cols-1
                 gap-4
-                sm:grid-cols-2
+                md:grid-cols-2
                 xl:grid-cols-4
             "
         >
 
-            {cards.map((card) => {
+            {cards.map((card) => (
 
-                const Icon = card.icon;
+                <StatCard
+                    key={card.title}
+                    title={card.title}
+                    value={card.value}
+                    icon={card.icon}
+                    iconColor={card.iconColor}
+                />
 
-                return (
-
-                    <Card
-                        key={card.title}
-                        className="
-                            min-w-0
-                            p-4
-                            sm:p-6
-                        "
-                    >
-
-                        <div
-                            className="
-                                flex
-                                items-center
-                                justify-between
-                                gap-4
-                            "
-                        >
-
-                            <div className="min-w-0">
-
-                                <p
-                                    className="
-                                        truncate
-                                        text-sm
-                                        text-slate-500
-                                    "
-                                >
-                                    {card.title}
-                                </p>
-
-                                <h2
-                                    className="
-                                        mt-2
-                                        truncate
-                                        text-2xl
-                                        font-bold
-                                        text-slate-900
-                                        sm:text-3xl
-                                    "
-                                >
-                                    {card.value}
-                                </h2>
-
-                            </div>
-
-                            <div
-                                className={`
-                                    ${card.color}
-                                    flex
-                                    h-11
-                                    w-11
-                                    shrink-0
-                                    items-center
-                                    justify-center
-                                    rounded-xl
-                                    text-white
-                                    sm:h-12
-                                    sm:w-12
-                                `}
-                            >
-                                <Icon size={24} />
-                            </div>
-
-                        </div>
-
-                    </Card>
-
-                );
-
-            })}
+            ))}
 
         </div>
 

@@ -121,7 +121,22 @@ export default function SignUpForm({ onSuccess }) {
                 placeholder="Confirm your password"
             />
 
-            <Button type="submit">
+            <Button
+                type="submit"
+                className="
+                    h-12
+                    cursor-pointer
+                    flex
+                    w-full
+                    gap-2
+                    bg-emerald-600
+                    text-sm
+                    font-medium
+                    text-white
+                    hover:bg-emerald-700
+                    sm:w-auto
+                "
+            >
                 Create Account
             </Button>
 

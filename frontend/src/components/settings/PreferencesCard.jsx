@@ -63,7 +63,7 @@ export default function PreferencesCard({
                         type="button"
                         onClick={onClick}
                         disabled={loading}
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto cursor-pointer"
                     >
                         {loading
                             ? "Saving..."

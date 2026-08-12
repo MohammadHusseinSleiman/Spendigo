@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Modal from "../common/Modal";
 import Button from "../common/Button"
+import Input from "../common/Input";
 
 export default function DeleteAccountModal({
     open,
@@ -36,7 +37,7 @@ export default function DeleteAccountModal({
                     This action is permanent and cannot be undone.
                 </p>
 
-                <input
+                <Input
                     type="password"
                     placeholder="Current password"
                     value={password}

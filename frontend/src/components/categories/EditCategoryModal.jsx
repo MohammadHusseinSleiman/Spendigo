@@ -48,26 +48,21 @@ export default function EditCategoryModal({
         setErrors({});
 
         try {
-console.log("1");
             await categoryService.updateCategory(
                 category.id,
                 form
-            );console.log("2");
-            addNotification(
-                `Category "${form.name}" updated`
-            );console.log("3");
+            );
+            addNotification( `Category "${form.name}" updated`);
+            toast.success("Category updated successfully.");
             setForm({
                 name: "",
                 type: "expense",
                 color: "#2563EB",
-            });console.log("4");
-            toast.success("Category updated successfully.");
-console.log("5");
-            onSuccess();console.log("6");
-            onClose();console.log("7");
+            });
+            onSuccess();
+            onClose();
 
         } catch (error) {
-console.log("Faild");
             if (error.response?.status === 422) {
 
                 setErrors(error.response.data.errors);

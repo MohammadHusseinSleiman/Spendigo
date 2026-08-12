@@ -18,7 +18,7 @@ export default function Input({
                     w-full
                     rounded-xl
                     border
-                    border-slate-300
+                    border-slate-200
                     bg-white
                     px-4
                     py-3
@@ -27,8 +27,9 @@ export default function Input({
                     transition-all
                     duration-200
                     outline-none
-                    focus:border-emerald-600
-                    focus:ring-4
+                    hover:border-slate-300
+                    focus:border-emerald-500
+                    focus:ring-2
                     focus:ring-emerald-100
                 "
                 type={type}

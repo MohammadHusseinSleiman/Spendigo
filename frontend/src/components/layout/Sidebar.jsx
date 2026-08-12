@@ -9,8 +9,9 @@ import {
 } from "lucide-react";
 
 import Logo from "../common/Logo";
-import NavItem from "./NavItem";
 import Button from "../common/Button";
+import NavItem from "./NavItem";
+
 import { useAuth } from "../../context/AuthContext";
 
 // Responsive application sidebar
@@ -87,6 +88,7 @@ export default function Sidebar({
                             setMobileOpen(false)
                         }
                         className="
+                            cursor-pointer
                             rounded-lg
                             p-2
                             text-slate-500
@@ -152,7 +154,7 @@ export default function Sidebar({
 
                     <Button
                         onClick={logout}
-                        className="w-full w-auto"
+                        className="w-full w-auto cursor-pointer"
                     >
                         <div
                             className="

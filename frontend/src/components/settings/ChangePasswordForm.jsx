@@ -1,5 +1,6 @@
 import Card from "../common/Card";
 import Button from "../common/Button";
+import Input from "../common/Input";
 
 // Change password form
 export default function ChangePasswordForm({
@@ -30,21 +31,11 @@ export default function ChangePasswordForm({
                         Current Password
                     </label>
 
-                    <input
+                    <Input
                         type="password"
                         name="current_password"
                         value={form.current_password}
                         onChange={onChange}
-                        className="
-                            w-full
-                            rounded-xl
-                            border
-                            border-slate-200
-                            px-4
-                            py-3
-                            outline-none
-                            focus:border-emerald-500
-                        "
                     />
                     {
                         errors.current_password && (
@@ -63,21 +54,11 @@ export default function ChangePasswordForm({
                         New Password
                     </label>
 
-                    <input
+                    <Input
                         type="password"
                         name="new_password"
                         value={form.new_password}
                         onChange={onChange}
-                        className="
-                            w-full
-                            rounded-xl
-                            border
-                            border-slate-200
-                            px-4
-                            py-3
-                            outline-none
-                            focus:border-emerald-500
-                        "
                     />
                     {
                         errors.new_password && (
@@ -96,21 +77,11 @@ export default function ChangePasswordForm({
                         Confirm Password
                     </label>
 
-                    <input
+                    <Input
                         type="password"
                         name="confirm_password"
                         value={form.confirm_password}
                         onChange={onChange}
-                        className="
-                            w-full
-                            rounded-xl
-                            border
-                            border-slate-200
-                            px-4
-                            py-3
-                            outline-none
-                            focus:border-emerald-500
-                        "
                     />
                     {
                         errors.confirm_password && (
@@ -126,7 +97,7 @@ export default function ChangePasswordForm({
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full sm:w-auto"
+                        className="w-full sm:w-auto cursor-pointer"
                     >
                         {
                             loading

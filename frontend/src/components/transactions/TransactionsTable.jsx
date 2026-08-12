@@ -29,7 +29,7 @@ export default function TransactionsTable({
 
     return (
 
-        <Card className="mt-6 overflow-hidden p-0 sm:mt-8">
+        <Card className="overflow-hidden p-0 sm:mt-8">
 
             <div className="overflow-x-auto">
 
@@ -186,6 +186,7 @@ export default function TransactionsTable({
                                                 onEdit(transaction.id)
                                             }
                                             className="
+                                                cursor-pointer
                                                 rounded-lg
                                                 p-2
                                                 text-blue-600
@@ -203,6 +204,7 @@ export default function TransactionsTable({
                                                 onDelete(transaction.id);
                                             }}
                                             className="
+                                                cursor-pointer
                                                 rounded-lg
                                                 p-2
                                                 text-red-600

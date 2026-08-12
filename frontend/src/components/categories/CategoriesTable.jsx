@@ -137,6 +137,7 @@ export default function CategoriesTable({
                                                         onEdit(category)
                                                     }
                                                     className="
+                                                        cursor-pointer
                                                         rounded-lg
                                                         p-2
                                                         text-blue-600
@@ -156,6 +157,7 @@ export default function CategoriesTable({
                                                         onDelete(category);
                                                     }}
                                                     className="
+                                                        cursor-pointer
                                                         rounded-lg
                                                         p-2
                                                         text-red-600

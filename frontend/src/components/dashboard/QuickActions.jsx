@@ -80,6 +80,7 @@ export default function QuickActions() {
                                 navigate(action.path)
                             }
                             className="
+                                cursor-pointer
                                 flex
                                 w-full
                                 items-center

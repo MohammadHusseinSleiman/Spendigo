@@ -92,6 +92,7 @@ export default function Topbar({
                 type="button"
                 onClick={onMenuClick}
                 className="
+                    cursor-pointer
                     rounded-xl
                     p-2
                     text-slate-600

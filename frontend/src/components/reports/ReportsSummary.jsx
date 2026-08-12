@@ -8,7 +8,7 @@ import {
 import formatCurrency from "../../utils/formatCurrency";
 import StatCard from "../common/StatCard";
 
-export default function ReportsSummary({ summary }) {
+export default function ReportsSummary({ summary = {} }) {
 
     const cards = [
         {
@@ -17,7 +17,7 @@ export default function ReportsSummary({ summary }) {
                 summary.balance ?? 0
             ),
             icon: Wallet,
-            iconColor: "text-emerald-600",
+            iconColor: "bg-slate-800",
         },
 
         {
@@ -26,7 +26,7 @@ export default function ReportsSummary({ summary }) {
                 summary.income ?? 0
             ),
             icon: ArrowUpCircle,
-            iconColor: "text-emerald-600",
+            iconColor: "bg-emerald-600",
         },
 
         {
@@ -35,14 +35,14 @@ export default function ReportsSummary({ summary }) {
                 summary.expenses ?? 0
             ),
             icon: ArrowDownCircle,
-            iconColor: "text-red-500",
+            iconColor: "bg-red-600",
         },
 
         {
             title: "Transactions",
             value: summary.transactions ?? 0,
             icon: Receipt,
-            iconColor: "text-blue-600",
+            iconColor: "bg-gray-400",
         },
     ];
 
@@ -50,7 +50,7 @@ export default function ReportsSummary({ summary }) {
         <div
             className="
                 grid
-                gap-6
+                gap-4
                 md:grid-cols-2
                 xl:grid-cols-4
             "

@@ -12,6 +12,7 @@ import PreferencesCard from "../components/settings/PreferencesCard";
 import DeleteAccountModal from "../components/settings/DeleteAccountModal";
 import Card from "../components/common/Card";
 import Button from "../components/common/Button";
+import LoadingSpinner from "../components/common/LoadingSpinner"
 
 export default function Settings() {
 
@@ -36,7 +37,6 @@ export default function Settings() {
     const [passwordLoading, setPasswordLoading] = useState(false);
 
     const [preferences, setPreferences] = useState({
-        currency: "USD",
         dark_mode: false,
     });
     const [preferencesLoading, setPreferencesLoading] = useState(false);
@@ -200,36 +200,37 @@ export default function Settings() {
         setPreferences(data);
     }
 
-async function handlePreferencesSubmit() {
+    async function handlePreferencesSubmit() {
 
-    setPreferencesLoading(true);
+        setPreferencesLoading(true);
 
-    try {
+        try {
 
-        await settingsService.updatePreferences(
-            preferences
-        );
-        await loadPreferences();
+            await settingsService.updatePreferences(
+                preferences
+            );
+            await loadPreferences();
 
-        document.documentElement.classList.toggle(
-            "dark",
-            preferences.dark_mode
-        );
-        addNotification("Application preferences updated");
-        toast.success("Preferences updated successfully.");
+            document.documentElement.classList.toggle(
+                "dark",
+                preferences.dark_mode
+            );
+            addNotification("Application preferences updated");
+            toast.success("Preferences updated successfully.");
 
-    } catch (error) {
+        } catch (error) {
 
-        toast.error(
-            error.response?.data?.message ??
-            "Unable to update preferences."
-        );
+            toast.error(
+                error.response?.data?.message ??
+                "Unable to update preferences."
+            );
 
-    } finally {
-        setPreferencesLoading(false);
+        } finally {
+            setPreferencesLoading(false);
+        }
     }
-}
 
+    // Delete Account
     async function handleDeleteAccount( password ) {
 
         setDeleteLoading(true);
@@ -255,6 +256,10 @@ async function handlePreferencesSubmit() {
             setDeleteLoading(false);
             setShowDeleteModal(false);
         }
+    }
+
+    if (loading) {
+        return <LoadingSpinner />
     }
 
     return (
@@ -299,24 +304,26 @@ async function handlePreferencesSubmit() {
                     Permanently delete your account.
                 </p>
 
-                <Button
-                    type="button"
-                    onClick={() =>{
-                        setShowDeleteModal(true);
-                        toast.warning("This action cannot be undone.");
-                    }}
-                    className="
-                        cursor-pointer
-                        mt-5
-                        w-full
-                        bg-red-600
-                        text-white
-                        hover:bg-red-700
-                        sm:w-auto
-                    "
-                >
-                    Delete Account
-                </Button>
+                <div className="flex justify-end">
+                    <Button
+                        type="button"
+                        onClick={() =>{
+                            setShowDeleteModal(true);
+                            toast.warning("This action cannot be undone.");
+                        }}
+                        className="
+                            cursor-pointer
+                            mt-5
+                            w-full
+                            bg-red-600
+                            text-white
+                            hover:bg-red-700
+                            sm:w-auto
+                        "
+                    >
+                        Delete Account
+                    </Button>
+                </div>
 
             </Card>
 

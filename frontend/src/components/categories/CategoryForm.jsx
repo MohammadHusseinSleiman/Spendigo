@@ -1,3 +1,9 @@
+import Select from "../common/Select";
+
+import { TRANSACTION_TYPE_OPTIONS } from "../../constants/transactionOptions";
+import Button from "../common/Button";
+import Input from "../common/Input";
+
 // Category form component
 export default function CategoryForm({
     form,
@@ -28,20 +34,10 @@ export default function CategoryForm({
                 >
                     Name
                 </label>
-                <input
+                <Input
                     name="name"
                     value={form.name ?? ""}
                     onChange={onChange}
-                    className="
-                        w-full
-                        rounded-xl
-                        border
-                        border-slate-200
-                        px-4
-                        py-2.5
-                        outline-none
-                        focus:border-emerald-500
-                    "
                 />
                 {
                     errors.name && (
@@ -70,28 +66,13 @@ export default function CategoryForm({
                 >
                     Type
                 </label>
-                <select
+                <Select
                     name="type"
                     value={form.type ?? "expense"}
                     onChange={onChange}
-                    className="
-                        w-full
-                        rounded-xl
-                        border
-                        border-slate-200
-                        px-4
-                        py-2.5
-                        outline-none
-                        focus:border-emerald-500
-                    "
-                >
-                    <option value="income">
-                        Income
-                    </option>
-                    <option value="expense">
-                        Expense
-                    </option>
-                </select>
+                    options={TRANSACTION_TYPE_OPTIONS}
+                    className="min-h-[50px]"
+                />
             </div>
 
             {/* Category color */}
@@ -121,38 +102,45 @@ export default function CategoryForm({
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-end gap-3">
-                <button
+            <div
+                className="
+                    flex
+                    flex-col-reverse
+                    gap-3
+                    sm:flex-row
+                    sm:justify-end
+                "
+            >
+                <Button
                     type="button"
+                    variant="secondary"
                     onClick={onCancel}
                     className="
-                        rounded-xl
                         border
-                        px-5
-                        py-3
+                        cursor-pointer
+                        w-full
+                        sm:w-auto
                     "
                 >
                     Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                     type="submit"
                     disabled={loading}
                     className="
-                        rounded-xl
+                        w-full
                         bg-emerald-600
-                        px-5
-                        py-3
                         font-medium
                         text-white
-                        transition
+                        cursor-pointer
                         hover:bg-emerald-700
-                        disabled:opacity-60
+                        sm:w-auto
                     "
                 >
                     {loading
                         ? "Saving..."
                         : submitText}
-                </button>
+                </Button>
             </div>
 
         </form>
