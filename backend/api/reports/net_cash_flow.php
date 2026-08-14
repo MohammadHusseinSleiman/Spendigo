@@ -16,5 +16,5 @@ $service = new AnalyticsService(
 );
 
 ApiResponse::success(
-    $service->monthlyIncomeExpense($userId)
+    $service->monthlyNetCashFlow($userId)
 );

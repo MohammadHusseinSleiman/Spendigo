@@ -1,4 +1,5 @@
 import api from "../api/axios";
+import downloadFile from "../utils/downloadFile";
 
 export default {
 
@@ -12,6 +13,7 @@ export default {
     },
 
 
+    // Get monthly income and expenses
     async getMonthlyIncomeExpense() {
 
         const response = await api.get(
@@ -36,6 +38,22 @@ export default {
     },
 
 
+    // Get monthly net cash flow
+    async getMonthlyNetCashFlow() {
+
+        const response = await api.get(
+            "/reports/net_cash_flow.php"
+        );
+
+        return response.data.data.map(item => ({
+            ...item,
+            net_cash_flow: Number(
+                item.net_cash_flow
+            ),
+        }));
+    },
+
+
     // Export CSV report
     async exportCSV() {
 
@@ -46,18 +64,10 @@ export default {
             }
         );
 
-        const url = window.URL.createObjectURL(
-            new Blob([response.data])
+        downloadFile(
+            response.data,
+            "report.csv"
         );
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "report.csv";
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
     },
 
 
@@ -71,18 +81,10 @@ export default {
             }
         );
 
-        const url = window.URL.createObjectURL(
-            new Blob([response.data])
+        downloadFile(
+            response.data,
+            "report.pdf"
         );
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "report.pdf";
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
     },
 
 };

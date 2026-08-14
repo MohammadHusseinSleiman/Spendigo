@@ -42,7 +42,7 @@ export default function ReportsSummary({ summary = {} }) {
             title: "Transactions",
             value: summary.transactions ?? 0,
             icon: Receipt,
-            iconColor: "bg-gray-400",
+            iconColor: "bg-slate-500",
         },
     ];
 
