@@ -6,6 +6,7 @@ export default function SearchInput({
     onChange,
     placeholder = "Search...",
     className = "",
+    ariaLabel = "Search",
 }) {
     return (
         <div className={`relative ${className}`}>
@@ -19,6 +20,7 @@ export default function SearchInput({
                     top-1/2
                     -translate-y-1/2
                     text-slate-400
+                    dark:text-slate-500
                 "
             />
 
@@ -27,6 +29,7 @@ export default function SearchInput({
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
+                aria-label={ariaLabel}
                 className="
                     w-full
                     rounded-xl
@@ -37,11 +40,25 @@ export default function SearchInput({
                     pl-10
                     pr-4
                     text-sm
+                    text-slate-900
                     outline-none
                     transition
+
+                    placeholder:text-slate-400
+
+                    hover:border-slate-300
+
                     focus:border-emerald-500
                     focus:ring-2
                     focus:ring-emerald-100
+
+                    dark:border-slate-700
+                    dark:bg-slate-800
+                    dark:text-slate-100
+                    dark:placeholder:text-slate-500
+                    dark:hover:border-slate-600
+                    dark:focus:border-emerald-500
+                    dark:focus:ring-emerald-900/40
                 "
             />
 

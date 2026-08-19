@@ -48,13 +48,18 @@ export default function SignInForm({ email = "" }) {
         >
 
             {error && (
-                <p className="
+                <p
+                className="
                     rounded-xl
                     bg-red-50
                     p-3
                     text-sm
                     text-red-600
-                ">
+
+                    dark:bg-red-950/40
+                    dark:text-red-400
+                "
+                >
                     {error}
                 </p>
             )}
@@ -81,16 +86,11 @@ export default function SignInForm({ email = "" }) {
                 type="submit"
                 className="
                     h-12
-                    cursor-pointer
-                    flex
                     w-full
-                    gap-2
                     bg-emerald-600
                     text-sm
-                    font-medium
-                    text-white
+                    text-whit
                     hover:bg-emerald-700
-                    sm:w-auto
                 "
             >
                 Sign In

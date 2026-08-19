@@ -55,7 +55,6 @@ export default function SignUpForm({ onSuccess }) {
         >
 
             {success && (
-
                 <p
                     className="
                         rounded-xl
@@ -63,15 +62,16 @@ export default function SignUpForm({ onSuccess }) {
                         p-3
                         text-sm
                         text-emerald-600
+
+                        dark:bg-emerald-950/40
+                        dark:text-emerald-400
                     "
                 >
                     {success}
                 </p>
-
             )}
 
             {error && (
-
                 <p
                     className="
                         rounded-xl
@@ -79,11 +79,13 @@ export default function SignUpForm({ onSuccess }) {
                         p-3
                         text-sm
                         text-red-600
+
+                        dark:bg-red-950/40
+                        dark:text-red-400
                     "
                 >
                     {error}
                 </p>
-
             )}
 
             <Input
@@ -125,16 +127,11 @@ export default function SignUpForm({ onSuccess }) {
                 type="submit"
                 className="
                     h-12
-                    cursor-pointer
-                    flex
                     w-full
-                    gap-2
                     bg-emerald-600
                     text-sm
-                    font-medium
                     text-white
                     hover:bg-emerald-700
-                    sm:w-auto
                 "
             >
                 Create Account

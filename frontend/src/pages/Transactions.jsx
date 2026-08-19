@@ -3,22 +3,24 @@ import { useNotifications } from "../context/NotificationContext";
 
 import { useState, useEffect } from "react";
 
+import transactionService from "../services/transactionService";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+
 import AppLayout from "../components/layout/AppLayout";
 import TransactionsHeader from "../components/transactions/TransactionsHeader";
+import TransactionFilters from "../components/transactions/TransactionFilters";
+import TransactionsTable from "../components/transactions/TransactionsTable";
 import AddTransactionModal from "../components/transactions/AddTransactionModal";
 import EditTransactionModal from "../components/transactions/EditTransactionModal";
 import DeleteTransactionModal from "../components/transactions/DeleteTransactionModal";
-import TransactionFilters from "../components/transactions/TransactionFilters";
-import TransactionsTable from "../components/transactions/TransactionsTable";
-
-import transactionService from "../services/transactionService";
-import LoadingSpinner from "../components/common/LoadingSpinner";
 
 export default function Transactions() {
 
     const [search, setSearch] = useState("");
     const [type, setType] = useState("all");
+
     const [modalOpen, setModalOpen] = useState(false);
+
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -50,15 +52,15 @@ export default function Transactions() {
     }, []);
 
     async function loadTransactions() {
-
         try {
 
             const data = await transactionService.getTransactions({
-                    search,
-                    type,
-                    category_id: categoryId,
-                    month,
-                });
+                search,
+                type,
+                category_id: categoryId,
+                month,
+            });
+
             setTransactions(data);
 
         } catch (error) {
@@ -67,6 +69,9 @@ export default function Transactions() {
                 error.response?.data?.message ??
                 "Unable to load transactions."
             );
+
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -75,6 +80,7 @@ export default function Transactions() {
         try {
 
             const data = await transactionService.getAllCategories();
+
             setCategories(data);
 
         } catch (error) {
@@ -83,8 +89,6 @@ export default function Transactions() {
                 error.response?.data?.message ??
                 "Unable to load categories."
             );
-        } finally {
-            setLoading(false);
         }
     }
 
@@ -97,7 +101,10 @@ export default function Transactions() {
             await transactionService.delete(deleteId);
 
             addNotification("Transaction deleted");
-            toast.success("Transaction deleted successfully.");
+
+            toast.success(
+                "Transaction deleted successfully."
+            );
 
             setDeleteOpen(false);
             setDeleteId(null);
@@ -112,12 +119,13 @@ export default function Transactions() {
             );
 
         } finally {
+
             setDeleteLoading(false);
         }
     }
 
-    if(loading) {
-        return <LoadingSpinner />
+    if (loading) {
+        return <LoadingSpinner />;
     }
 
     return (
@@ -127,38 +135,38 @@ export default function Transactions() {
             description="Manage your income and expenses"
         >
 
-            <div className="space-y-6">
+            {/* Header */}
+            <TransactionsHeader
+                onAdd={() => setModalOpen(true)}
+            />
 
-                <TransactionsHeader
-                    onAdd={() => setModalOpen(true)}
-                />
+            {/* Filters */}
+            <TransactionFilters
+                search={search}
+                setSearch={setSearch}
+                type={type}
+                setType={setType}
+                categoryId={categoryId}
+                setCategoryId={setCategoryId}
+                categories={categories}
+                month={month}
+                setMonth={setMonth}
+            />
 
-                <TransactionFilters
-                    search={search}
-                    setSearch={setSearch}
-                    type={type}
-                    setType={setType}
-                    categoryId={categoryId}
-                    setCategoryId={setCategoryId}
-                    categories={categories}
-                    month={month}
-                    setMonth={setMonth}
-                />
+            {/* Table */}
+            <TransactionsTable
+                transactions={transactions ?? []}
+                onEdit={(id) => {
+                    setEditId(id);
+                    setEditOpen(true);
+                }}
+                onDelete={(id) => {
+                    setDeleteId(id);
+                    setDeleteOpen(true);
+                }}
+            />
 
-                <TransactionsTable
-                    transactions={transactions ?? {}}
-                    onEdit={(id) => {
-                        setEditId(id);
-                        setEditOpen(true);
-                    }}
-                    onDelete={(id) => {
-                        setDeleteId(id);
-                        setDeleteOpen(true);
-                    }}
-                />
-
-            </div>
-
+            {/* Add, Edit, Delete Modals */}
             <AddTransactionModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
@@ -186,6 +194,5 @@ export default function Transactions() {
             />
 
         </AppLayout>
-
     );
 }

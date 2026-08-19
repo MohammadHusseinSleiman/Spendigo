@@ -15,28 +15,46 @@ export default function Modal({
     return (
         <div
             className="
-                fixed inset-0 z-50
-                flex items-center justify-center
+                fixed
+                inset-0
+                z-50
+                flex
+                items-center
+                justify-center
                 bg-black/50
                 p-4
+
+                dark:bg-black/70
             "
         >
+
             <div
                 className="
                     w-full
                     max-w-lg
                     rounded-2xl
+                    border
+                    border-slate-200
                     bg-white
                     shadow-xl
+
+                    dark:border-slate-800
+                    dark:bg-slate-900
                 "
             >
 
                 {/* Header */}
                 <div
                     className="
-                        flex items-center justify-between
+                        flex
+                        items-center
+                        justify-between
                         border-b
-                        px-6 py-4
+                        border-slate-200
+                        px-6
+                        py-4
+
+                        dark:border-slate-800
                     "
                 >
 
@@ -45,6 +63,8 @@ export default function Modal({
                             text-lg
                             font-semibold
                             text-slate-900
+
+                            dark:text-slate-100
                         "
                     >
                         {title}
@@ -54,11 +74,17 @@ export default function Modal({
                         type="button"
                         onClick={onClose}
                         className="
+                            cursor-pointer
                             rounded-lg
                             p-2
+                            text-slate-500
                             transition
                             hover:bg-slate-100
+
+                            dark:text-slate-400
+                            dark:hover:bg-slate-800
                         "
+                        aria-label="Close modal"
                     >
                         <X size={20} />
                     </button>
@@ -71,6 +97,7 @@ export default function Modal({
                 </div>
 
             </div>
+
         </div>
     );
 }

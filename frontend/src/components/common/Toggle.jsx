@@ -11,7 +11,13 @@ export default function Toggle({
         <div className="flex items-center justify-between">
 
             {label && (
-                <span className="font-medium text-slate-700">
+                <span
+                    className="
+                        font-medium
+                        text-slate-700
+                        dark:text-slate-300
+                    "
+                >
                     {label}
                 </span>
             )}
@@ -37,12 +43,19 @@ export default function Toggle({
                     focus:ring-2
                     focus:ring-emerald-500
                     focus:ring-offset-2
+
+                    dark:focus:ring-offset-slate-900
+
                     disabled:cursor-not-allowed
                     disabled:opacity-50
+
                     ${
                         checked
                             ? "bg-emerald-600"
-                            : "bg-slate-300"
+                            : `
+                                bg-slate-300
+                                dark:bg-slate-700
+                            `
                     }
                 `}
             >

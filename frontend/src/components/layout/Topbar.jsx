@@ -1,9 +1,13 @@
 import {
     Bell,
     Menu,
+    Moon,
+    Sun,
 } from "lucide-react";
 
 import { useState, useRef, useEffect } from "react";
+
+import { useTheme } from "../../context/ThemeContext";
 
 import NotificationDropdown from "../notifications/NotificationDropdown";
 import { useNotifications } from "../../context/NotificationContext";
@@ -19,6 +23,7 @@ export default function Topbar({
 }) {
 
     const [openNotifications, setOpenNotifications] = useState(false);
+
     const notificationRef = useRef(null);
 
     const {
@@ -31,8 +36,14 @@ export default function Topbar({
 
     const unreadCount =
         notifications.filter(
-            notification => !notification.read
+            (notification) => !notification.read
         ).length;
+
+    const {
+        darkMode,
+        toggleTheme,
+        loading: themeLoading,
+    } = useTheme();
 
     useEffect(() => {
 
@@ -40,7 +51,9 @@ export default function Topbar({
 
             if (
                 notificationRef.current &&
-                !notificationRef.current.contains(event.target)
+                !notificationRef.current.contains(
+                    event.target
+                )
             ) {
                 setOpenNotifications(false);
             }
@@ -84,6 +97,9 @@ export default function Topbar({
                 sm:px-6
                 lg:left-64
                 lg:px-8
+
+                dark:border-slate-800
+                dark:bg-slate-900
             "
         >
 
@@ -99,6 +115,9 @@ export default function Topbar({
                     transition
                     hover:bg-slate-100
                     lg:hidden
+
+                    dark:text-slate-300
+                    dark:hover:bg-slate-800
                 "
                 aria-label="Open menu"
             >
@@ -121,9 +140,12 @@ export default function Topbar({
                     flex
                     shrink-0
                     items-center
-                    gap-3
+                    gap-2
+                    sm:gap-3
                 "
             >
+
+
 
                 {/* Notifications */}
                 <div
@@ -135,16 +157,20 @@ export default function Topbar({
                         type="button"
                         onClick={() =>
                             setOpenNotifications(
-                                previous => !previous
+                                (previous) => !previous
                             )
                         }
                         className="
                             relative
+                            cursor-pointer
                             rounded-xl
                             p-2
+                            text-slate-700
                             transition
-                            cursor-pointer
                             hover:bg-slate-100
+
+                            dark:text-slate-200
+                            dark:hover:bg-slate-800
                         "
                         aria-label="Notifications"
                     >
@@ -152,6 +178,7 @@ export default function Topbar({
                         <Bell size={22} />
 
                         {unreadCount > 0 && (
+
                             <span
                                 className="
                                     absolute
@@ -172,6 +199,7 @@ export default function Topbar({
                             >
                                 {unreadCount}
                             </span>
+
                         )}
 
                     </button>
@@ -186,6 +214,44 @@ export default function Topbar({
                     />
 
                 </div>
+
+                {/* Dark / Light mode */}
+                <button
+                    type="button"
+                    onClick={toggleTheme}
+                    disabled={themeLoading}
+                    aria-label={
+                        darkMode
+                            ? "Switch to light mode"
+                            : "Switch to dark mode"
+                    }
+                    title={
+                        darkMode
+                            ? "Switch to light mode"
+                            : "Switch to dark mode"
+                    }
+                    className="
+                        cursor-pointer
+                        rounded-xl
+                        text-slate-700
+                        transition
+                        p-1
+                        lg:p-2
+                        hover:bg-slate-100
+
+                        disabled:cursor-not-allowed
+                        disabled:opacity-50
+
+                        dark:text-slate-200
+                        dark:hover:bg-slate-800
+                    "
+                >
+                    {darkMode ? (
+                        <Sun size={23} />
+                    ) : (
+                        <Moon size={23} />
+                    )}
+                </button>
 
                 {/* User menu */}
                 <UserMenu />

@@ -20,42 +20,45 @@ export default function TransactionsTable({
         return (
             <EmptyState
                 title="No transactions found"
-                description="You haven't added any transactions yet."
+                description="Try adjusting your filters or add a new transaction to get started."
             />
         );
     }
 
     return (
 
-        <Card className="overflow-hidden p-0 sm:mt-8">
+        <Card className="mt-6 min-w-0 overflow-hidden p-0">
 
             <div className="overflow-x-auto">
 
-                <table className="w-full min-w-[850px]">
+                <table className="w-full min-w-[900px]">
 
                     <thead
                         className="
                             bg-slate-50
                             text-left
+                            text-slate-700
+                            dark:border-slate-700
+                            dark:bg-slate-900/60
                         "
                     >
                         <tr>
-                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6 dark:text-slate-100">
                                 Type
                             </th>
-                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6 dark:text-slate-100">
                                 Description
                             </th>
-                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6 dark:text-slate-100">
                                 Category
                             </th>
-                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6 dark:text-slate-100">
                                 Amount
                             </th>
-                            <th className="px-4 py-4 text-sm font-semibold sm:px-6">
+                            <th className="px-4 py-4 text-sm font-semibold sm:px-6 dark:text-slate-100">
                                 Date
                             </th>
-                            <th className="px-4 py-4 text-center text-sm font-semibold sm:px-6">
+                            <th className="px-4 py-4 text-center text-sm font-semibold sm:px-6 dark:text-slate-100">
                                 Actions
                             </th>
                         </tr>
@@ -71,6 +74,7 @@ export default function TransactionsTable({
                                     border-slate-100
                                     transition
                                     hover:bg-slate-50
+                                    dark:hover:bg-slate-700/40
                                 "
                             >
 
@@ -104,6 +108,7 @@ export default function TransactionsTable({
                                             truncate
                                             font-medium
                                             text-slate-800
+                                            dark:text-slate-100
                                         "
                                         title={transaction.description}
                                     >
@@ -121,6 +126,7 @@ export default function TransactionsTable({
                                             whitespace-nowrap
                                             text-sm
                                             text-slate-600
+                                            dark:text-slate-400
                                         "
                                     >
                                         <span
@@ -148,8 +154,8 @@ export default function TransactionsTable({
                                         font-semibold
                                         ${
                                             transaction.type === "income"
-                                                ? "text-emerald-600"
-                                                : "text-red-500"
+                                                ? "text-emerald-600 dark:text-emerald-400"
+                                                : "text-red-500 dark:text-red-400"
                                         }
                                     `}
                                 >
@@ -170,6 +176,7 @@ export default function TransactionsTable({
                                         text-sm
                                         text-slate-500
                                         sm:px-6
+                                        dark:text-slate-400
                                     "
                                 >
                                     {transaction.transaction_date}

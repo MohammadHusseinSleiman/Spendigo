@@ -10,6 +10,8 @@ import {
 import Card from "../common/Card";
 import EmptyState from "../common/EmptyState";
 
+import formatCurrency from "../../utils/formatCurrency";
+
 // Expense distribution by category
 export default function ExpenseCategoryChart({
     data = [],
@@ -25,6 +27,8 @@ export default function ExpenseCategoryChart({
                     className="
                         text-base
                         font-semibold
+                        text-slate-900
+                        dark:text-slate-100
                         sm:text-lg
                     "
                 >
@@ -41,7 +45,6 @@ export default function ExpenseCategoryChart({
                 </div>
 
             </Card>
-
         );
     }
 
@@ -61,6 +64,8 @@ export default function ExpenseCategoryChart({
                     mb-4
                     text-base
                     font-semibold
+                    text-slate-900
+                    dark:text-slate-100
                     sm:mb-6
                     sm:text-lg
                 "
@@ -89,23 +94,19 @@ export default function ExpenseCategoryChart({
                             data={data}
                             dataKey="total"
                             nameKey="name"
-                            outerRadius="70%"
-                            label={({ percent }) =>
-                                `${(
-                                    percent * 100
-                                ).toFixed(0)}%`
-                            }
+                            outerRadius="75%"
+                            innerRadius="45%"
+                            paddingAngle={2}
                         >
 
                             {data.map(
                                 (category) => (
 
                                     <Cell
-                                        key={
-                                            category.name
-                                        }
+                                        key={category.name}
                                         fill={
-                                            category.color
+                                            category.color ||
+                                            "#94a3b8"
                                         }
                                     />
 
@@ -115,14 +116,20 @@ export default function ExpenseCategoryChart({
                         </Pie>
 
                         <Tooltip
-                            formatter={(value) =>
-                                `$${Number(
-                                    value
-                                ).toFixed(2)}`
-                            }
+                            formatter={(value, name) => [
+                                formatCurrency(Number(value)),
+                                name,
+                            ]}
+                            contentStyle={{
+                                borderRadius: "12px",
+                                border: "1px solid #e2e8f0",
+                            }}
                         />
 
-                        <Legend />
+                        <Legend
+                            verticalAlign="bottom"
+                            height={40}
+                        />
 
                     </PieChart>
 
@@ -131,6 +138,5 @@ export default function ExpenseCategoryChart({
             </div>
 
         </Card>
-
     );
 }

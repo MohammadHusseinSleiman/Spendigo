@@ -10,100 +10,59 @@ export default function ChangePasswordForm({
     onChange,
     onSubmit,
 }) {
-
     return (
+        <Card className="mt-6">
 
-        <Card className="mt-8">
-
-            <h2 className="mb-2 text-xl font-semibold text-slate-900">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
                 Security
             </h2>
 
+            <p className="mt-2 mb-6 text-sm text-slate-500 dark:text-slate-400">
+                Update your password to keep your account secure.
+            </p>
+
             <form
                 onSubmit={onSubmit}
-                className="space-y-5 mt-8"
+                className="space-y-5"
             >
 
-                {/* Current password */}
-                <div>
+                <Input
+                    label="Current Password"
+                    type="password"
+                    name="current_password"
+                    value={form.current_password ?? ""}
+                    onChange={onChange}
+                    error={errors.current_password}
+                />
 
-                    <label className="mb-2 block text-sm font-medium">
-                        Current Password
-                    </label>
+                <Input
+                    label="New Password"
+                    type="password"
+                    name="new_password"
+                    value={form.new_password ?? ""}
+                    onChange={onChange}
+                    error={errors.new_password}
+                />
 
-                    <Input
-                        type="password"
-                        name="current_password"
-                        value={form.current_password}
-                        onChange={onChange}
-                    />
-                    {
-                        errors.current_password && (
-                            <p className="mt-1 text-sm text-red-600">
-                                {errors.current_password}
-                            </p>
-                        )
-                    }
-
-                </div>
-
-                {/* New password */}
-                <div>
-
-                    <label className="mb-2 block text-sm font-medium">
-                        New Password
-                    </label>
-
-                    <Input
-                        type="password"
-                        name="new_password"
-                        value={form.new_password}
-                        onChange={onChange}
-                    />
-                    {
-                        errors.new_password && (
-                            <p className="mt-1 text-sm text-red-600">
-                                {errors.new_password}
-                            </p>
-                        )
-                    }
-
-                </div>
-
-                {/* Confirm password */}
-                <div>
-
-                    <label className="mb-2 block text-sm font-medium">
-                        Confirm Password
-                    </label>
-
-                    <Input
-                        type="password"
-                        name="confirm_password"
-                        value={form.confirm_password}
-                        onChange={onChange}
-                    />
-                    {
-                        errors.confirm_password && (
-                            <p className="mt-1 text-sm text-red-600">
-                                {errors.confirm_password}
-                            </p>
-                        )
-                    }
-
-                </div>
+                <Input
+                    label="Confirm Password"
+                    type="password"
+                    name="confirm_password"
+                    value={form.confirm_password ?? ""}
+                    onChange={onChange}
+                    error={errors.confirm_password}
+                />
 
                 <div className="flex pt-1 sm:justify-end">
+
                     <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full sm:w-auto cursor-pointer"
+                        className="w-full sm:w-auto"
                     >
-                        {
-                            loading
-                                ? "Updating..."
-                                : "Change Password"
-                        }
+                        {loading
+                            ? "Updating..."
+                            : "Change Password"}
                     </Button>
 
                 </div>
@@ -111,6 +70,5 @@ export default function ChangePasswordForm({
             </form>
 
         </Card>
-
     );
 }

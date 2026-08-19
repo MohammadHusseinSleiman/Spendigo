@@ -1,5 +1,3 @@
-import { Search } from "lucide-react";
-
 import SearchInput from "../common/SearchInput";
 import Select from "../common/Select";
 
@@ -31,6 +29,11 @@ export default function TransactionFilters({
                 bg-white
                 p-4
                 shadow-sm
+                mb-6
+
+                dark:border-slate-700
+                dark:bg-slate-900
+
                 sm:p-5
             "
         >
@@ -81,7 +84,9 @@ export default function TransactionFilters({
                     onChange={(event) =>
                         setMonth(event.target.value)
                     }
+                    aria-label="Filter by month"
                     className="
+                        cursor-pointer
                         w-full
                         rounded-xl
                         border
@@ -90,17 +95,27 @@ export default function TransactionFilters({
                         px-4
                         py-3
                         text-sm
+                        text-slate-700
                         outline-none
                         transition
+
+                        hover:border-slate-300
+
                         focus:border-emerald-500
                         focus:ring-2
                         focus:ring-emerald-100
+
+                        dark:border-slate-700
+                        dark:bg-slate-950
+                        dark:text-slate-100
+                        dark:hover:border-slate-600
+                        dark:focus:border-emerald-500
+                        dark:focus:ring-emerald-900/40
                     "
                 />
 
             </div>
 
         </div>
-
     );
 }

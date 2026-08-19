@@ -23,7 +23,7 @@ export default function CategoriesTable({
 
     return (
 
-        <Card className="mt-6 overflow-hidden p-0">
+        <Card className="mt-6 min-w-0 overflow-hidden p-0">
 
             <div className="w-full overflow-x-auto">
 
@@ -35,22 +35,25 @@ export default function CategoriesTable({
                             border-slate-200
                             bg-slate-50
                             text-left
+
+                            dark:border-slate-700
+                            dark:bg-slate-900/60
                         "
                     >
                         <tr>
-                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4 dark:text-slate-100">
                                 Name
                             </th>
-                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4 dark:text-slate-100">
                                 Type
                             </th>
-                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4 dark:text-slate-100">
                                 Color
                             </th>
-                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4">
+                            <th className="px-4 py-3 text-sm font-semibold sm:px-6 sm:py-4 dark:text-slate-100">
                                 Source
                             </th>
-                            <th className="px-4 py-3 text-center text-sm font-semibold sm:px-6 sm:py-4">
+                            <th className="px-4 py-3 text-center text-sm font-semibold sm:px-6 sm:py-4 dark:text-slate-100">
                                 Actions
                             </th>
                         </tr>
@@ -66,12 +69,20 @@ export default function CategoriesTable({
                                     last:border-none
                                     transition
                                     hover:bg-slate-50
+
+                                    dark:hover:bg-slate-700/40
                                 "
                             >
 
                                 {/* Name */}
                                 <td className="px-4 py-3 sm:px-6 sm:py-4">
-                                    <span className="font-medium text-slate-800">
+                                    <span
+                                        className="
+                                            font-medium
+                                            text-slate-800
+                                            dark:text-slate-100
+                                        "
+                                    >
                                         {category.name}
                                     </span>
                                 </td>

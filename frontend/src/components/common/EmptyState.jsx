@@ -1,10 +1,8 @@
 // Reusable empty state component
-
 export default function EmptyState({
     title = "No data found",
     description = "",
 }) {
-
     return (
         <div
             className="
@@ -20,6 +18,9 @@ export default function EmptyState({
                 px-6
                 py-12
                 text-center
+
+                dark:border-slate-700
+                dark:bg-slate-800
             "
         >
 
@@ -28,25 +29,25 @@ export default function EmptyState({
                     text-lg
                     font-semibold
                     text-slate-800
+                    dark:text-slate-100
                 "
             >
                 {title}
             </h3>
 
-            {
-                description && (
-                    <p
-                        className="
-                            mt-2
-                            max-w-md
-                            text-sm
-                            text-slate-500
-                        "
-                    >
-                        {description}
-                    </p>
-                )
-            }
+            {description && (
+                <p
+                    className="
+                        mt-2
+                        max-w-md
+                        text-sm
+                        text-slate-500
+                        dark:text-slate-400
+                    "
+                >
+                    {description}
+                </p>
+            )}
 
         </div>
     );

@@ -12,7 +12,6 @@ export default function NotificationDropdown({
     if (!open) return null;
 
     return (
-
         <div
             className="
                 fixed
@@ -20,47 +19,61 @@ export default function NotificationDropdown({
                 right-4
                 top-16
                 z-50
-                overflow-x-hidden
+                overflow-hidden
                 rounded-2xl
                 border
                 border-slate-200
                 bg-white
                 shadow-xl
 
-                md:w-80
+                dark:border-slate-800
+                dark:bg-slate-900
+
                 md:absolute
                 md:left-auto
                 md:right-0
                 md:top-12
                 md:w-80
-                md:max-h-none
-                md:overflow-hidden
-
-                lg:absolute
-                lg:left-auto
-                lg:right-0
-                lg:top-12
-                lg:w-80
-                lg:max-h-none
-                lg:overflow-hidden
             "
         >
 
-            <div className="p-4 border-b">
-                <h3 className="font-semibold">
+            <div
+                className="
+                    border-b
+                    border-slate-200
+                    p-4
+
+                    dark:border-slate-800
+                "
+            >
+                <h3
+                    className="
+                        font-semibold
+                        text-slate-900
+                        dark:text-slate-100
+                    "
+                >
                     Notifications
                 </h3>
             </div>
 
             <div className="max-h-[60vh] overflow-y-auto">
-                {
-                    notifications.length === 0 ?
-                    (
-                        <p className="p-6 text-center text-slate-500">
-                            No notifications yet.
-                        </p>
-                    )
-                    :
+
+                {notifications.length === 0 ? (
+
+                    <p
+                        className="
+                            p-6
+                            text-center
+                            text-slate-500
+                            dark:text-slate-400
+                        "
+                    >
+                        No notifications yet.
+                    </p>
+
+                ) : (
+
                     notifications.map(notification => (
                         <NotificationItem
                             key={notification.id}
@@ -69,53 +82,57 @@ export default function NotificationDropdown({
                             onDelete={removeNotification}
                         />
                     ))
-                }
+
+                )}
+
             </div>
 
-            {
-                notifications.length > 0 && (
+            {notifications.length > 0 && (
 
-                    <div
+                <div
+                    className="
+                        flex
+                        flex-wrap
+                        justify-between
+                        gap-3
+                        border-t
+                        border-slate-200
+                        p-3
+
+                        dark:border-slate-800
+                    "
+                >
+
+                    <button
+                        type="button"
+                        onClick={markAllAsRead}
                         className="
-                            flex
-                            flex-wrap
-                            justify-between
-                            gap-3
-                            border-t
-                            p-3
+                            cursor-pointer
+                            text-sm
+                            text-emerald-600
+                            hover:text-emerald-700
                         "
                     >
+                        Mark all as read
+                    </button>
 
-                        <button
-                            type="button"
-                            onClick={markAllAsRead}
-                            className="
-                                text-sm
-                                text-emerald-600
-                                cursor-pointer
-                            "
-                        >
-                            Mark all as read
-                        </button>
+                    <button
+                        type="button"
+                        onClick={clearNotifications}
+                        className="
+                            cursor-pointer
+                            text-sm
+                            text-red-600
+                            hover:text-red-700
+                        "
+                    >
+                        Clear all
+                    </button>
 
-                        <button
-                            type="button"
-                            onClick={clearNotifications}
-                            className="
-                                text-sm
-                                text-red-600
-                                cursor-pointer
-                            "
-                        >
-                            Clear all
-                        </button>
+                </div>
 
-                    </div>
-
-                )
-            }
+            )}
 
         </div>
-
     );
 }

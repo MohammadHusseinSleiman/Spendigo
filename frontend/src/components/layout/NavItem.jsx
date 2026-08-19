@@ -6,6 +6,7 @@ export default function NavItem({
     icon: Icon,
     label,
 }) {
+
     return (
         <NavLink
             to={to}
@@ -21,16 +22,24 @@ export default function NavItem({
                 font-medium
                 transition-all
                 duration-200
+
                 ${
                     isActive
                         ? "bg-emerald-600 text-white shadow-sm"
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                        : `
+                            text-slate-600
+                            hover:bg-slate-100
+                            hover:text-slate-900
+
+                            dark:text-slate-400
+                            dark:hover:bg-slate-800
+                            dark:hover:text-slate-100
+                        `
                 }
-            `
+                `
             }
         >
             <Icon size={20} />
-
             <span>{label}</span>
         </NavLink>
     );

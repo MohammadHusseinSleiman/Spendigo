@@ -33,7 +33,6 @@ export default function DeleteCategoryModal({
                     onClick={onClose}
                     className="
                         w-full
-                        cursor-pointer
                         sm:w-auto
                     "
                 >
@@ -46,14 +45,16 @@ export default function DeleteCategoryModal({
                     disabled={loading}
                     className="
                         w-full
-                        cursor-pointer
                         bg-red-600
                         font-medium
                         text-white
-                        transition
                         hover:bg-red-700
                         disabled:opacity-60
                         sm:w-auto
+
+                        dark:bg-red-600
+                        dark:text-white
+                        dark:hover:bg-red-700
                     "
                 >
                     {

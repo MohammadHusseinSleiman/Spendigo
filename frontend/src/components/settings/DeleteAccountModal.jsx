@@ -16,8 +16,15 @@ export default function DeleteAccountModal({
     function handleSubmit(e) {
 
         e.preventDefault();
+        if (!password.trim()) {
+            return;
+        }
         onConfirm(password);
+    }
+
+    function handleClose() {
         setPassword("");
+        onClose();
     }
 
     return (
@@ -25,7 +32,7 @@ export default function DeleteAccountModal({
         <Modal
             isOpen={open}
             title="Delete Account"
-            onClose={onClose}
+            onClose={handleClose}
         >
 
             <form
@@ -66,9 +73,8 @@ export default function DeleteAccountModal({
                     <Button
                         type="button"
                         variant="secondary"
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="
-                            cursor-pointer
                             w-full
                             border
                             sm:w-auto
@@ -81,12 +87,15 @@ export default function DeleteAccountModal({
                         type="submit"
                         disabled={loading}
                         className="
-                            cursor-pointer
                             w-full
                             bg-red-600
                             text-white
                             hover:bg-red-700
                             sm:w-auto
+
+                            dark:bg-red-600
+                            dark:text-white
+                            dark:hover:bg-red-700
                         "
                     >
                         {

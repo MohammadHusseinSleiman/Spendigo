@@ -1,78 +1,97 @@
 import Card from "../common/Card";
 import Toggle from "../common/Toggle";
-import Button from "../common/Button";
+import { useTheme } from "../../context/ThemeContext";
 
-export default function PreferencesCard({
-    loading,
-    onClick,
-    preferences,
-    setPreferences,
-}) {
+export default function PreferencesCard() {
+
+    const {
+        darkMode,
+        toggleTheme,
+        loading,
+    } = useTheme();
 
     return (
 
-        <Card className="mt-8">
+        <Card className="mt-6">
 
-            <h2 className="mb-2 text-xl font-semibold text-slate-900">
+            <h2
+                className="
+                    text-xl
+                    font-semibold
+                    text-slate-900
+                    dark:text-white
+                "
+            >
                 Application Preferences
             </h2>
 
-            <p className="mb-6 text-sm text-slate-500">
+            <p
+                className="
+                    mt-2
+                    mb-6
+                    text-sm
+                    text-slate-500
+                    dark:text-slate-400
+                "
+            >
                 Customize how Spendigo behaves and appears.
             </p>
 
             <div className="space-y-5">
 
-                {/* Dark mode */}
                 <div
                     className="
                         flex
                         items-center
                         justify-between
+                        gap-4
                         rounded-xl
                         border
                         border-slate-100
                         p-4
-                        gap-4
+
+                        dark:border-slate-700
+                        dark:bg-slate-800/50
                     "
                 >
 
                     <div>
-                        <p className="font-medium text-slate-900">
+
+                        <p
+                            className="
+                                font-medium
+                                text-slate-900
+                                dark:text-white
+                            "
+                        >
                             Dark Mode
                         </p>
-                        <p className="mt-1 text-sm text-slate-500">
-                            Use a darker interface throughout the application.
+
+                        <p
+                            className="
+                                mt-1
+                                text-sm
+                                text-slate-500
+                                dark:text-slate-400
+                            "
+                        >
+                            Use a darker interface throughout
+                            the application.
                         </p>
+
                     </div>
 
                     <Toggle
-                        checked={preferences.dark_mode}
-                        onChange={(value) =>
-                            setPreferences(previous => ({
-                                ...previous,
-                                dark_mode: value,
-                            }))
-                        }
+                        checked={darkMode}
+                        onChange={toggleTheme}
+                        disabled={loading}
                     />
 
-                </div>
-
-                <div className="flex justify-end pt-2">
-                    <Button
-                        type="button"
-                        onClick={onClick}
-                        disabled={loading}
-                        className="w-full sm:w-auto cursor-pointer"
-                    >
-                        {loading
-                            ? "Saving..."
-                            : "Save Preferences"}
-                    </Button>
                 </div>
 
             </div>
 
         </Card>
+
     );
 }

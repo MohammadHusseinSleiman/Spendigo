@@ -26,6 +26,8 @@ export default function StatCard({
                             truncate
                             text-sm
                             text-slate-500
+
+                            dark:text-slate-400
                         "
                     >
                         {title}
@@ -38,6 +40,9 @@ export default function StatCard({
                             text-2xl
                             font-bold
                             text-slate-900
+
+                            dark:text-slate-100
+
                             sm:text-3xl
                         "
                     >

@@ -10,6 +10,8 @@ export default function Started() {
                 justify-center
                 bg-slate-50
                 p-6
+
+                dark:bg-slate-950
             "
         >
             <AuthCard />

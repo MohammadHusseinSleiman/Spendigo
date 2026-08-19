@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 import Card from "../common/Card";
 
+import formatCurrency from "../../utils/formatCurrency";
+
 // Latest transactions
 export default function RecentTransactions({
     transactions = [],
@@ -22,6 +24,7 @@ export default function RecentTransactions({
         >
 
             {/* Header */}
+
             <div
                 className="
                     mb-4
@@ -39,6 +42,8 @@ export default function RecentTransactions({
                     className="
                         text-lg
                         font-semibold
+                        text-slate-900
+                        dark:text-slate-100
                         sm:text-xl
                     "
                 >
@@ -51,12 +56,16 @@ export default function RecentTransactions({
                         navigate("/transactions")
                     }
                     className="
-                        self-start
                         cursor-pointer
+                        self-start
                         text-sm
                         font-medium
                         text-emerald-600
+                        transition
+                        hover:text-emerald-700
                         hover:underline
+                        dark:text-emerald-400
+                        dark:hover:text-emerald-300
                         sm:self-auto
                     "
                 >
@@ -65,22 +74,25 @@ export default function RecentTransactions({
 
             </div>
 
+
+            {/* Empty state */}
+
             {transactions.length === 0 ? (
 
-                <p
-                    className="
-                        py-6
-                        text-center
-                        text-sm
-                        text-slate-500
-                    "
-                >
-                    No recent transactions.
-                </p>
+                <EmptyState
+                    title="No transactions found"
+                    description="You haven't added any transactions yet."
+                />
 
             ) : (
 
-                <div className="divide-y divide-slate-100">
+                <div
+                    className="
+                        divide-y
+                        divide-slate-100
+                        dark:divide-slate-800
+                    "
+                >
 
                     {transactions.map(
                         (transaction) => (
@@ -98,6 +110,7 @@ export default function RecentTransactions({
                             >
 
                                 {/* Left side */}
+
                                 <div
                                     className="
                                         flex
@@ -136,6 +149,7 @@ export default function RecentTransactions({
                                                 text-sm
                                                 font-medium
                                                 text-slate-800
+                                                dark:text-slate-200
                                             "
                                         >
                                             {
@@ -149,6 +163,7 @@ export default function RecentTransactions({
                                                 truncate
                                                 text-xs
                                                 text-slate-500
+                                                dark:text-slate-400
                                             "
                                         >
                                             {
@@ -160,7 +175,9 @@ export default function RecentTransactions({
 
                                 </div>
 
+
                                 {/* Right side */}
+
                                 <div
                                     className="
                                         shrink-0
@@ -172,8 +189,18 @@ export default function RecentTransactions({
                                         className={
                                             transaction.type ===
                                             "income"
-                                                ? "text-sm font-semibold text-emerald-600"
-                                                : "text-sm font-semibold text-red-600"
+                                                ? `
+                                                    text-sm
+                                                    font-semibold
+                                                    text-emerald-600
+                                                    dark:text-emerald-400
+                                                `
+                                                : `
+                                                    text-sm
+                                                    font-semibold
+                                                    text-red-600
+                                                    dark:text-red-400
+                                                `
                                         }
                                     >
                                         {
@@ -182,10 +209,13 @@ export default function RecentTransactions({
                                                 ? "+"
                                                 : "-"
                                         }
-                                        $
-                                        {Number(
-                                            transaction.amount
-                                        ).toFixed(2)}
+
+                                        {formatCurrency(
+                                            Number(
+                                                transaction.amount
+                                            )
+                                        )}
+
                                     </p>
 
                                     <p
@@ -193,6 +223,7 @@ export default function RecentTransactions({
                                             mt-1
                                             text-xs
                                             text-slate-500
+                                            dark:text-slate-400
                                         "
                                     >
                                         {
@@ -212,6 +243,5 @@ export default function RecentTransactions({
             )}
 
         </Card>
-
     );
 }

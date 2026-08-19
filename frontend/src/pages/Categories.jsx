@@ -140,12 +140,14 @@ export default function Categories() {
             description="Categorize your transactions for easier management."
         >
 
+            {/* Header */}
             <CategoriesHeader
                 onAdd={() => {
                     setShowAddModal(true)
                 }}
             />
 
+            {/* Filters */}
             <CategoriesFilters
                 search={search}
                 setSearch={setSearch}
@@ -153,12 +155,14 @@ export default function Categories() {
                 setType={setType}
             />
 
+            {/* Table */}
             <CategoriesTable
                 categories={filteredCategories}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />
 
+            {/* Add, Edit, Delete Modals */}
             <AddCategoryModal
                 open={showAddModal}
                 onClose={() =>

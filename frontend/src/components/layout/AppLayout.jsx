@@ -10,7 +10,8 @@ export default function AppLayout({
     children,
 }) {
 
-    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+    const [mobileSidebarOpen, setMobileSidebarOpen] =
+        useState(false);
 
     return (
 
@@ -18,6 +19,12 @@ export default function AppLayout({
             className="
                 min-h-screen
                 bg-slate-50
+                text-slate-900
+                transition-colors
+                duration-200
+
+                dark:bg-slate-950
+                dark:text-slate-100
             "
         >
 
@@ -50,8 +57,10 @@ export default function AppLayout({
                         flex-1
                         p-4
                         pt-24
+
                         sm:p-6
                         sm:pt-24
+
                         lg:p-8
                         lg:pt-24
                     "

@@ -5,6 +5,11 @@ import {
     useState
 } from "react";
 
+import settingsService from "../services/settingsService";
+import { applyTheme } from "../utils/theme";
+
+import { useTheme } from "./ThemeContext";
+
 import api from "../api/axios";
 
 const AuthContext = createContext();
@@ -13,17 +18,15 @@ export function AuthProvider({ children }) {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { resetTheme } = useTheme();
 
     useEffect(() => {
 
-        const token =
-            localStorage.getItem("token");
-
+        const token = localStorage.getItem("token");
         if (!token) {
             setLoading(false);
             return;
         }
-
         fetchUser();
 
     }, []);
@@ -41,14 +44,23 @@ export function AuthProvider({ children }) {
                 response.data.data
             );
 
+            // Load saved theme preference
+            try {
+
+                const preferences = await settingsService.getPreferences();
+
+                applyTheme(
+                    preferences.dark_mode ?? false
+                );
+
+            } catch {
+                // Keep current theme.
+            }
+
         } catch {
-
             logout();
-
         } finally {
-
             setLoading(false);
-
         }
     }
 
@@ -72,6 +84,20 @@ export function AuthProvider({ children }) {
 
         setUser(user);
 
+        // Load user's saved application preferences
+        try {
+
+            const preferences = await settingsService.getPreferences();
+
+            applyTheme(
+                preferences.dark_mode ?? false
+            );
+
+        } catch {
+
+            // Keep the current theme if preferences
+            // cannot be loaded.
+        }
     }
 
 async function register(data) {
@@ -83,16 +109,20 @@ async function register(data) {
         );
 
     return response.data;
-
 }
 
     function logout() {
 
-        localStorage.removeItem(
-            "token"
-        );
+        localStorage.removeItem("token");
+        resetTheme();
         setUser(null);
+    }
 
+    function updateUser(data) {
+        setUser(previous => ({
+            ...previous,
+            ...data,
+        }));
     }
 
     return (
@@ -102,6 +132,7 @@ async function register(data) {
                 login,
                 register,
                 logout,
+                updateUser,
                 loading
             }}
         >

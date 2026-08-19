@@ -25,11 +25,27 @@ export default function UserMenu() {
 
             <div className="hidden min-w-0 sm:block">
 
-                <p className="max-w-50 truncate font-medium text-slate-900">
+                <p
+                    className="
+                        max-w-50
+                        truncate
+                        font-medium
+                        text-slate-900
+                        dark:text-slate-100
+                    "
+                >
                     {user?.full_name}
                 </p>
 
-                <p className="max-w-40 truncate text-sm text-slate-500">
+                <p
+                    className="
+                        max-w-40
+                        truncate
+                        text-sm
+                        text-slate-500
+                        dark:text-slate-400
+                    "
+                >
                     {user?.email}
                 </p>
 

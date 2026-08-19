@@ -38,20 +38,8 @@ export default function CategoryForm({
                     name="name"
                     value={form.name ?? ""}
                     onChange={onChange}
+                    error={errors.name}
                 />
-                {
-                    errors.name && (
-                        <p
-                            className="
-                                mt-1
-                                text-sm
-                                text-red-600
-                            "
-                        >
-                            {errors.name}
-                        </p>
-                    )
-                }
             </div>
 
             {/* Category type */}
@@ -117,7 +105,6 @@ export default function CategoryForm({
                     onClick={onCancel}
                     className="
                         border
-                        cursor-pointer
                         w-full
                         sm:w-auto
                     "
@@ -132,7 +119,6 @@ export default function CategoryForm({
                         bg-emerald-600
                         font-medium
                         text-white
-                        cursor-pointer
                         hover:bg-emerald-700
                         sm:w-auto
                     "

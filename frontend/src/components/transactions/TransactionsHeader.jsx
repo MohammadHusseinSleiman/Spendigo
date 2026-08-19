@@ -16,13 +16,9 @@ export default function TransactionsHeader({
                     type="button"
                     onClick={onAdd}
                     className="
-                        cursor-pointer
-                        flex
                         w-full
                         gap-2
-                        bg-emerald-600
                         text-sm
-                        font-medium
                         sm:w-auto
                     "
                 >

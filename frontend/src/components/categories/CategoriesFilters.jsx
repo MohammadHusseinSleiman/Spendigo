@@ -28,6 +28,11 @@ export default function CategoriesFilters({
                 bg-white
                 p-4
                 shadow-sm
+                mb-6
+
+                dark:border-slate-700
+                dark:bg-slate-900
+
                 sm:p-5
             "
         >

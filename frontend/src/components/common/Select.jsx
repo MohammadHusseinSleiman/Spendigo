@@ -14,9 +14,11 @@ export default function Select({
 }) {
 
     return (
+
         <div className="w-full">
 
             {label && (
+
                 <label
                     htmlFor={name}
                     className="
@@ -25,20 +27,24 @@ export default function Select({
                         text-sm
                         font-medium
                         text-slate-700
+                        dark:text-slate-300
                     "
                 >
                     {label}
                 </label>
+
             )}
 
             <div className="relative">
 
                 <select
+
                     id={name}
                     name={name}
                     value={value}
                     onChange={onChange}
                     disabled={disabled}
+
                     className={`
                         w-full
                         appearance-none
@@ -51,25 +57,45 @@ export default function Select({
                         text-sm
                         text-slate-700
                         outline-none
+
                         transition-all
                         duration-200
+
                         cursor-pointer
 
                         border-slate-200
-
                         hover:border-slate-300
 
                         focus:border-emerald-500
                         focus:ring-2
                         focus:ring-emerald-100
 
+                        dark:border-slate-700
+                        dark:bg-slate-950
+                        dark:text-slate-100
+                        dark:hover:border-slate-600
+                        dark:focus:border-emerald-500
+                        dark:focus:ring-emerald-950
+
                         disabled:cursor-not-allowed
                         disabled:bg-slate-50
                         disabled:text-slate-400
 
-                        ${error
-                            ? "border-red-300 focus:border-red-500 focus:ring-red-100"
-                            : ""
+                        dark:disabled:bg-slate-900
+                        dark:disabled:text-slate-600
+
+                        ${
+                            error
+                                ? `
+                                    border-red-300
+                                    focus:border-red-500
+                                    focus:ring-red-100
+
+                                    dark:border-red-700
+                                    dark:focus:border-red-500
+                                    dark:focus:ring-red-950
+                                `
+                                : ""
                         }
 
                         ${className}
@@ -77,18 +103,22 @@ export default function Select({
                 >
 
                     {placeholder && (
+
                         <option value="">
                             {placeholder}
                         </option>
+
                     )}
 
                     {options.map((option) => (
+
                         <option
                             key={option.value}
                             value={option.value}
                         >
                             {option.label}
                         </option>
+
                     ))}
 
                 </select>
@@ -103,17 +133,27 @@ export default function Select({
                         top-1/2
                         -translate-y-1/2
                         text-slate-400
+                        dark:text-slate-100
                     "
                 />
 
             </div>
 
             {error && (
-                <p className="mt-1 text-sm text-red-600">
+                <p
+                    className="
+                        mt-1
+                        text-sm
+                        text-red-600
+                        dark:text-red-400
+                    "
+                >
                     {error}
                 </p>
             )}
 
         </div>
+
     );
+
 }

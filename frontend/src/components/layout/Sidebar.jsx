@@ -36,6 +36,7 @@ export default function Sidebar({
                         inset-0
                         z-40
                         bg-slate-900/40
+                        dark:bg-black/60
                         lg:hidden
                     "
                     onClick={() => setMobileOpen(false)}
@@ -61,6 +62,9 @@ export default function Sidebar({
                     duration-300
                     ease-in-out
                     lg:translate-x-0
+
+                    dark:border-slate-800
+                    dark:bg-slate-900
 
                     ${
                         mobileOpen
@@ -96,6 +100,10 @@ export default function Sidebar({
                             hover:bg-slate-100
                             hover:text-slate-700
                             lg:hidden
+
+                            dark:text-slate-400
+                            dark:hover:bg-slate-800
+                            dark:hover:text-slate-200
                         "
                         aria-label="Close menu"
                     >

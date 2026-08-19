@@ -13,6 +13,7 @@ import RecentTransactions from "../components/dashboard/RecentTransactions";
 import QuickActions from "../components/dashboard/QuickActions";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 
+// Main dashboard page
 export default function Dashboard() {
 
     const [dashboard, setDashboard] = useState(null);
@@ -27,22 +28,29 @@ export default function Dashboard() {
 
         try {
 
-            const data = await dashboardService.getSummary();
+            const data =
+                await dashboardService.getSummary();
+
             setDashboard(data);
+
             setRecentTransactions(
                 data.recent_transactions ?? []
             );
 
         } catch (error) {
+
             toast.error(
                 error.response?.data?.message ??
                 "Unable to load dashboard."
             );
+
         } finally {
             setLoading(false);
         }
     }
 
+    // Keep the loading state outside AppLayout
+    // This prevents the sidebar/topbar from appearing before the dashboard data is ready
     if (loading || !dashboard) {
         return <LoadingSpinner />;
     }
@@ -54,18 +62,20 @@ export default function Dashboard() {
             description="Overview of your financial activity"
         >
 
-            <div className="space-y-6">
+            <div className="min-w-0 space-y-6">
 
                 {/* Statistics */}
                 <DashboardStats
-                    stats={dashboard ?? {}}
+                    stats={dashboard}
                 />
 
-                {/* Charts */}
+
+                {/* Financial Charts */}
                 <div
                     className="
                         grid
                         min-w-0
+                        grid-cols-1
                         gap-6
                         lg:grid-cols-2
                     "
@@ -85,38 +95,33 @@ export default function Dashboard() {
 
                 </div>
 
+
                 {/* Recent Transactions + Quick Actions */}
                 <div
                     className="
                         grid
                         min-w-0
+                        grid-cols-1
                         gap-6
-                        lg:grid-cols-3
+                        lg:grid-cols-2
                     "
                 >
 
-                    <div
-                        className="
-                            min-w-0
-                            lg:col-span-2
-                        "
-                    >
-                        <RecentTransactions
-                            transactions={
-                                recentTransactions
-                            }
-                        />
-                    </div>
+                    {/* Recent Transactions */}
+                    <RecentTransactions
+                        transactions={
+                            recentTransactions
+                        }
+                    />
 
-                    <div className="min-w-0">
-                        <QuickActions />
-                    </div>
+
+                    {/* Quick Actions */}
+                    <QuickActions />
 
                 </div>
 
             </div>
 
         </AppLayout>
-
     );
 }
