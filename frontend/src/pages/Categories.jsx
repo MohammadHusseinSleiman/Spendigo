@@ -19,6 +19,7 @@ export default function Categories() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
     const [type, setType] = useState("all");
 
     const [showAddModal, setShowAddModal] = useState(false);
@@ -52,13 +53,21 @@ export default function Categories() {
         });
     }, [
         categories,
-        search,
+        debouncedSearch,
         type,
     ]);
 
     useEffect(() => {
         loadCategories();
     }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [search]);
 
     async function loadCategories() {
         try {

@@ -17,6 +17,7 @@ import DeleteTransactionModal from "../components/transactions/DeleteTransaction
 export default function Transactions() {
 
     const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
     const [type, setType] = useState("all");
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -41,7 +42,7 @@ export default function Transactions() {
     useEffect(() => {
         loadTransactions();
     }, [
-        search,
+        debouncedSearch,
         type,
         categoryId,
         month,
@@ -51,11 +52,19 @@ export default function Transactions() {
         loadCategories();
     }, []);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [search]);
+
     async function loadTransactions() {
         try {
 
             const data = await transactionService.getTransactions({
-                search,
+                search: debouncedSearch,
                 type,
                 category_id: categoryId,
                 month,
