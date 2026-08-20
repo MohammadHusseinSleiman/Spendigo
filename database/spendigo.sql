@@ -108,6 +108,36 @@ CREATE TABLE transactions (
 );
 
 -- =====================================================
+-- RATE LIMITS
+-- =====================================================
+
+CREATE TABLE rate_limits (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    key_hash CHAR(64) NOT NULL,
+
+    attempts INT UNSIGNED NOT NULL DEFAULT 0,
+
+    window_started_at DATETIME NOT NULL,
+
+    blocked_until DATETIME NULL,
+
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at DATETIME NOT NULL
+        DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    UNIQUE KEY uq_rate_limits_key_hash (key_hash),
+
+    INDEX idx_rate_limits_blocked_until (blocked_until),
+
+    INDEX idx_rate_limits_window_started_at (
+        window_started_at
+    )
+);
+
+-- =====================================================
 -- NOTIFICATION SETTINGS
 -- =====================================================
 
