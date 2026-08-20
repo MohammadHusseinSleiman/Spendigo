@@ -10,34 +10,103 @@ use App\Core\Request;
 use App\Middleware\AuthMiddleware;
 use App\Services\CategoryService;
 
+// Only allow PUT requests.
 if (Request::method() !== 'PUT') {
-
     ApiResponse::error(
         'Method not allowed.',
         405
     );
-
 }
 
+// Authenticate user.
 $userId = AuthMiddleware::handle();
 
-$id = (int) (
-    Request::query('id') ?? 0
-);
+// Validate category ID.
+$id = (int) (Request::query('id') ?? 0);
 
+if ($id <= 0) {
+    ApiResponse::validation([
+        'id' => 'Invalid category.'
+    ]);
+}
+
+// Get request body.
 $data = Request::json();
 
-$service = new CategoryService(
-    Database::getConnection()
+$name = trim(
+    $data['name'] ?? ''
 );
 
-$service->update(
-    $userId,
-    $id,
-    $data
+$type = trim(
+    $data['type'] ?? ''
 );
 
-ApiResponse::success(
-    null,
-    'Category updated successfully.'
+$color = trim(
+    $data['color'] ?? ''
 );
+
+$errors = [];
+
+// Validate name.
+if ($name === '') {
+    $errors['name'] =
+        'Category name is required.';
+}
+
+// Validate type.
+if (
+    !in_array(
+        $type,
+        ['income', 'expense'],
+        true
+    )
+) {
+    $errors['type'] =
+        'Invalid category type.';
+}
+
+// Validate color.
+if ($color === '') {
+    $errors['color'] =
+        'Category color is required.';
+}
+
+if (!empty($errors)) {
+    ApiResponse::validation($errors);
+}
+
+try {
+
+    $service = new CategoryService(
+        Database::getConnection()
+    );
+
+    $service->update(
+        $userId,
+        $id,
+        [
+            'name' => $name,
+            'type' => $type,
+            'color' => $color,
+        ]
+    );
+
+    ApiResponse::success(
+        null,
+        'Category updated successfully.'
+    );
+
+} catch (RuntimeException $exception) {
+
+    ApiResponse::error(
+        $exception->getMessage(),
+        400
+    );
+
+} catch (Throwable $exception) {
+
+    ApiResponse::error(
+        'Failed to update category.',
+        500
+    );
+}

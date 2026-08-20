@@ -38,6 +38,14 @@ $color = trim(
 
 $errors = [];
 
+if (mb_strlen($name) > 100) {
+    $errors['name'] = 'Category name is too long.';
+}
+
+if (mb_strlen($color) > 20) {
+    $errors['color'] = 'Invalid color value.';
+}
+
 if ($name === '') {
 
     $errors['name'] = 'Category name is required.';
