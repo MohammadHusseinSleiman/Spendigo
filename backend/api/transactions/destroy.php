@@ -12,26 +12,22 @@ use App\Services\TransactionService;
 
 // Only allow DELETE requests.
 if (Request::method() !== 'DELETE') {
-
     ApiResponse::error(
         'Method not allowed.',
         405
     );
-
 }
 
 // Authenticate user.
 $userId = AuthMiddleware::handle();
 
-// Validate transaction id.
-$id = (int) Request::query('id');
+// Validate transaction ID.
+$id = (int) (Request::query('id') ?? 0);
 
 if ($id <= 0) {
-
     ApiResponse::validation([
         'id' => 'Invalid transaction.'
     ]);
-
 }
 
 try {
@@ -46,7 +42,7 @@ try {
     );
 
     ApiResponse::success(
-        [],
+        null,
         'Transaction deleted successfully.'
     );
 
@@ -62,5 +58,4 @@ try {
         'Failed to delete transaction.',
         500
     );
-
 }

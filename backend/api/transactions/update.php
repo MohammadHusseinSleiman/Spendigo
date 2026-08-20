@@ -13,77 +13,75 @@ use App\Services\TransactionService;
 
 // Only allow PUT requests.
 if (Request::method() !== 'PUT') {
-
     ApiResponse::error(
         'Method not allowed.',
         405
     );
-
 }
 
+// Authenticate user.
 $userId = AuthMiddleware::handle();
 
-$id = (int)Request::query('id');
+// Validate transaction ID.
+$id = (int) (Request::query('id') ?? 0);
 
 if ($id <= 0) {
-
     ApiResponse::validation([
         'id' => 'Invalid transaction.'
     ]);
-
 }
 
+// Get request body.
 $data = Request::json();
+
+$categoryId = $data['category_id'] ?? null;
+$amount = $data['amount'] ?? null;
+$description = trim(
+    $data['description'] ?? ''
+);
+$transactionDate = trim(
+    $data['transaction_date'] ?? ''
+);
 
 $errors = [];
 
+// Validate category.
 if (
-    !isset($data['category_id']) ||
-    !is_numeric($data['category_id'])
+    $categoryId === null ||
+    !is_numeric($categoryId) ||
+    (int) $categoryId <= 0
 ) {
-
-    $errors['category_id'] =
-        'Category is required.';
-
+    $errors['category_id'] = 'Category is required.';
 }
 
+// Validate amount.
 if (
-    !isset($data['amount']) ||
-    !is_numeric($data['amount']) ||
-    (float)$data['amount'] <= 0
+    $amount === null ||
+    !is_numeric($amount) ||
+    (float) $amount <= 0
 ) {
-
-    $errors['amount'] =
-        'Amount must be greater than zero.';
-
+    $errors['amount'] = 'Amount must be greater than zero.';
 }
 
-if (
-    !Validator::required(
-        $data['description'] ?? ''
-    )
-) {
-
-    $errors['description'] =
-        'Description is required.';
-
+// Validate description.
+if (!Validator::required($description)) {
+    $errors['description'] = 'Description is required.';
 }
 
+// Prevent excessively large descriptions.
+if (mb_strlen($description) > 500) {
+    $errors['description'] = 'Description is too long.';
+}
+
+// Validate date.
 if (
-    !Validator::required(
-        $data['transaction_date'] ?? ''
-    )
+    !Validator::required($transactionDate)
 ) {
-
-    $errors['transaction_date'] =
-        'Transaction date is required.';
-
+    $errors['transaction_date'] = 'Transaction date is required.';
 }
 
 if (!empty($errors)) {
-
     ApiResponse::validation($errors);
-
 }
 
 try {
@@ -95,11 +93,16 @@ try {
     $service->update(
         $userId,
         $id,
-        $data
+        [
+            'category_id' => (int) $categoryId,
+            'amount' => (float) $amount,
+            'description' => $description,
+            'transaction_date' => $transactionDate,
+        ]
     );
 
     ApiResponse::success(
-        [],
+        null,
         'Transaction updated successfully.'
     );
 
@@ -116,5 +119,4 @@ try {
         'Failed to update transaction.',
         500
     );
-
 }

@@ -18,7 +18,6 @@ if (Request::method() !== 'POST') {
         'Method not allowed.',
         405
     );
-
 }
 
 // Authenticate user.
@@ -27,44 +26,50 @@ $userId = AuthMiddleware::handle();
 // Get request body.
 $data = Request::json();
 
+$categoryId = $data['category_id'] ?? null;
+$amount = $data['amount'] ?? null;
+
+$description = trim(
+    $data['description'] ?? ''
+);
+
+$transactionDate = trim(
+    $data['transaction_date'] ?? ''
+);
+
 // Validate request.
 $errors = [];
 
 if (
-    !isset($data['category_id']) ||
-    !is_numeric($data['category_id'])
+    $categoryId === null ||
+    !is_numeric($categoryId) ||
+    (int) $categoryId <= 0
 ) {
     $errors['category_id'] = 'Category is required.';
 }
 
 if (
-    !isset($data['amount']) ||
-    !is_numeric($data['amount']) ||
-    (float)$data['amount'] <= 0
+    $amount === null ||
+    !is_numeric($amount) ||
+    (float) $amount <= 0
 ) {
     $errors['amount'] = 'Amount must be greater than zero.';
 }
 
-if (
-    !Validator::required(
-        $data['description'] ?? ''
-    )
-) {
+if (!Validator::required($description)) {
     $errors['description'] = 'Description is required.';
 }
 
-if (
-    !Validator::required(
-        $data['transaction_date'] ?? ''
-    )
-) {
+if (mb_strlen($description) > 500) {
+    $errors['description'] = 'Description is too long.';
+}
+
+if (!Validator::required($transactionDate)) {
     $errors['transaction_date'] = 'Transaction date is required.';
 }
 
 if (!empty($errors)) {
-    ApiResponse::validation(
-        $errors
-    );
+    ApiResponse::validation($errors);
 }
 
 try {
@@ -75,13 +80,17 @@ try {
 
     $transactionId = $service->create(
         $userId,
-        $data
+        [
+            'category_id' => (int) $categoryId,
+            'amount' => (float) $amount,
+            'description' => $description,
+            'transaction_date' => $transactionDate,
+        ]
     );
 
     ApiResponse::created(
         [
-            'transaction_id' =>
-                $transactionId
+            'transaction_id' => $transactionId
         ],
         'Transaction created successfully.'
     );
