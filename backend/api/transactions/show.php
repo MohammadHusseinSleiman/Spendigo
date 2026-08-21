@@ -10,20 +10,19 @@ use App\Core\Request;
 use App\Middleware\AuthMiddleware;
 use App\Services\TransactionService;
 
-// Only allow GET requests.
+// Only allow GET requests
 if (Request::method() !== 'GET') {
 
     ApiResponse::error(
         'Method not allowed.',
         405
     );
-
 }
 
-// Authenticate user.
+// Authenticate user
 $userId = AuthMiddleware::handle();
 
-// Validate id.
+// Validate id
 $id = (int)Request::query('id');
 
 if ($id <= 0) {
@@ -31,7 +30,6 @@ if ($id <= 0) {
     ApiResponse::validation([
         'id' => 'Invalid transaction.'
     ]);
-
 }
 
 $service = new TransactionService(
@@ -48,7 +46,6 @@ if (!$transaction) {
     ApiResponse::notFound(
         'Transaction not found.'
     );
-
 }
 
 ApiResponse::success(

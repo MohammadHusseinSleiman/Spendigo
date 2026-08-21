@@ -23,6 +23,8 @@ $service = new ReportService(
     Database::getConnection()
 );
 
+$currency = $service->currency($userId);
+
 $transactions = $service->transactions(
     $userId
 );
@@ -73,7 +75,9 @@ foreach ($transactions as $transaction) {
         . ucfirst($transaction["type"]) .
         '</td>
 
-        <td>$'
+        <td>'
+        . htmlspecialchars($currency)
+        . ' '
         . number_format(
             (float) $transaction["amount"],
             2

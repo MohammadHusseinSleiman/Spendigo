@@ -113,13 +113,122 @@ final class CategoryService {
         ]);
     }
 
-    // Update Category
+    // Update category
     public function update(
         int $userId,
         int $id,
         array $data
     ): void {
 
+        $name = trim(
+            $data['name'] ?? ''
+        );
+
+        $type = trim(
+            $data['type'] ?? ''
+        );
+
+        $color = trim(
+            $data['color'] ?? ''
+        );
+
+        if ($id <= 0) {
+            ApiResponse::validation([
+                'id' => 'Invalid category.'
+            ]);
+        }
+
+        if ($name === '') {
+            ApiResponse::validation([
+                'name' => 'Category name is required.'
+            ]);
+        }
+
+        if (
+            !in_array(
+                $type,
+                ['income', 'expense'],
+                true
+            )
+        ) {
+            ApiResponse::validation([
+                'type' => 'Invalid category type.'
+            ]);
+        }
+
+        if ($color === '') {
+            ApiResponse::validation([
+                'color' => 'Category color is required.'
+            ]);
+        }
+
+        // Check category ownership and default status.
+        $stmt = $this->db->prepare(
+            "
+            SELECT
+                id,
+                is_default
+            FROM categories
+            WHERE
+                id = ?
+                AND user_id = ?
+            LIMIT 1
+            "
+        );
+
+        $stmt->execute([
+            $id,
+            $userId
+        ]);
+
+        $category = $stmt->fetch(
+            PDO::FETCH_ASSOC
+        );
+
+        if (!$category) {
+            ApiResponse::error(
+                'Category not found.',
+                404
+            );
+        }
+
+        if (
+            (int) $category['is_default'] === 1
+        ) {
+            ApiResponse::error(
+                'Default categories cannot be modified.',
+                403
+            );
+        }
+
+        // Prevent duplicate category names.
+        $stmt = $this->db->prepare(
+            "
+            SELECT COUNT(*)
+            FROM categories
+            WHERE
+                user_id = ?
+                AND name = ?
+                AND type = ?
+                AND id <> ?
+            "
+        );
+
+        $stmt->execute([
+            $userId,
+            $name,
+            $type,
+            $id
+        ]);
+
+        if ((int) $stmt->fetchColumn() > 0) {
+            ApiResponse::error(
+                'Category already exists.',
+                409
+            );
+        }
+
+        // Update category.
         $stmt = $this->db->prepare(
             "
             UPDATE categories
@@ -135,11 +244,11 @@ final class CategoryService {
         );
 
         $stmt->execute([
-            trim($data['name']),
-            trim($data['type']),
-            trim($data['color']),
+            $name,
+            $type,
+            $color,
             $id,
-            $userId,
+            $userId
         ]);
     }
 

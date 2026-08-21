@@ -129,6 +129,8 @@ final class DashboardService {
         int $limit = 5
     ): array {
 
+        $limit = max(1, min($limit, 20));
+
         $stmt = $this->db->prepare("
             SELECT
                 t.id,

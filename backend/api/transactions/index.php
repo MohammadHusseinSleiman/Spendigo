@@ -10,51 +10,92 @@ use App\Core\Request;
 use App\Middleware\AuthMiddleware;
 use App\Services\TransactionService;
 
-// Only allow GET requests.
+// Only allow GET requests
 if (Request::method() !== 'GET') {
-
     ApiResponse::error(
         'Method not allowed.',
         405
     );
-
 }
 
-// Authenticate user.
+// Authenticate user
 $userId = AuthMiddleware::handle();
 
-// Read filters.
-$filters = [
+// Read query parameters
+$search = trim(
+    Request::query('search', '')
+);
 
-    'search' => trim(
-        Request::query('search', '')
-    ),
+$type = trim(
+    Request::query('type', '')
+);
 
-    'type' => trim(
-        Request::query('type', '')
-    ),
+$categoryId = (int) Request::query(
+    'category_id',
+    0
+);
 
-    'category_id' => (int)
-    Request::query('category_id', 0),
+$month = trim(
+    Request::query('month', '')
+);
 
-    'month' => trim(
-        Request::query('month', '')
-    ),
+// "all" means no type filter
+if ($type === 'all') {
+    $type = '';
+}
 
-];
+// Validate transaction type
+if (
+    $type !== '' &&
+    !in_array(
+        $type,
+        ['income', 'expense'],
+        true
+    )
+) {
+    ApiResponse::validation([
+        'type' => 'Invalid transaction type.'
+    ]);
+}
 
-// Create service.
+// Validate category ID
+if ($categoryId < 0) {
+    ApiResponse::validation([
+        'category_id' => 'Invalid category.'
+    ]);
+}
+
+// Validate month format
+if (
+    $month !== '' &&
+    !preg_match(
+        '/^\d{4}-(0[1-9]|1[0-2])$/',
+        $month
+    )
+) {
+    ApiResponse::validation([
+        'month' =>
+            'Invalid month format. Use YYYY-MM.'
+    ]);
+}
+
+// Create service
 $service = new TransactionService(
     Database::getConnection()
 );
 
-// Get transactions.
+// Get transactions
 $transactions = $service->list(
     $userId,
-    $filters
+    [
+        'search' => $search,
+        'type' => $type,
+        'category_id' => $categoryId,
+        'month' => $month,
+    ]
 );
 
-// Return response.
+// Return response
 ApiResponse::success(
     $transactions,
     'Transactions retrieved successfully.'

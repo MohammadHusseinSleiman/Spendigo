@@ -97,7 +97,9 @@ final class TransactionService
 
         } catch (\Throwable $exception) {
 
-            $this->db->rollBack();
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
             throw $exception;
         }
     }
@@ -324,7 +326,9 @@ final class TransactionService
 
         } catch (Throwable $exception) {
 
-            $this->db->rollBack();
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
             throw $exception;
 
         }
