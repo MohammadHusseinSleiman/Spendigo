@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import Card from "../common/Card";
+import EmptyState from "../common/EmptyState";
 
 import formatCurrency from "../../utils/formatCurrency";
 

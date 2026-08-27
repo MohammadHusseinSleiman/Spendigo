@@ -10,7 +10,7 @@ use App\Core\Request;
 use App\Middleware\AuthMiddleware;
 use App\Services\CategoryService;
 
-// Only allow DELETE requests.
+// Only allow DELETE requests
 if (Request::method() !== 'DELETE') {
     ApiResponse::error(
         'Method not allowed.',
@@ -18,10 +18,10 @@ if (Request::method() !== 'DELETE') {
     );
 }
 
-// Authenticate user.
+// Authenticate user
 $userId = AuthMiddleware::handle();
 
-// Validate category ID.
+// Validate category ID
 $id = (int) (Request::query('id') ?? 0);
 
 if ($id <= 0) {

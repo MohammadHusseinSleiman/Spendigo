@@ -18,10 +18,10 @@ if (Request::method() !== 'PUT') {
     );
 }
 
-// Authenticate user.
+// Authenticate user
 $userId = AuthMiddleware::handle();
 
-// Validate category ID.
+// Validate category ID
 $id = (int) (Request::query('id') ?? 0);
 
 if ($id <= 0) {
@@ -30,7 +30,7 @@ if ($id <= 0) {
     ]);
 }
 
-// Get request body.
+// Get request body
 $data = Request::json();
 
 $name = trim(
@@ -45,15 +45,14 @@ $color = trim(
     $data['color'] ?? ''
 );
 
+// Validate name
 $errors = [];
 
-// Validate name.
 if ($name === '') {
-    $errors['name'] =
-        'Category name is required.';
+    $errors['name'] = 'Category name is required.';
 }
 
-// Validate type.
+// Validate type
 if (
     !in_array(
         $type,
@@ -61,14 +60,12 @@ if (
         true
     )
 ) {
-    $errors['type'] =
-        'Invalid category type.';
+    $errors['type'] = 'Invalid category type.';
 }
 
-// Validate color.
+// Validate color
 if ($color === '') {
-    $errors['color'] =
-        'Category color is required.';
+    $errors['color'] = 'Category color is required.';
 }
 
 if (!empty($errors)) {
