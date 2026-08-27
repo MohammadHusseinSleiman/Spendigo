@@ -10,7 +10,7 @@ use App\Core\Request;
 use App\Middleware\AuthMiddleware;
 use App\Services\DashboardService;
 
-// Only allow GET requests.
+// Only allow GET requests
 if (Request::method() !== 'GET') {
 
     ApiResponse::error(
@@ -19,20 +19,20 @@ if (Request::method() !== 'GET') {
     );
 }
 
-// Authenticate the user.
+// Authenticate the user
 $userId = AuthMiddleware::handle();
 
-// Create dashboard service.
+// Create dashboard service
 $service = new DashboardService(
     Database::getConnection()
 );
 
-// Get dashboard summary.
+// Get dashboard summary
 $data = $service->summary(
     $userId
 );
 
-// Return response.
+// Return response
 ApiResponse::success(
     $data,
     'Dashboard summary retrieved successfully.'

@@ -9,11 +9,13 @@ use Firebase\JWT\Key;
 use Dotenv\Dotenv;
 use stdClass;
 
-final class JWTHelper {
+final class JWTHelper
+{
     private static ?string $secret = null;
 
     // Load JWT secret from environment
-    private static function secret(): string {
+    private static function secret(): string
+    {
         if (self::$secret !== null) {
             return self::$secret;
         }
@@ -27,11 +29,12 @@ final class JWTHelper {
     }
 
     // Create a JWT for the authenticated user
-    public static function create(int $userId): string {
+    public static function create(int $userId): string
+    {
         $payload = [
             'sub' => $userId,
             'iat' => time(),
-            'exp' => time() + (60 * 60 * 24 * 7)
+            'exp' => time() + (60 * 60 * 24 * 7),
         ];
 
         return JWT::encode(
@@ -42,7 +45,8 @@ final class JWTHelper {
     }
 
     // Verify a JWT
-    public static function verify(string $token): stdClass {
+    public static function verify(string $token): stdClass
+    {
         return JWT::decode(
             $token,
             new Key(
