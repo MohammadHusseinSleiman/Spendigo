@@ -44,27 +44,6 @@ if ($file['size'] > 2 * 1024 * 1024) {
     ]);
 }
 
-// Detect the real MIME type
-// Do not trust $_FILES['photo']['type']
-$mimeType = mime_content_type(
-    $file['tmp_name']
-);
-
-$allowedMimeTypes = [
-    'image/jpeg' => 'jpg',
-    'image/png'  => 'png',
-    'image/webp' => 'webp',
-];
-
-if (
-    $mimeType === false ||
-    !isset($allowedMimeTypes[$mimeType])
-) {
-    ApiResponse::validation([
-        'photo' => 'Invalid image type.',
-    ]);
-}
-
 // Make sure PHP recognizes the file as an actual image.
 $imageInfo = @getimagesize(
     $file['tmp_name']
@@ -73,6 +52,25 @@ $imageInfo = @getimagesize(
 if ($imageInfo === false) {
     ApiResponse::validation([
         'photo' => 'Uploaded file is not a valid image.',
+    ]);
+}
+
+// Detect the real MIME type from the image itself.
+// Do not trust $_FILES['photo']['type'].
+$mimeType = $imageInfo['mime'] ?? null;
+
+$allowedMimeTypes = [
+    'image/jpeg' => 'jpg',
+    'image/png'  => 'png',
+    'image/webp' => 'webp',
+];
+
+if (
+    $mimeType === null ||
+    !isset($allowedMimeTypes[$mimeType])
+) {
+    ApiResponse::validation([
+        'photo' => 'Invalid image type.',
     ]);
 }
 
