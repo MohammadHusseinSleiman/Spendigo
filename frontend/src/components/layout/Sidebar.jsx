@@ -83,7 +83,7 @@ export default function Sidebar({
                     "
                 >
 
-                    <Logo size="text-3xl" />
+                    <Logo size="small" />
 
                     {/* Mobile close button */}
                     <button
