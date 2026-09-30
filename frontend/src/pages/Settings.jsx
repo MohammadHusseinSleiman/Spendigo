@@ -17,9 +17,7 @@ import PreferencesCard from "../components/settings/PreferencesCard";
 import DeleteAccountCard from "../components/settings/DeleteAccountCard";
 import DeleteAccountModal from "../components/settings/DeleteAccountModal";
 
-import Card from "../components/common/Card";
-import Button from "../components/common/Button";
-import LoadingSpinner from "../components/common/LoadingSpinner";
+import SettingsSkeleton from "../components/common/skeletons/SettingsSkeleton";
 
 export default function Settings() {
 
@@ -35,9 +33,9 @@ export default function Settings() {
         photo: null,
     });
     const photoUrl = profile.photo
-        ? `${import.meta.env.VITE_API_URL}/uploads/profile.php?file=${profile.photo
-            .split("/")
-            .pop()}`
+        ? `${import.meta.env.VITE_API_URL}/uploads/profile.php?file=${encodeURIComponent(
+            profile.photo.split("/").pop()
+        )}`
         : "/default-avatar.png";
     const [originalProfile, setOriginalProfile] = useState(null);
     const { updateUser } = useAuth();
@@ -310,7 +308,14 @@ export default function Settings() {
     }
 
     if (loading) {
-        return <LoadingSpinner />;
+        return (
+            <AppLayout
+                title="Settings"
+                description="Manage your account preferences"
+            >
+                <SettingsSkeleton />
+            </AppLayout>
+        );
     }
 
     return (
