@@ -6,7 +6,7 @@ import reportService from "../services/reportService";
 
 import Card from "../components/common/Card";
 import Button from "../components/common/Button";
-import LoadingSpinner from "../components/common/LoadingSpinner";
+import ReportsSkeleton from "../components/common/skeletons/ReportsSkeleton";
 
 import AppLayout from "../components/layout/AppLayout";
 import ReportsSummary from "../components/reports/ReportsSummary";
@@ -95,7 +95,14 @@ export default function Reports() {
     }
 
     if (loading) {
-        return <LoadingSpinner />;
+        return (
+            <AppLayout
+                title="Reports & Analytics"
+                description="Analyze your financial performance"
+            >
+                <ReportsSkeleton />
+            </AppLayout>
+        );
     }
 
     return (

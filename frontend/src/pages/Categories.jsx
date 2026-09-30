@@ -12,7 +12,7 @@ import CategoriesTable from "../components/categories/CategoriesTable";
 import AddCategoryModal from "../components/categories/AddCategoryModal";
 import EditCategoryModal from "../components/categories/EditCategoryModal";
 import DeleteCategoryModal from "../components/categories/DeleteCategoryModal";
-import LoadingSpinner from "../components/common/LoadingSpinner";
+import CategoriesSkeleton from "../components/common/skeletons/CategoriesSkeleton";
 
 export default function Categories() {
 
@@ -139,14 +139,21 @@ export default function Categories() {
     }
 
     if (loading) {
-        return <LoadingSpinner />
+        return (
+            <AppLayout
+                title="Categories"
+                description="Manage your transaction categories"
+            >
+                <CategoriesSkeleton />
+            </AppLayout>
+        );
     }
 
     return (
 
         <AppLayout
             title="Categories"
-            description="Categorize your transactions for easier management."
+            description="Manage your transaction categories"
         >
 
             {/* Header */}

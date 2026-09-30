@@ -4,7 +4,7 @@ import { useNotifications } from "../context/NotificationContext";
 import { useState, useEffect } from "react";
 
 import transactionService from "../services/transactionService";
-import LoadingSpinner from "../components/common/LoadingSpinner";
+import TransactionsSkeleton from "../components/common/skeletons/TransactionsSkeleton";
 
 import AppLayout from "../components/layout/AppLayout";
 import TransactionsHeader from "../components/transactions/TransactionsHeader";
@@ -134,7 +134,14 @@ export default function Transactions() {
     }
 
     if (loading) {
-        return <LoadingSpinner />;
+        return (
+            <AppLayout
+                title="Transactions"
+                description="Manage your income and expenses"
+            >
+                <TransactionsSkeleton />
+            </AppLayout>
+        );
     }
 
     return (

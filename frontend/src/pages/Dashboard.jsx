@@ -11,7 +11,7 @@ import IncomeExpenseChart from "../components/charts/IncomeExpenseChart";
 import ExpenseCategoryChart from "../components/charts/ExpenseCategoryChart";
 import RecentTransactions from "../components/dashboard/RecentTransactions";
 import QuickActions from "../components/dashboard/QuickActions";
-import LoadingSpinner from "../components/common/LoadingSpinner";
+import DashboardSkeleton from "../components/common/skeletons/DashboardSkeleton";
 
 // Main dashboard page
 export default function Dashboard() {
@@ -28,8 +28,7 @@ export default function Dashboard() {
 
         try {
 
-            const data =
-                await dashboardService.getSummary();
+            const data = await dashboardService.getSummary();
 
             setDashboard(data);
 
@@ -49,10 +48,15 @@ export default function Dashboard() {
         }
     }
 
-    // Keep the loading state outside AppLayout
-    // This prevents the sidebar/topbar from appearing before the dashboard data is ready
     if (loading || !dashboard) {
-        return <LoadingSpinner />;
+        return (
+            <AppLayout
+                title="Dashboard"
+                description="Overview of your financial activity"
+            >
+                <DashboardSkeleton />
+            </AppLayout>
+        );
     }
 
     return (
