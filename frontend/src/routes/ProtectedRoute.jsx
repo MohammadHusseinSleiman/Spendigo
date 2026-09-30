@@ -1,18 +1,17 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-import LoadingSpinner from "../components/common/LoadingSpinner";
+import ProtectedRouteSkeleton from "../components/common/skeletons/ProtectedRouteSkeleton";
 
-export default function ProtectedRoute({children}) {
-
-    const {user, loading} = useAuth();
+export default function ProtectedRoute({ children }) {
+    const { user, loading } = useAuth();
 
     if (loading) {
-        return <LoadingSpinner />;
+        return <ProtectedRouteSkeleton />;
     }
 
     if (!user) {
-        return <Navigate to="/" replace/>;
+        return <Navigate to="/" replace />;
     }
 
     return children;
