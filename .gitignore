@@ -9,3 +9,4 @@ backend/uploads/profiles/*
 # Dependencies
 frontend/node_modules/
 backend/vendor/
+backend/vendor.zip
